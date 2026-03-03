@@ -28,7 +28,9 @@ This file is a Todo List file that follows specific formatting rules:
 - IDs are automatically added to tasks when saved
 -->
 
+
 # Todo List
+<!-- TODO:  contrainte unicité sur listBook, userCategory, bookCategory Action :  règle de gestion. Dans code Drizzle, créer une Primary Key composée ou un Unique Index sur les deux IDs de chaque table pivot. -->
 
 <!-- Format de la Todo List :
 - [ ] Tâche @id(abc123)

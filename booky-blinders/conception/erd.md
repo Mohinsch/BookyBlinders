@@ -5,9 +5,6 @@ Légende :
 - Bleu - table entité
 - Orange - table pivot
 - Rouge - evolution future
-- 
-<!-- TODO: ajouter modif image + contrainte unicité sur listBook, userCategory, bookCategory -->
-<!-- TODO: ajouter refreshToken si conservé -->
 
 ```mermaid
 erDiagram
