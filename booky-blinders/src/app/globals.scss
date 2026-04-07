@@ -1,0 +1,28 @@
+// --- Color tokens ---
+$bg-dark: #111827;
+$bg-card: #1a1f2e;
+$copper: #b87333;
+$brass: #c5a059;
+$gold-light: #d4a843;
+$burgundy: #7f1d1d;
+$burgundy-light: #991b1b;
+$text-muted: #9ca3af;
+$border-subtle: rgba(184, 115, 51, 0.18);
+
+// --- Reset ---
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background: $bg-dark;
+  color: #e5e5e5;
+  font-family: "Georgia", "Times New Roman", serif;
+  -webkit-font-smoothing: antialiased;
+}
