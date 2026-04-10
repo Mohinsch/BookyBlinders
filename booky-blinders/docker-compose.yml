@@ -1,0 +1,47 @@
+# /docker-compose.yml
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:16-alpine
+    container_name: booky_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Database Management GUI
+  adminer:
+    image: adminer
+    container_name: booky_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  # Next.js Application Service
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: booky_web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      # 'db' hostname refers to the database service defined above
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+    volumes:
+      - .:/app
+      - /app/node_modules # Avoid overwriting container modules with local ones
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

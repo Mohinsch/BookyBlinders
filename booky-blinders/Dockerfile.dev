@@ -1,0 +1,20 @@
+# /Dockerfile.dev
+FROM node:20-alpine
+
+WORKDIR /app
+
+# 1. Essential for Next.js on Alpine (native binaries)
+RUN apk add --no-cache libc6-compat
+
+# 2. Layer caching for dependencies
+COPY package*.json ./
+RUN npm install
+
+# 3. Copy source code so the image isn't empty
+COPY . .
+
+# 4. Standard Next.js port
+EXPOSE 3000
+
+# 5. Clean start command
+CMD ["npm", "run", "dev"]
