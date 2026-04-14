@@ -4,7 +4,8 @@ services:
   db:
     image: postgres:16-alpine
     container_name: booky_db
-    restart: always
+    # Only restart if the container crashes, but remain off if manually stopped
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -12,17 +13,26 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      # Persist database data across container restarts and recreations
       - postgres_data:/var/lib/postgresql/data
+    # Ensure the database is fully initialized and ready to accept connections
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # Database Management GUI
+  # Database Management GUI (Graphical User Interface)
   adminer:
     image: adminer
     container_name: booky_adminer
-    restart: always
+    restart: unless-stopped
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        # Wait for the database healthcheck to pass before starting Adminer
+        condition: service_healthy 
 
   # Next.js Application Service
   web:
@@ -30,18 +40,21 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: booky_web
-    restart: always
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      # 'db' hostname refers to the database service defined above
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       NEXT_PUBLIC_API_URL: http://localhost:3000
     volumes:
+      # Mount the local directory to enable hot-reloading in development
       - .:/app
-      - /app/node_modules # Avoid overwriting container modules with local ones
+      # Prevent the host's node_modules from overriding the container's compiled modules
+      - /app/node_modules
     depends_on:
-      - db
+      db:
+        # Prevent Next.js connection crashes by waiting for the DB to be fully ready
+        condition: service_healthy
 
 volumes:
   postgres_data:
