@@ -1,0 +1,60 @@
+# /docker-compose.yml
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:16-alpine
+    container_name: booky_db
+    # Only restart if the container crashes, but remain off if manually stopped
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persist database data across container restarts and recreations
+      - postgres_data:/var/lib/postgresql/data
+    # Ensure the database is fully initialized and ready to accept connections
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Database Management GUI (Graphical User Interface)
+  adminer:
+    image: adminer
+    container_name: booky_adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        # Wait for the database healthcheck to pass before starting Adminer
+        condition: service_healthy 
+
+  # Next.js Application Service
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: booky_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+    volumes:
+      # Mount the local directory to enable hot-reloading in development
+      - .:/app
+      # Prevent the host's node_modules from overriding the container's compiled modules
+      - /app/node_modules
+    depends_on:
+      db:
+        # Prevent Next.js connection crashes by waiting for the DB to be fully ready
+        condition: service_healthy
+
+volumes:
+  postgres_data:

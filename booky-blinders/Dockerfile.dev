@@ -1,0 +1,22 @@
+# /Dockerfile.dev
+FROM node:20-alpine AS base
+
+WORKDIR /app
+
+# I use node:18-alpine for a much smaller image footprint. 
+# Because Alpine is so minimal, the RUN apk add... line is needed to install Python and the build tools required for dependencies. 
+# We group these common settings in a base stage for easy reuse.
+RUN apk add --no-cache g++ make py3-pip libc6-compat
+
+# Layer caching for dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source code so the image isn't empty
+COPY . .
+
+# Standard Next.js port
+EXPOSE 3000
+
+# Start command
+CMD ["npm", "run", "dev"]
