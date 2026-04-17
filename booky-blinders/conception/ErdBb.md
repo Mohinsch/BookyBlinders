@@ -41,15 +41,32 @@ erDiagram
         string account_id
         string provider_id
         string user_id FK
-        string password "hashed by Better-Auth"
+        string password "hashed"
+        string scope
+        datetime access_token_expires_at
+        datetime refresh_token_expires_at
+        datetime created_at
+        datetime updated_at
     }
 
     session {
         string id PK
+        string token "unique session token"
         datetime expires_at
         string ip_address
         string user_agent
         string user_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    verification {
+        string id PK
+        string identifier "email/phone"
+        string value "token/code"
+        datetime expires_at
+        datetime created_at
+        datetime updated_at
     }
 
     %% MVP Business Tables
@@ -122,7 +139,7 @@ erDiagram
     classDef pivot fill:#fff4db,stroke:#e67e22,stroke-width:1px
     classDef evolution fill:#ffe5e5,stroke:#c0392b,stroke-width:1px
 
-    class account,session auth
+    class account,session,verification auth
     class user,library,book,category entity
     class user_category,book_category,library_book pivot
     class review evolution

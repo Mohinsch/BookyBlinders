@@ -1,52 +1,81 @@
 // src/db/schema.ts
-import { pgTable, text, timestamp, boolean, serial, varchar, date, integer, unique } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, serial, varchar, date, integer, unique, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // ==========================================
-// 1. BETTER-AUTH CORE TABLES
+// 1. BETTER-AUTH CORE TABLES (Merged & Optimized)
 // ==========================================
 
 export const user = pgTable("user", {
-  id: text("id").primaryKey(), // Managed by Better-Auth (UUID/CUID)
+  id: text("id").primaryKey(),
   name: text("name").notNull(), // username
   email: text("email").notNull().unique(), // auth credential
-  emailVerified: boolean("email_verified").notNull(),
+  emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"), // profile picture URL
-  role: varchar("role", { length: 50 }).default("user").notNull(), // permissions
-  createdAt: timestamp("created_at").notNull(),
-  updatedAt: timestamp("updated_at").notNull(),
-  deletedAt: timestamp("deleted_at"),
+  role: varchar("role", { length: 50 }).default("user").notNull(), // Added: permissions
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+  deletedAt: timestamp("deleted_at"), // Added: soft delete
 });
 
 export const session = pgTable("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
+  token: text("token").notNull().unique(), // Required by Better-Auth
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .$onUpdate(() => new Date())
+    .notNull(),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-});
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+}, (table) => [
+  index("session_userId_idx").on(table.userId)
+]);
 
 export const account = pgTable("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
   idToken: text("id_token"),
-  expiresAt: timestamp("expires_at"),
-  password: text("password"), // Hashed password isolated from identity
-});
+  accessTokenExpiresAt: timestamp("access_token_expires_at"), // Better-Auth specific
+  refreshTokenExpiresAt: timestamp("refresh_token_expires_at"), // Better-Auth specific
+  scope: text("scope"),
+  password: text("password"), // hashed
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .$onUpdate(() => new Date())
+    .notNull(),
+}, (table) => [
+  index("account_userId_idx").on(table.userId)
+]);
 
 export const verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
-});
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+}, (table) => [
+  index("verification_identifier_idx").on(table.identifier)
+]);
 
 // ==========================================
-// 2. MVP CORE TABLES
+// 2. MVP CORE TABLES (Business Logic)
 // ==========================================
 
 export const library = pgTable("library", {
@@ -125,14 +154,30 @@ export const review = pgTable("review", {
 });
 
 // ==========================================
-// 4. RELATIONS
+// 4. RELATIONS (Auth + Business)
 // ==========================================
 
-// Relation: A user has many libraries, reviews, and favorite categories
+// Relation: A user has many libraries, reviews, sessions, and accounts
 export const userRelations = relations(user, ({ many }) => ({
+  sessions: many(session),
+  accounts: many(account),
   libraries: many(library),
   reviews: many(review),
   favoriteCategories: many(userCategory),
+}));
+
+export const sessionRelations = relations(session, ({ one }) => ({
+  user: one(user, {
+    fields: [session.userId],
+    references: [user.id],
+  }),
+}));
+
+export const accountRelations = relations(account, ({ one }) => ({
+  user: one(user, {
+    fields: [account.userId],
+    references: [user.id],
+  }),
 }));
 
 // Relation: A library belongs to a user and contains many books
