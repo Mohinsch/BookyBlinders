@@ -14,7 +14,7 @@ export const auth = betterAuth({
         },
     }),
     emailAndPassword: {
-        enabled: true, // Classic login
+        enabled: true, // Login with email and password
     },
-    // To add later Google/GitHub/Réseau sociaux ici 
+    // To add later Google/GitHub/Réseau sociaux here 
 });

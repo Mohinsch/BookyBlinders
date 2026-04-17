@@ -18,7 +18,7 @@ export function LoginForm() {
   const router = useRouter();
   const [globalError, setGlobalError] = useState<string | null>(null);
 
-  // 2. Initialize TanStack Form (Sans adapter)
+  // 2. Init TanStack Form
   const form = useForm({
     defaultValues: {
       email: "",
