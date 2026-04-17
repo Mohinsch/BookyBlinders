@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/db"; // Importe ton instance de DB
+import { db } from "@/db"; 
 import * as schema from "@/db/schema";
 
 export const auth = betterAuth({
@@ -14,7 +14,7 @@ export const auth = betterAuth({
         },
     }),
     emailAndPassword: {
-        enabled: true, // Activation du login classique pour le MVP
+        enabled: true, // Classic login
     },
-    // On pourra ajouter Google/GitHub ici plus tard
+    // To add later Google/GitHub/Réseau sociaux ici 
 });
