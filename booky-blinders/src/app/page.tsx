@@ -1,39 +1,47 @@
-import HeroBrassSeal from "../components/HeroBrassSeal";
-import styles from "./hero.module.scss";
+// src/app/page.tsx
+import { searchBooks } from "@/services/google-books";
 
-export default function Home() {
+export default async function HomePage() {
+  // To test the API connection
+  const books = await searchBooks("peaky blinders", 10);
+
   return (
-    <main className={styles.showcase}>
-      {/* Ambient floating particles */}
-      <div className={styles.particles}>
-        {Array.from({ length: 8 }).map((_, i) => (
-          <span key={i} className={styles.particle} />
-        ))}
-      </div>
-
-      <header className={styles.header}>
-        <h1 className={styles.title}>Booky Blinders</h1>
-        <div className={styles.divider} />
-      </header>
-
-      <section className={styles.sealContainer}>
-        <div className={styles.sealFloat}>
-          <div className={styles.sealWrapper}>
-            <div className={styles.sealSvg}>
-              <HeroBrassSeal />
-            </div>
-          </div>
+    <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+      <h1 style={{ marginBottom: "2rem" }}>Google Books API Test</h1>
+      
+      {books.length === 0 ? (
+        <p>No books found. Check your API service or network connection.</p>
+      ) : (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+          {books.map((book) => (
+            <article 
+              key={book.id} 
+              style={{ border: "1px solid #ccc", padding: "1rem", width: "220px", borderRadius: "8px" }}
+            >
+              {/* Cover Image */}
+              {book.volumeInfo.imageLinks?.thumbnail ? (
+                <img 
+                  src={book.volumeInfo.imageLinks.thumbnail} 
+                  alt={book.volumeInfo.title} 
+                  style={{ width: "100%", height: "250px", objectFit: "cover" }}
+                />
+              ) : (
+                <div style={{ height: "250px", backgroundColor: "#eee", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  No Cover
+                </div>
+              )}
+              
+              {/* Book Metadata */}
+              <h3 style={{ fontSize: "1.1rem", margin: "0.5rem 0" }}>
+                {book.volumeInfo.title}
+              </h3>
+              <p style={{ fontSize: "0.9rem", color: "#666" }}>
+                {book.volumeInfo.authors?.join(", ") || "Unknown Author"}
+              </p>
+            </article>
+          ))}
         </div>
-      </section>
-
-      <footer className={styles.footer}>
-        <p className={styles.footerText}>
-          By order of the Booky Blinders
-        </p>
-        <p className={styles.footerSub}>
-          Personal Library Management &mdash; Est. 1920
-        </p>
-      </footer>
+      )}
     </main>
   );
 }
