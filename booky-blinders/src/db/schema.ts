@@ -97,7 +97,7 @@ export const book = pgTable("book", {
   description: text("description"),
   isbn: varchar("isbn", { length: 50 }),
   publisher: varchar("publisher", { length: 255 }),
-  publishedAt: date("published_at"),
+  publishedAt: varchar("published_at", { length: 20 }),
 });
 
 export const libraryBook = pgTable("library_book", {
