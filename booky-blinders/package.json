@@ -33,9 +33,12 @@
     "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/ui": "^4.1.4",
     "babel-plugin-react-compiler": "1.0.0",
     "drizzle-kit": "^0.31.10",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.4"
   },
   "overrides": {
     "@tanstack/zod-form-adapter": {
