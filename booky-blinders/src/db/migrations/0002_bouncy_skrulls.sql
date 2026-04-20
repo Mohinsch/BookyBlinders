@@ -1,0 +1,1 @@
+ALTER TABLE "book" ALTER COLUMN "published_at" SET DATA TYPE varchar(20);
