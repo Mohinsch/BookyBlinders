@@ -1,0 +1,65 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background-color: $color-bg-base;
+}
+
+body {
+  color: $color-text-main;
+  font-family: $font-main;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+h1 { @include heading-hero; margin-bottom: $spacing-base; }
+h2 { @include heading-sub; margin-bottom: $spacing-base; }
+
+blockquote, .text-quote {
+  @include text-classic;
+  color: $color-text-paper;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  &:hover { color: $color-primary; }
+}
+
+.btn-primary {
+  @include flex-center;
+  @include text-ui;
+  
+  background-color: $color-primary;
+  color: $color-bg-base;
+  padding: 12px 24px;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $color-primary-80;
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.text-muted {
+  color: $color-text-dimmed;
+  font-size: 0.875rem;
+}
