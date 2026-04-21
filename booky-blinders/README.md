@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🧪 Test Plan
 
-## Getting Started
+The project follows a testing strategy to ensure data integrity and API reliability.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🔹 Authentication & Security
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Test Case | Expected Result | Status |
+| :--- | :--- | :--- |
+| **Action call with valid session** | 200: Returns user object and proceeds | 🟢 |
+| **Action call without session** | 401: Throws "Unauthorized" (Caught: success: false) | 🔴 |
+| **Route protection (Proxy)** | 302: Redirects `/library` to `/login` | 🔴 |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 📚 Library Server Actions (`src/actions/library.ts`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Test Case | Expected Result | Status |
+| :--- | :--- | :--- |
+| **Add book (Success)** | Inserts book into DB and revalidates UI | 🟢 |
+| **Get library (Success)** | Returns formatted list of user's saved books | 🟢 |
+| **Update status (Success)** | Updates reading status and revalidates UI | 🟢 |
+| **Remove book (Success)** | Removes book and revalidates UI | 🟢 |
+| **Add book (Not Found)** | Throws "Book not found" -> Returns `success: false` | 🔴 |
+| **Get library (DB Error)** | Exception caught safely -> Returns empty array `[]` | 🔴 |
+| **Update status (Library not found)** | Throws "Library not found" -> Returns `success: false` | 🔴 |
+| **Remove book (Library not found)** | Throws "Library not found" -> Returns `success: false` | 🔴 |
 
-## Learn More
+### 🌐 Google Books API Service (`src/services/google-books.ts`)
 
-To learn more about Next.js, take a look at the following resources:
+| Test Case | Expected Result | Status |
+| :--- | :--- | :--- |
+| **Search books (Valid query)** | URL constructed properly, returns array of books | 🟢 |
+| **Get book by ID (Valid ID)** | Returns detailed book object | 🟢 |
+| **Search books (Empty query)** | Returns empty array `[]` without calling API | 🔴 |
+| **Get book by ID (Empty ID)** | Returns `null` without calling API | 🔴 |
+| **Fetch (HTTP Error)** | Detects 404/500, logs error, returns `null` | 🔴 |
+| **Fetch (Network Failure)** | Exception caught, logs error, returns `null` | 🔴 |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🔍 Books Server Actions (`src/actions/books.ts`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Test Case | Expected Result | Status |
+| :--- | :--- | :--- |
+| **Search Books (Success)** | Fetches and returns search results to the client | 🟢 |
+| **Get Book Details (Success)** | Fetches and returns specific book data | 🟢 |
+| **Search Books (API Down)** | Catches error, returns empty array to prevent UI crash | 🔴 |
+| **Get Book Details (API Down)** | Catches error, returns `null` to prevent UI crash | 🔴 |
