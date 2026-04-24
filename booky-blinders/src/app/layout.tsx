@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, EB_Garamond, Montserrat } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import "@/styles/main.scss"; 
+import { Header } from "@/components/layout/Header";
 
 const dmSans = DM_Sans({ 
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Header />
       <body 
         className={`${dmSans.variable} ${garamond.variable} ${montserrat.variable}`}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}

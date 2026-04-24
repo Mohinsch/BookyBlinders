@@ -1,63 +1,52 @@
-// src/components/layout/Header.tsx
-"use client";
+"use client"
 
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { BBMonogram } from "@/components/ui/BBMonogram";
+import styles from "./Header.module.scss";
 
 export function Header() {
-  const router = useRouter();
-  // hook from Better-Auth
-  const { data: session, isPending } = authClient.useSession();
-
-  const handleLogout = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/login");
-          router.refresh(); // Ensure the server-side state is updated
-        },
-      },
-    });
-  };
+  const navLinks = ["Home", "Discover", "About Us"];
 
   return (
-    <header className="main-header">
-      <nav className="header-nav">
-        {/* LOGO - Accessible to everyone */}
-        <div className="logo">
-          <Link href="/">
-            <span className="logo-text">BB</span>
-            <span className="logo-subtext">Booky Blinders</span>
+    <header className={styles.header}>
+      <div className={styles.container}>
+        
+        {/* --- Bloc Marque (Logo + Texte) --- */}
+        <Link href="/" className={styles.brand}>
+          <BBMonogram className={styles.logo} />
+          <div className={styles.brandText}>
+            <span className={styles.title}>Booky Blinders</span>
+            <span className={styles.subtitle}>Personal Library</span>
+          </div>
+        </Link>
+
+        {/* --- Navigation Bureau + Bouton --- */}
+        <div className={styles.desktopActions}>
+          <nav className={styles.nav} aria-label="Main navigation">
+            {navLinks.map((link) => (
+              <Link 
+                key={link} 
+                href={link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, '-')}`} 
+                className={styles.navLink}
+              >
+                {link}
+              </Link>
+            ))}
+          </nav>
+          
+          <Link href="/login" className={styles.enterBtn}>
+            Enter Library
           </Link>
         </div>
 
-        <div className="nav-links">
-          {/* While the session is loading, we can show a placeholder or nothing */}
-          {!isPending && (
-            <>
-              {session ? (
-                /* AUTHENTICATED STATE */
-                <>
-                  <Link href="/library" className="nav-item">My Library</Link>
-                  <Link href="/profile" className="nav-item">Profile</Link>
-                  <button onClick={handleLogout} className="logout-btn">
-                    Sign Out
-                  </button>
-                </>
-              ) : (
-                /* GUEST STATE */
-                <>
-                  <Link href="/login" className="nav-item">Sign In</Link>
-                  <Link href="/register" className="nav-item btn-copper">
-                    Enlist
-                  </Link>
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </nav>
+        {/* --- Menu Hamburger Mobile --- */}
+        <button className={styles.mobileMenuBtn} aria-label="Open menu">
+          <span />
+          <span />
+          <span />
+        </button>
+
+      </div>
     </header>
   );
 }

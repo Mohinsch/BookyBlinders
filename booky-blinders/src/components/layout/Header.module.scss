@@ -1,0 +1,157 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.header {
+  background-color: $color-bg-base;
+  border-bottom: 1px solid rgba($color-primary, 0.3);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  @include respond-to('md') {
+    padding: 2rem 0 1rem;  // Sur grand écran, on lui donne encore un peu plus de place
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; // Required for absolute centering of the brand text on mobile
+}
+
+/* --- BRANDING --- */
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 0.2rem;
+
+  @include respond-to('md') {
+    gap: 1rem; 
+  }
+
+  .logo {
+    width: 3.5rem;
+    height: 3.5rem;
+    flex-shrink: 0;
+    color: $color-primary;
+
+    @include respond-to('md') {
+      width: 4rem; 
+      height: 4rem;
+    }
+  }
+
+  .brandText {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+
+    @include respond-to('md') {
+      position: static;
+      transform: none;
+      text-align: left;
+    }
+
+    .title {
+      font-family: $font-accent;
+      font-size: 1.5rem;
+      color: $color-text-paper;
+      line-height: 1;
+
+      @include respond-to('md') {
+        font-size: 2rem;
+      }
+    }
+
+    .subtitle {
+      font-family: $font-ui;
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: $color-text-dimmed;
+      margin-top: 0.2rem;
+
+      @include respond-to('md') {
+        font-size: 0.7rem;
+      }
+    }
+  }
+}
+
+/* --- DESKTOP NAVIGATION --- */
+.desktopActions {
+  display: none; // Hidden on mobile
+
+  @include respond-to('md') {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .nav {
+    display: flex;
+    gap: 2rem;
+
+    .navLink {
+      font-family: $font-ui;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      transition: color 0.3s ease;
+
+      &:first-child, &:hover {
+        color: $color-primary; 
+      }
+    }
+  }
+
+  .enterBtn {
+    font-family: $font-ui;
+    font-size: 0.95rem;
+    color: $color-primary;
+    border: 1px solid rgba($color-primary, 0.5);
+    background: transparent;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba($color-primary, 0.1);
+      border-color: $color-primary;
+    }
+  }
+}
+
+/* --- MOBILE HAMBURGER MENU --- */
+.mobileMenuBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 51;
+
+  @include respond-to('md') {
+    display: none; 
+  }
+
+  span {
+    display: block;
+    width: 28px;
+    height: 2px;
+    background-color: $color-primary;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+}
