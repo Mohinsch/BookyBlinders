@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, EB_Garamond, Montserrat } from "next/font/google";
+import { Footer } from "@/components/layout/Footer";
 import "@/styles/main.scss"; 
 
 const dmSans = DM_Sans({ 
@@ -32,8 +33,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} ${garamond.variable} ${montserrat.variable}`}>
-        {children}
+      <body 
+        className={`${dmSans.variable} ${garamond.variable} ${montserrat.variable}`}
+        style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      >
+        <div style={{ flex: 1 }}>
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   );
