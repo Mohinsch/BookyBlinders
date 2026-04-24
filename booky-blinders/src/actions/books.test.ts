@@ -21,6 +21,7 @@ describe("Books Server Actions", () => {
     it("should return an empty array if the query is empty", async () => {
       const result = await searchBooksAction("");
       
+      //Then
       expect(result).toEqual([]);
       expect(searchBooks).not.toHaveBeenCalled();
     });
@@ -33,12 +34,14 @@ describe("Books Server Actions", () => {
     });
 
     it("should return search results for a valid query", async () => {
-      // Mock a successful API response
+      // Mock a successful API response Given
       const mockBooks = [{ id: "1", volumeInfo: { title: "Dune" } }];
       (searchBooks as any).mockResolvedValue(mockBooks);
 
+      //When
       const result = await searchBooksAction("Dune");
       
+      //Then
       expect(result).toEqual(mockBooks);
       expect(searchBooks).toHaveBeenCalledWith("Dune");
     });
