@@ -4,7 +4,7 @@
 .footer {
   border-top: 1px solid rgba($color-primary, 0.3);
   background-color: $color-bg-base;
-  padding: 1rem 0; 
+  padding: 0.5rem 0; 
   margin-top: auto;
 
   @include respond-to('md') {
@@ -26,7 +26,7 @@
   flex-direction: column;
   align-items: center; 
   text-align: center;
-  gap: 1rem;
+  gap: 0.5rem;
 
   @include respond-to('md') {
     flex-direction: row;
@@ -48,8 +48,8 @@
   }
 
   .logo {
-    width: 3.5rem; 
-    height: 3.5rem; 
+    width: 3rem; 
+    height: 3rem; 
     flex-shrink: 0;
     color: $color-primary;
     @include respond-to('md') {
@@ -65,7 +65,7 @@
 
     .title {
       font-family: $font-accent;
-      font-size: 1.5rem;
+      font-size: 1rem;
       color: $color-text-paper;
       line-height: 1;
 
@@ -76,13 +76,13 @@
 
     .subtitle {
       font-family: $font-ui;
-      font-size: 0.5rem;
+      font-size: 0.4rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: $color-text-dimmed;
       margin-top: 0.2rem;
       @include respond-to('md') {
-        font-size: 0.85rem;
+        font-size: 0.7rem;
       }
     }
   }
@@ -100,10 +100,13 @@
 
   .navLink {
     font-family: $font-ui;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     transition: color 0.3s ease;
+    @include respond-to('md') {
+      font-size: 1rem;
+  }
 
     &:first-child, &:hover {
       color: $color-primary; 
@@ -126,7 +129,7 @@
 
   .copyright {
     font-family: $font-ui;
-    font-size: 0.6rem;
+    font-size: 0.5rem;
     color: rgba(255, 255, 255, 0.4);
 
     @include respond-to('md') {
@@ -136,7 +139,7 @@
 
   .quote {
     font-family: $font-ui;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.6);
 
