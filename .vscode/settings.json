@@ -3,5 +3,8 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "explicit"
+  },
+  "[svg]": {
+    "editor.defaultFormatter": "jock.svg"
   }
 }

@@ -1,0 +1,28 @@
+// src/styles/_variables.scss
+
+// ==========================================
+// 🎨 COLORS (Updated with Figma + UI Surface)
+// ==========================================
+$color-primary: #D9B26A;       
+$color-primary-80: rgba(217, 178, 106, 0.8); 
+$color-bg-base: #000000;     
+$color-surface: #121212;      
+$color-bg-muted: #A19083;     
+$color-text-main: #FFFFFF;    
+$color-text-paper: #F5F5F0;   
+$color-text-dimmed: rgba(255, 255, 255, 0.6); 
+
+
+$font-main: var(--font-dm-sans), sans-serif;
+$font-accent: var(--font-garamond), serif;
+$font-ui: var(--font-montserrat), sans-serif;
+$letter-spacing-standard: 0.5px;
+
+$spacing-xs: 0.5rem;   
+$spacing-sm: 1rem;     
+$spacing-md: 1.5rem;   
+$spacing-lg: 2rem;     
+$spacing-xl: 4rem;     
+$spacing-base: $spacing-sm;
+
+$border-radius-sm: 4px;

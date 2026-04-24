@@ -1,29 +1,47 @@
-// src/app/layout.tsx
 import type { Metadata } from "next";
-import "./globals.scss";
-import { Header } from "@/components/layout/Header";
+import { DM_Sans, EB_Garamond, Montserrat } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
+import "@/styles/main.scss"; 
+import { Header } from "@/components/layout/Header";
+
+const dmSans = DM_Sans({ 
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-dm-sans",
+});
+
+const garamond = EB_Garamond({ 
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-garamond",
+});
+
+const montserrat = Montserrat({ 
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-montserrat",
+});
 
 export const metadata: Metadata = {
-  title: "Booky Blinders",
-  description:
-    "Personal library management with a 1920s Peaky Blinders aesthetic.",
+  title: "Booky Blinders | Personal Library",
+  description: "By order of the Booky Blinders.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <body>
-        <Header />
-
-        {/* Wrapping children in a main tag for SEO and CSS layout management */}
-        <main>
+      <Header />
+      <body 
+        className={`${dmSans.variable} ${garamond.variable} ${montserrat.variable}`}
+        style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      >
+        <div style={{ flex: 1 }}>
           {children}
-        </main>
+        </div>
         <Footer />
       </body>
     </html>
