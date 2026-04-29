@@ -8,8 +8,9 @@
   position: sticky;
   top: 0;
   z-index: 50;
+
   @include respond-to('md') {
-    padding: 2rem 0 1rem;  // Sur grand écran, on lui donne encore un peu plus de place
+    padding: 2rem 0 1rem;
   }
 }
 
@@ -20,10 +21,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative; // Required for absolute centering of the brand text on mobile
+  position: relative; 
 }
 
-/* --- BRANDING --- */
+/* Brand */
 .brand {
   display: flex;
   align-items: center;
@@ -86,9 +87,9 @@
   }
 }
 
-/* --- DESKTOP NAVIGATION --- */
+/* Desktop Navigation */
 .desktopActions {
-  display: none; // Hidden on mobile
+  display: none; 
 
   @include respond-to('md') {
     display: flex;
@@ -107,7 +108,7 @@
       text-decoration: none;
       transition: color 0.3s ease;
 
-      &:first-child, &:hover {
+      &.active, &:hover {
         color: $color-primary; 
       }
     }
@@ -121,6 +122,7 @@
     background: transparent;
     padding: 0.6rem 1.2rem;
     text-decoration: none;
+    cursor: pointer;
     transition: all 0.3s ease;
 
     &:hover {
@@ -130,7 +132,7 @@
   }
 }
 
-/* --- MOBILE HAMBURGER MENU --- */
+/* Mobile Hamburger Menu */
 .mobileMenuBtn {
   display: flex;
   flex-direction: column;
@@ -153,5 +155,58 @@
     background-color: $color-primary;
     border-radius: 2px;
     transition: all 0.3s ease;
+  }
+
+  &.menuOpen span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  &.menuOpen span:nth-child(2) {
+    opacity: 0;
+  }
+  &.menuOpen span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+/* Mobile Navigation Overlay */
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: $color-bg-base;
+  border-top: 1px solid rgba($color-primary, 0.2);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.5);
+
+  @include respond-to('md') {
+    display: none;
+  }
+
+  .mobileNavLink {
+    font-family: $font-accent;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+
+    &.active {
+      color: $color-primary;
+    }
+  }
+
+  .enterBtnMobile {
+    font-family: $font-ui;
+    font-size: 1.2rem;
+    color: $color-primary;
+    border: 1px solid $color-primary;
+    background: transparent;
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 1rem;
   }
 }
