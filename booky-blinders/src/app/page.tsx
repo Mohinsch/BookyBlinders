@@ -4,6 +4,7 @@ import { Search, Star, Library, LayoutGrid, Quote, BookOpen, ArrowRight } from "
 import styles from "./page.module.scss";
 import { HeroSection } from "@/components/home/HeroSection"; 
 import { FeaturesSection } from "@/components/home/FeaturesSection";
+import { ShowcaseSection } from "@/components/home/ShowcaseSection";
 
 export default async function HomePage() {
   // Fetch initial collection for the "Discover" section
@@ -14,54 +15,7 @@ export default async function HomePage() {
       
         <HeroSection />
         <FeaturesSection/>
-
-        
-      {/* 🔹 Showcase Section (Thomas Shelfy) */}
-      <section className={styles.showcase}>
-        <div className={styles.imageColumn}>
-          <div className={styles.imageWrapper}>
-            <Image 
-              src="/thomas-shelfy.jpg" 
-              alt="Thomas Shelfy" 
-              width={500} 
-              height={600} 
-            />
-            <div className={styles.quoteOverlay}>
-              <Quote size={20} className={styles.quoteIcon} />
-              <blockquote>"A man who reads lives a thousand lives before he dies."</blockquote>
-              <cite>Thomas Shelfy</cite>
-            </div>
-          </div>
-        </div>
-        <div className={styles.textColumn}>
-          <span className={styles.label}>Thomas Shelfy's Collection</span>
-          <h2>A gentleman's library</h2>
-          <p>Every great mind curates their shelf with care. Here's a glimpse into one reader's world.</p>
-          
-          <div className={styles.showcaseList}>
-            <div className={styles.showcaseItem}>
-              <div className={styles.itemHeader}>
-                <h4>The Great Gatsby</h4>
-                <div className={styles.stars}>
-                  {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
-                </div>
-              </div>
-              <span className={styles.author}>F. Scott Fitzgerald</span>
-              <p>"A masterpiece of the jazz age. The green light beckons us all."</p>
-            </div>
-            <div className={styles.showcaseItem}>
-              <div className={styles.itemHeader}>
-                <h4>Crime and Punishment</h4>
-                <div className={styles.stars}>
-                  {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
-                </div>
-              </div>
-              <span className={styles.author}>Fyodor Dostoevsky</span>
-              <p>"The depths of human conscience, laid bare on every page."</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        <ShowcaseSection/>
 
       {/* 🔹 Discover Section */}
       <section className={styles.discover}>

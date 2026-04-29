@@ -1,0 +1,141 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.showcase {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .imageColumn {
+    display: flex;
+    justify-content: center;
+
+    .imageWrapper {
+      position: relative;
+      @include vintage-border;
+      padding: 0.5rem;
+      background-color: $color-bg-base;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: sepia(20%) contrast(1.1);
+      }
+
+      .quoteOverlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        padding: 3rem 1.5rem 1.5rem;
+        text-align: center;
+        z-index: 10;
+
+        .quoteIcon {
+          color: $color-primary;
+          margin: 0 auto 0.5rem;
+        }
+
+        blockquote {
+          @include text-classic;
+          font-size: 1.1rem;
+          font-style: italic;
+          color: $color-text-main;
+          margin-bottom: 0.5rem;
+          border: none;
+          padding: 0;
+        }
+
+        cite {
+          @include text-ui;
+          color: $color-primary;
+          font-style: normal;
+        }
+      }
+    }
+  }
+
+  .textColumn {
+    .label {
+      @include text-ui;
+      color: $color-primary;
+      display: block;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    h2 {
+      @include heading-sub;
+      font-size: 2.2rem;
+      border: none;
+      margin: 0.5rem 0 1rem;
+    }
+
+    p {
+      @include text-classic;
+      color: $color-text-dimmed;
+      margin-bottom: 2rem;
+    }
+
+    .showcaseList {
+      @include flex-column;
+      gap: 1.5rem;
+
+      .showcaseItem {
+        @include vintage-border;
+        padding: 1.2rem;
+        background: rgba($color-primary, 0.05);
+
+        .itemHeader {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 0.2rem;
+
+          h4 {
+            @include heading-sub;
+            font-size: 1.1rem;
+            border: none;
+            padding: 0;
+            margin: 0;
+          }
+
+          .stars {
+            color: $color-primary;
+            display: flex;
+            gap: 0.1rem;
+          }
+        }
+
+        .author {
+          @include text-ui;
+          color: $color-text-dimmed;
+          display: block;
+          margin-bottom: 0.8rem;
+          font-style: italic;
+        }
+
+        p {
+          font-family: $font-main;
+          color: $color-text-main;
+          font-size: 0.9rem;
+          font-style: italic;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
