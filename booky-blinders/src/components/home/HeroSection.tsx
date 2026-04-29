@@ -3,6 +3,7 @@
 import { motion, Variants } from "framer-motion";
 import { Search, Star } from "lucide-react";
 import styles from "./HeroSection.module.scss";
+import BlurText from "../ui/BlurText";
 
 export function HeroSection() {
   const containerVariants: Variants = {
@@ -42,12 +43,24 @@ export function HeroSection() {
           <span>EST. 1920</span>
           <div className={styles.line} />
         </motion.div>
+        {/* --- BLUR TEXT INTEGRATION --- */}
+        <motion.div variants={itemVariants} className={styles.titleWrapper}>
+            <BlurText
+            text="Your Books."
+            delay={150}
+            animateBy="letters"
+            direction="top"
+            className={`${styles.title} ${styles.gold}`}
+            />
 
-        <motion.h1 variants={itemVariants}>
-          Your Books.
-          <br />
-          <span>Your Rules.</span>
-        </motion.h1>
+          <BlurText
+            text="Your Rules."
+            delay={150}
+            animateBy="letters"
+            direction="top"
+            className={`${styles.title} ${styles.gold}`}
+          />
+        </motion.div>
         
         <motion.p variants={itemVariants}>
           A personal library for those who read with purpose. Search, collect, annotate, and curate your literary empire with the elegance it deserves.
