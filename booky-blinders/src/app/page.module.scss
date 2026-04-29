@@ -22,52 +22,6 @@
     text-transform: uppercase;
   }
 
-  /* --- FEATURES SECTION --- */
-  .features {
-    text-align: center;
-
-    .featureGrid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: $spacing-lg;
-      text-align: left;
-
-      @include respond-to('md') {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .featureCard {
-        @include vintage-border;
-        padding: $spacing-md;
-        @include flex-column;
-        gap: $spacing-xs;
-        transition: transform 0.3s;
-
-        &:hover { transform: translateY(-5px); }
-
-        .icon {
-          color: $color-primary;
-          margin-bottom: $spacing-xs;
-        }
-
-        h3 {
-          @include heading-sub;
-          font-size: 1.3rem;
-          color: $color-text-main; 
-          border: none;
-          padding: 0;
-          margin: 0;
-        }
-
-        p {
-          @include text-ui;
-          color: $color-text-dimmed;
-          line-height: 1.6;
-        }
-      }
-    }
-  }
-
   /* --- SHOWCASE SECTION --- */
   .showcase {
     display: grid;

@@ -1,0 +1,62 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+  
+.features {
+  text-align: center;
+
+  .sectionTitle {
+    @include heading-sub;
+    border-bottom: 1px solid $color-primary;
+    display: inline-block;
+    padding-bottom: $spacing-xs;
+    margin-bottom: $spacing-lg;
+    text-transform: uppercase;
+  }
+
+  .featureGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+    text-align: left;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .featureCard {
+      @include vintage-border;
+      padding: $spacing-md;
+      @include flex-column;
+      gap: $spacing-xs;
+      
+      background-color: transparent;
+      border-radius: 0; 
+
+      .icon, h3, p {
+        position: relative;
+        z-index: 2; 
+      }
+
+      .icon {
+        color: $color-primary;
+        margin-bottom: $spacing-xs;
+      }
+
+      h3 {
+        @include heading-sub;
+        font-size: 1.3rem;
+        color: $color-text-main; 
+        border: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      p {
+        @include text-ui;
+        color: $color-text-dimmed;
+        line-height: 1.6;
+        margin: 0;
+      }
+    }
+  }
+}

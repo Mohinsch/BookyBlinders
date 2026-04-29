@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Search, Star, Library, LayoutGrid, Quote, BookOpen, ArrowRight } from "lucide-react";
 import styles from "./page.module.scss";
 import { HeroSection } from "@/components/home/HeroSection"; 
+import { FeaturesSection } from "@/components/home/FeaturesSection";
 
 export default async function HomePage() {
   // Fetch initial collection for the "Discover" section
@@ -12,28 +13,9 @@ export default async function HomePage() {
     <main className={styles.home}>
       
         <HeroSection />
-      {/* 🔹 Features Section */}
-      <section className={styles.features}>
-        <h2 className={styles.sectionTitle}>Everything a reader needs</h2>
-        <div className={styles.featureGrid}>
-          <div className={styles.featureCard}>
-            <Search className={styles.icon} size={28} />
-            <h3>Discover & Search</h3>
-            <p>Explore millions of books. Our search engine uncovers every title, from forgotten classics to the latest releases.</p>
-          </div>
-          <div className={styles.featureCard}>
-            <Library className={styles.icon} size={28} />
-            <h3>Curate Your Shelf</h3>
-            <p>Build your personal library with precision. Organize by genre, author, mood, or your own custom categories.</p>
-          </div>
-          <div className={styles.featureCard}>
-            <LayoutGrid className={styles.icon} size={28} />
-            <h3>Organise & Track</h3>
-            <p>Track your reading progress, set goals, and maintain lists. From 'Currently Reading' to 'All-Time Favourites'.</p>
-          </div>
-        </div>
-      </section>
+        <FeaturesSection/>
 
+        
       {/* 🔹 Showcase Section (Thomas Shelfy) */}
       <section className={styles.showcase}>
         <div className={styles.imageColumn}>
