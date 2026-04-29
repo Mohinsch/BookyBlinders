@@ -34,11 +34,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Header />
       <body 
         className={`${dmSans.variable} ${garamond.variable} ${montserrat.variable}`}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
+        <Header />
         <div style={{ flex: 1 }}>
           {children}
         </div>
