@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { authClient } from "@/lib/auth-client";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import styles from "./Header.module.scss";
@@ -13,7 +14,6 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { data: session, isPending } = authClient.useSession();
-  // Explicitly check for the user object to confirm authentication
   const isAuthenticated = !!session?.user;
 
   const navLinks = ["Home", "Discover", "About Us"];
@@ -27,6 +27,28 @@ export function Header() {
         },
       },
     });
+  };
+
+  // Animation variants for the mobile slide-down menu
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      y: "-100%",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
   };
 
   return (
@@ -47,7 +69,6 @@ export function Header() {
           <nav className={styles.nav} aria-label="Main navigation">
             {navLinks.map((link) => {
               const href = link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, '-')}`;
-              // Keep active state even on nested routes (e.g., /discover/123)
               const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
 
               return (
@@ -66,16 +87,16 @@ export function Header() {
             <span className={styles.enterBtn} style={{ opacity: 0.5 }}>Loading...</span>
           ) : isAuthenticated ? (
             <button onClick={handleLogout} className={styles.enterBtn}>
-              Step Away
+              Close the Ledger
             </button>
           ) : (
             <Link href="/login" className={styles.enterBtn}>
-              Enter Library
+              Open the Ledger
             </Link>
           )}
         </div>
 
-        {/* Mobile Menu Burger */}
+        {/* Mobile Menu Toggle */}
         <button 
           className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.menuOpen : ""}`} 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -88,36 +109,44 @@ export function Header() {
 
       </div>
 
-      {/* Mobile Navigation Overlay */}
-      {isMobileMenuOpen && (
-        <div className={styles.mobileNav}>
-          {navLinks.map((link) => {
-            const href = link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, '-')}`;
-            const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+      {/* Animated Mobile Navigation Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            className={styles.mobileNav}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+          >
+            {navLinks.map((link) => {
+              const href = link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, '-')}`;
+              const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
 
-            return (
-              <Link 
-                key={link} 
-                href={href} 
-                className={`${styles.mobileNavLink} ${isActive ? styles.active : ""}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link}
+              return (
+                <Link 
+                  key={link} 
+                  href={href} 
+                  className={`${styles.mobileNavLink} ${isActive ? styles.active : ""}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link}
+                </Link>
+              );
+            })}
+            
+            {isAuthenticated ? (
+              <button onClick={handleLogout} className={styles.enterBtnMobile}>
+                Close the Ledger
+              </button>
+            ) : (
+              <Link href="/login" className={styles.enterBtnMobile} onClick={() => setIsMobileMenuOpen(false)}>
+                Open the Ledger
               </Link>
-            );
-          })}
-          
-          {isAuthenticated ? (
-            <button onClick={handleLogout} className={styles.enterBtnMobile}>
-              Sign Out
-            </button>
-          ) : (
-            <Link href="/login" className={styles.enterBtnMobile} onClick={() => setIsMobileMenuOpen(false)}>
-              Enter Library
-            </Link>
-          )}
-        </div>
-      )}
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

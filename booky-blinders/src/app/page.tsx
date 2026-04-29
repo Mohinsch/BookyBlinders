@@ -2,6 +2,7 @@ import { searchBooks } from "@/services/google-books";
 import Image from "next/image";
 import { Search, Star, Library, LayoutGrid, Quote, BookOpen, ArrowRight } from "lucide-react";
 import styles from "./page.module.scss";
+import { HeroSection } from "@/components/home/HeroSection"; 
 
 export default async function HomePage() {
   // Fetch initial collection for the "Discover" section
@@ -10,47 +11,7 @@ export default async function HomePage() {
   return (
     <main className={styles.home}>
       
-      {/* 🔹 Hero Section matching Moqups */}
-      <section className={styles.hero}>
-        <div className={styles.decorativeLine}>
-          <div className={styles.line} />
-          <span>EST. 1920</span>
-          <div className={styles.line} />
-        </div>
-        <h1>
-          Your Books. <br />
-          <span>Your Rules.</span>
-        </h1>
-        <p>
-          A personal library for those who read with purpose. Search, collect, 
-          and curate your literary empire with the elegance it deserves.
-        </p>
-        <div className={styles.ctaContainer}>
-          <button className={styles.btnPrimary}>
-            <BookOpen size={18} /> Start your collection
-          </button>
-          <button className={styles.btnOutline}>
-            <Search size={18} /> Explore Books
-          </button>
-        </div>
-        
-        {/* Stats Row */}
-        <div className={styles.stats}>
-          <div className={styles.statItem}>
-            <strong>10 M+</strong>
-            <span>Books</span>
-          </div>
-          <div className={styles.statItem}>
-            <strong>4.9 <Star size={16} fill="currentColor" /></strong>
-            <span>Rating</span>
-          </div>
-          <div className={styles.statItem}>
-            <strong>Free</strong>
-            <span>Forever</span>
-          </div>
-        </div>
-      </section>
-
+        <HeroSection />
       {/* 🔹 Features Section */}
       <section className={styles.features}>
         <h2 className={styles.sectionTitle}>Everything a reader needs</h2>
