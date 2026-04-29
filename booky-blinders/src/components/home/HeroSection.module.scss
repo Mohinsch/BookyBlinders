@@ -1,0 +1,129 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.hero {
+  @include flex-column;
+  @include flex-center;
+  text-align: center;
+  width: 100%;
+  padding-top: 4rem;
+
+  @include respond-to('md') {
+    padding-top: 8rem;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .decorativeLine {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: $spacing-md;
+    color: $color-primary;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+
+    .line {
+      height: 1px;
+      width: 40px;
+      background-color: rgba($color-primary, 0.4);
+    }
+  }
+
+  h1 {
+    @include heading-hero;
+    span { color: $color-primary; }
+  }
+
+  p {
+    @include text-classic;
+    color: $color-text-dimmed;
+    max-width: 700px;
+    margin: $spacing-md 0;
+  }
+
+  .ctaContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-md;
+    margin-top: $spacing-sm;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+    border-top: 1px solid rgba($color-primary, 0.2);
+    padding-top: 2rem;
+    width: 100%;
+    max-width: 600px;
+
+    .statItem {
+      @include flex-column;
+      align-items: center;
+      gap: 0.3rem;
+
+      strong {
+        font-family: $font-main;
+        font-size: 1.5rem;
+        color: $color-primary;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+
+        @include respond-to('md') { font-size: 2rem; }
+      }
+
+      span {
+        @include text-ui;
+        color: $color-text-dimmed;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.btnPrimary {
+  background-color: $color-primary;
+  color: $color-bg-base;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-family: $font-main;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover { opacity: 0.9; }
+}
+
+.btnOutline {
+  background-color: transparent;
+  color: $color-primary;
+  border: 1px solid $color-primary;
+  padding: 0.8rem 1.5rem;
+  font-family: $font-main;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover { background-color: rgba($color-primary, 0.1); }
+}
