@@ -1,0 +1,95 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.discover {
+  width: 100%;
+
+  .discoverHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+    width: 100%;
+
+    .sectionTitle {
+      @include heading-sub;
+      color: $color-primary;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      text-transform: uppercase;
+      margin: 0;
+      white-space: nowrap;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+
+      @include respond-to('md') {
+        gap: 1.5rem;
+       
+      }
+
+      &::before, &::after {
+        content: '';
+        display: block;
+        height: 1px;
+        width: 25px;
+        background-color: $color-primary;
+        flex-shrink: 0;
+
+        @include respond-to('md') {
+          width: 50px;
+        }
+      }
+    }
+
+    .searchBar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba($color-primary, 0.5);
+      padding: 0.8rem 1.5rem;
+      max-width: 400px;
+      width: 100%;
+      margin: 1.5rem auto 0;
+      border-radius: 2px;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+      background-color: $color-surface;
+
+      &:focus-within { 
+        border-color: $color-primary; 
+      }
+
+      input {
+        background: $color-surface;
+        border: none;
+        color: $color-text-main;
+        font-family: $font-main;
+        width: 100%;
+        outline: none;
+
+        &::placeholder {
+          color: rgba($color-primary, 0.5);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          font-size: 0.85rem;
+        }
+      }
+
+      svg { 
+        color: $color-primary;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .bookGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    width: 100%;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: $spacing-lg;
+    }
+  }
+}

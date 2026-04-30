@@ -27,10 +27,10 @@ export function ShowcaseSection() {
         <TiltedCard
           imageSrc="/thomas-shelfy.jpg"
           altText="Thomas Shelfy"
-          containerHeight="600px" // Adjusted to match your original design
+          containerHeight="600px"
           containerWidth="100%"
-          imageHeight="600px"     // Match containerHeight
-          imageWidth="500px"      // Adjusted to match your original design
+          imageHeight="600px"    
+          imageWidth="500px"    
           rotateAmplitude={12}
           scaleOnHover={1.03}
           showTooltip={false}

@@ -3,21 +3,27 @@
   
 .features {
   text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-md;
 
   .sectionTitle {
-    @include heading-sub;
-    border-bottom: 1px solid $color-primary;
-    display: inline-block;
-    padding-bottom: $spacing-xs;
-    margin-bottom: $spacing-lg;
-    text-transform: uppercase;
+    font-family: $font-accent;
+    font-size: clamp(1.7rem, 5vw, 4rem); 
+    color: $color-primary;
+    margin: 0 0 3rem 0;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    line-height: 1.2;
   }
-
+  
   .featureGrid {
     display: grid;
     grid-template-columns: 1fr;
     gap: $spacing-lg;
     text-align: left;
+    width: 100%;
 
     @include respond-to('md') {
       grid-template-columns: repeat(3, 1fr);
@@ -29,7 +35,7 @@
       @include flex-column;
       gap: $spacing-xs;
       
-      background-color: transparent;
+      background-color: $color-surface;
       border-radius: 0; 
 
       .icon, h3, p {
@@ -44,18 +50,20 @@
 
       h3 {
         @include heading-sub;
-        font-size: 1.3rem;
-        color: $color-text-main; 
+        font-size: 1.5rem;
         border: none;
         padding: 0;
         margin: 0;
+        font-family: $font-accent
       }
 
       p {
         @include text-ui;
-        color: $color-text-dimmed;
+        color: $color-bg-muted;
         line-height: 1.6;
+        font-size: 1.1rem;
         margin: 0;
+        font-family: $font-ui;
       }
     }
   }

@@ -18,13 +18,31 @@
   .imageColumn {
     display: flex;
     justify-content: center;
+    width: 100%;
+    min-width: 0; 
+
+    /* Force the TiltedCard and its JS-injected children to shrink on mobile */
+    :global(.tilted-card-figure),
+    :global(.tilted-card-inner) {
+      width: 100% !important;
+      max-width: 500px !important;
+      height: auto !important;
+      aspect-ratio: 5 / 6;
+    }
+
+    :global(.tilted-card-img) {
+      max-width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+    }
 
     .imageWrapper {
       position: relative;
       @include vintage-border;
       padding: 0.5rem;
-      background-color: $color-bg-base;
+      background-color: $color-surface;
       overflow: hidden;
+      width: 100%;
 
       img {
         width: 100%;
@@ -39,9 +57,13 @@
         left: 0;
         right: 0;
         background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        padding: 3rem 1.5rem 1.5rem;
+        padding: 2rem 1rem 1rem;
         text-align: center;
         z-index: 10;
+
+        @include respond-to('md') {
+          padding: 3rem 1.5rem 1.5rem;
+        }
 
         .quoteIcon {
           color: $color-primary;
@@ -50,12 +72,16 @@
 
         blockquote {
           @include text-classic;
-          font-size: 1.1rem;
+          font-size: 1rem;
           font-style: italic;
           color: $color-text-main;
           margin-bottom: 0.5rem;
           border: none;
           padding: 0;
+
+          @include respond-to('md') {
+            font-size: 1.1rem;
+          }
         }
 
         cite {
@@ -68,6 +94,9 @@
   }
 
   .textColumn {
+    text-align: center;
+    width: 100%;
+
     .label {
       @include text-ui;
       color: $color-primary;
@@ -79,9 +108,13 @@
 
     h2 {
       @include heading-sub;
-      font-size: 2.2rem;
+      font-size: 2rem;
       border: none;
       margin: 0.5rem 0 1rem;
+
+      @include respond-to('md') {
+        font-size: 2.2rem;
+      }
     }
 
     p {
@@ -93,11 +126,19 @@
     .showcaseList {
       @include flex-column;
       gap: 1.5rem;
+      align-items: center;
+
+      @include respond-to('md') {
+        align-items: stretch;
+      }
 
       .showcaseItem {
         @include vintage-border;
         padding: 1.2rem;
         background: rgba($color-primary, 0.05);
+        width: 100%;
+        text-align: left;
+        background-color: $color-surface;
 
         .itemHeader {
           display: flex;

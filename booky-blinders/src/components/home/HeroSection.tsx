@@ -4,6 +4,7 @@ import { motion, Variants } from "framer-motion";
 import { Search, Star } from "lucide-react";
 import styles from "./HeroSection.module.scss";
 import BlurText from "../ui/BlurText";
+import { Button } from "@/components/ui/Button";
 
 export function HeroSection() {
   const containerVariants: Variants = {
@@ -43,16 +44,15 @@ export function HeroSection() {
           <span>EST. 1920</span>
           <div className={styles.line} />
         </motion.div>
-        {/* --- BLUR TEXT INTEGRATION --- */}
+
         <motion.div variants={itemVariants} className={styles.titleWrapper}>
-            <BlurText
+          <BlurText
             text="Your Books."
             delay={150}
             animateBy="letters"
             direction="top"
             className={`${styles.title} ${styles.gold}`}
-            />
-
+          />
           <BlurText
             text="Your Rules."
             delay={150}
@@ -67,10 +67,12 @@ export function HeroSection() {
         </motion.p>
         
         <motion.div className={styles.ctaContainer} variants={itemVariants}>
-          <button className={styles.btnPrimary}>Start your collection</button>
-          <button className={styles.btnOutline}>
+          <Button variant="primary">
+            Start your collection
+          </Button>
+          <Button variant="outline">
             Explore Books <Search size={16} />
-          </button>
+          </Button>
         </motion.div>
         
         <motion.div className={styles.stats} variants={itemVariants}>

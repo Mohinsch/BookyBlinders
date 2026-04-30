@@ -36,15 +36,15 @@ async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
 /**
  * Utility 1: Search books by title, author, or keywords. It returns a list of books matching the query.
  */
-export async function searchBooks(query: string, maxResults = 10): Promise<GoogleBookItem[]> {
-  if (!query) return [];
-
-  const safeQuery = encodeURIComponent(query);
-  const endpoint = `?q=${safeQuery}&maxResults=${maxResults}&langRestrict=en,fr`;
-
-  const data = await fetchFromGoogleBooks<GoogleBooksResponse>(endpoint);
-  
-  return data?.items || [];
+export async function searchBooks(query: string, maxResults = 12) {
+  try {
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=${maxResults}`);
+    const data = await response.json();
+    return data.items || []; 
+  } catch (error) {
+    console.error("SearchBooks Error:", error);
+    return []; 
+  }
 }
 
 /**
