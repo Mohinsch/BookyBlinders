@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence , Variants} from "framer-motion";
 import { authClient } from "@/lib/auth-client";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import styles from "./Header.module.scss";
@@ -30,7 +30,7 @@ export function Header() {
   };
 
   // Animation variants for the mobile slide-down menu
-  const menuVariants = {
+  const menuVariants : Variants= {
     closed: {
       opacity: 0,
       y: "-100%",
