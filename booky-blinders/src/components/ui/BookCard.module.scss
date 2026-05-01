@@ -7,25 +7,81 @@
   @include flex-column;
   height: 100%;
   background-color: $color-surface;
+  cursor: pointer;
+  gap: $spacing-sm;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px $color-primary;
+  }
 
   .coverWrapper {
     width: 100%;
-    // Responsive height
-    height: 250px; 
+    height: 220px; 
+    background-color: rgba($color-primary, 0.03);
+    border: 1px solid rgba($color-primary, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
     
     @include respond-to('md') {
-      height: 300px;
+      height: 280px;
     }
 
     img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+      transition: filter 0.3s ease;
     }
   }
 
-  h3 {
-    font-size: 1rem;
-    line-height: 1.3;
+  &:hover .coverWrapper img {
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.9)) brightness(1.05);
+  }
+
+  .placeholder {
+    @include flex-center;
+    width: 100%;
+    height: 100%;
+    color: rgba($color-primary, 0.5);
+    font-family: $font-accent;
+    font-style: italic;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .info {
+    @include flex-column;
+    gap: 0.3rem;
+    overflow: hidden;
+
+    .title {
+      font-family: $font-accent;
+      font-size: 1.1rem;
+      line-height: 1.25;
+      color: $color-text-paper;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .author {
+      @include text-ui;
+      font-size: 0.8rem;
+      color: $color-primary;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }

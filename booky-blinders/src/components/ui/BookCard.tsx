@@ -11,18 +11,40 @@ interface BookCardProps {
 
 export function BookCard({ title, authors, thumbnail, onClick }: BookCardProps) {
   return (
-    <article className={styles.bookCard} onClick={onClick}>
+    <article 
+      className={styles.bookCard} 
+      onClick={onClick}
+      role={onClick ? "button" : "article"}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (onClick && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+    >
       <div className={styles.coverWrapper}>
         {thumbnail ? (
-          <img src={thumbnail} alt={title} />
+          <img 
+            src={thumbnail} 
+            alt={`Cover of ${title}`} 
+            loading="lazy" 
+          />
         ) : (
-          <div className={styles.placeholder}>No Cover</div>
+          <div className={styles.placeholder}>
+            <span>Missing Cover</span>
+          </div>
         )}
       </div>
-      <h3>{title}</h3>
-      <p className={styles.author}>
-        {authors?.join(", ") || "Unknown Author"}
-      </p>
+      
+      <div className={styles.info}>
+        <h3 className={styles.title} title={title}>
+          {title}
+        </h3>
+        <p className={styles.author} title={authors?.join(", ")}>
+          {authors?.join(", ") || "Unknown Author"}
+        </p>
+      </div>
     </article>
   );
 }

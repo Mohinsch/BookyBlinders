@@ -1,27 +1,41 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { motion, Variants } from "framer-motion";
 import { BookCard } from "@/components/ui/BookCard";
+import type { GoogleBookItem } from "@/types/google-books";
 import styles from "./DiscoverSection.module.scss";
 
-interface Book {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors?: string[];
-    imageLinks?: {
-      thumbnail?: string;
-    };
-  };
+interface DiscoverSectionProps {
+  initialBooks: GoogleBookItem[];
 }
 
-interface DiscoverSectionProps {
-  initialBooks: Book[];
-}
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      type: "spring", 
+      stiffness: 260, 
+      damping: 20 
+    } 
+  },
+};
 
 export function DiscoverSection({ initialBooks = [] }: DiscoverSectionProps) {
   return (
-    <section className={styles.discover}>
+    <section id="discover" className={styles.discover}>
       <div className={styles.discoverHeader}>
         <h2 className={styles.sectionTitle}>Discover & Search</h2>
         <div className={styles.searchBar}>
@@ -33,16 +47,23 @@ export function DiscoverSection({ initialBooks = [] }: DiscoverSectionProps) {
       {!initialBooks || initialBooks.length === 0 ? (
         <p className={styles.emptyMessage}>The archives are empty.</p>
       ) : (
-        <div className={styles.bookGrid}>
+        <motion.div 
+          className={styles.bookGrid}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {initialBooks.map((book) => (
-            <BookCard 
-              key={book.id}
-              title={book.volumeInfo.title}
-              authors={book.volumeInfo.authors}
-              thumbnail={book.volumeInfo.imageLinks?.thumbnail}
-            />
+            <motion.div key={book.id} variants={itemVariants}>
+              <BookCard 
+                title={book.volumeInfo.title}
+                authors={book.volumeInfo.authors}
+                thumbnail={book.volumeInfo.imageLinks?.thumbnail}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </section>
   );
