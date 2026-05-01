@@ -1,5 +1,6 @@
 export interface UserLibraryBook {
   id: number;
+  libraryId: number;
   googleId: string | null;
   title: string;
   author: string | null;
@@ -9,7 +10,12 @@ export interface UserLibraryBook {
   addedAt: Date;
 }
 
-export type ReadingStatus = 'TO_READ' | 'IN_PROGRESS' | 'READ';
+export type ReadingStatus = "TO_READ" | "IN_PROGRESS" | "READ";
+
+export interface UserLibrarySummary {
+  id: number;
+  name: string;
+}
 
 export interface ActionResponse {
   success: boolean;

@@ -6,7 +6,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { UserLibraryBook, ReadingStatus } from "@/types/library";
+import { useMemo } from "react";
+import type { ReadingStatus, UserLibraryBook } from "@/types/library";
 import styles from "./LibraryTable.module.scss";
 
 const columnHelper = createColumnHelper<UserLibraryBook>();
@@ -17,54 +18,89 @@ const getStatus = (book: UserLibraryBook): ReadingStatus => {
   return "TO_READ";
 };
 
-const columns = [
-  columnHelper.accessor("cover", {
-    header: "",
-    cell: (info) => (
-      <div className={styles.coverCell}>
-        {info.getValue() ? (
-          <img src={info.getValue() || ""} alt="Cover" />
-        ) : (
-          <div className={styles.placeholder} />
-        )}
-      </div>
-    ),
-  }),
-  columnHelper.accessor("title", {
-    header: "Title",
-    cell: (info) => <span className={styles.bookTitle}>{info.getValue()}</span>,
-  }),
-  columnHelper.accessor("author", {
-    header: "Author",
-    cell: (info) => <span className={styles.author}>{info.getValue()}</span>,
-  }),
-  columnHelper.accessor((row) => getStatus(row), {
-    id: "status",
-    header: "Status",
-    cell: (info) => {
-      const status = info.getValue();
-      return (
-        <span className={`${styles.badge} ${styles[status.toLowerCase()]}`}>
-          {status.replace("_", " ")}
-        </span>
-      );
-    },
-  }),
-  columnHelper.accessor("addedAt", {
-    header: "Added Date",
-    cell: (info) => (
-      <span className={styles.date}>
-        {new Date(info.getValue()).toLocaleDateString()}
-      </span>
-    ),
-  }),
-];
-
 interface LibraryTableProps {
   data: UserLibraryBook[];
+  onStatusChange: (bookId: number, status: ReadingStatus) => void;
+  onRemove: (bookId: number) => void;
 }
 
-export function LibraryTable({ data }: LibraryTableProps) {
+export function LibraryTable({
+  data,
+  onStatusChange,
+  onRemove,
+}: LibraryTableProps) {
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("cover", {
+        header: "",
+        cell: (info) => (
+          <div className={styles.coverCell}>
+            {info.getValue() ? (
+              <img src={info.getValue() || ""} alt="Cover" />
+            ) : (
+              <div className={styles.placeholder} />
+            )}
+          </div>
+        ),
+      }),
+      columnHelper.accessor("title", {
+        header: "Title",
+        cell: (info) => (
+          <span className={styles.bookTitle}>{info.getValue()}</span>
+        ),
+      }),
+      columnHelper.accessor("author", {
+        header: "Author",
+        cell: (info) => (
+          <span className={styles.author}>{info.getValue()}</span>
+        ),
+      }),
+      columnHelper.accessor((row) => getStatus(row), {
+        id: "status",
+        header: "Status",
+        cell: (info) => {
+          const status = info.getValue();
+          const currentBook = info.row.original;
+          return (
+            <select
+              className={`${styles.badge} ${styles[status.toLowerCase()]}`}
+              value={status}
+              onChange={(e) =>
+                onStatusChange(currentBook.id, e.target.value as ReadingStatus)
+              }
+            >
+              <option value="TO_READ">TO READ</option>
+              <option value="IN_PROGRESS">IN PROGRESS</option>
+              <option value="READ">READ</option>
+            </select>
+          );
+        },
+      }),
+      columnHelper.accessor("addedAt", {
+        header: "Added Date",
+        cell: (info) => (
+          <span className={styles.date}>
+            {new Date(info.getValue()).toLocaleDateString()}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "",
+        cell: (info) => (
+          <button
+            type="button"
+            className={styles.removeBtn}
+            onClick={() => onRemove(info.row.original.id)}
+          >
+            Remove
+          </button>
+        ),
+      }),
+    ],
+    [onRemove, onStatusChange],
+  );
+
   const table = useReactTable({
     data,
     columns,
@@ -79,7 +115,10 @@ export function LibraryTable({ data }: LibraryTableProps) {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
                 </th>
               ))}
             </tr>
