@@ -23,7 +23,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     position: relative;
     
     @include respond-to('md') {
@@ -41,6 +40,82 @@
 
   &:hover .coverWrapper img {
     filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.9)) brightness(1.05);
+  }
+
+  .actionOverlay {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
+
+  &:hover .actionOverlay {
+    opacity: 1;
+  }
+
+  .actionBtn {
+    @include flex-center;
+    background-color: $color-bg-base;
+    color: $color-primary;
+    border: 1px solid $color-primary;
+    width: 36px;
+    height: 36px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $color-primary;
+      color: $color-surface;
+    }
+  }
+
+  .libraryDropdown {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    z-index: 5;
+
+    .dropdownTitle {
+      @include text-ui;
+      color: $color-primary;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid rgba($color-primary, 0.3);
+      padding-bottom: 0.2rem;
+    }
+
+    .libraryList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      overflow-y: auto;
+
+      li {
+        font-family: $font-accent;
+        color: $color-text-paper;
+        padding: 0.5rem 0;
+        cursor: pointer;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+
+    .noLibrary {
+      @include text-ui;
+      color: $color-text-dimmed;
+      font-style: italic;
+      margin-top: 1rem;
+    }
   }
 
   .placeholder {
