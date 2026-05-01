@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import { DoorOpen, LogOut } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import styles from "./Header.module.scss";
@@ -12,6 +13,7 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showLogoutHint, setShowLogoutHint] = useState(false);
 
   const { data: session, isPending } = authClient.useSession();
   const isAuthenticated = !!session?.user;
@@ -29,7 +31,10 @@ export function Header() {
     });
   };
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    link: string,
+  ) => {
     if (link === "Discover") {
       if (pathname === "/") {
         e.preventDefault();
@@ -59,7 +64,11 @@ export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href="/" className={styles.brand} onClick={(e) => handleLinkClick(e, "Home")}>
+        <Link
+          href="/"
+          className={styles.brand}
+          onClick={(e) => handleLinkClick(e, "Home")}
+        >
           <BBMonogram className={styles.logo} />
           <div className={styles.brandText}>
             <span className={styles.title}>Booky Blinders</span>
@@ -72,14 +81,17 @@ export function Header() {
             {navLinks.map((link) => {
               let href = "/";
               if (link === "Discover") href = "/#discover";
-              else if (link !== "Home") href = `/${link.toLowerCase().replace(/\s+/g, '-')}`;
+              else if (link !== "Home")
+                href = `/${link.toLowerCase().replace(/\s+/g, "-")}`;
 
-              const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+              const isActive =
+                pathname === href ||
+                (href !== "/" && pathname.startsWith(href));
 
               return (
-                <Link 
-                  key={link} 
-                  href={href} 
+                <Link
+                  key={link}
+                  href={href}
                   className={`${styles.navLink} ${isActive ? styles.active : ""}`}
                   onClick={(e) => handleLinkClick(e, link)}
                 >
@@ -88,13 +100,44 @@ export function Header() {
               );
             })}
           </nav>
-          
+
           {isPending ? (
-            <span className={styles.enterBtn} style={{ opacity: 0.5 }}>Loading...</span>
+            <span className={styles.enterBtn} style={{ opacity: 0.5 }}>
+              Loading...
+            </span>
           ) : isAuthenticated ? (
-            <button onClick={handleLogout} className={styles.enterBtn}>
-              Close the Ledger
-            </button>
+            <div className={styles.authActions}>
+              <Link href="/library" className={styles.enterBtn}>
+                My Library
+              </Link>
+              <div
+                className={styles.logoutIconWrap}
+                onMouseEnter={() => setShowLogoutHint(true)}
+                onMouseLeave={() => setShowLogoutHint(false)}
+              >
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className={styles.logoutIconBtn}
+                  aria-label="Sign out"
+                >
+                  <DoorOpen size={18} />
+                </button>
+                <AnimatePresence>
+                  {showLogoutHint && (
+                    <motion.span
+                      className={styles.logoutHint}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 4 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Close the Ledger
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
           ) : (
             <Link href="/login" className={styles.enterBtn}>
               Open the Ledger
@@ -102,8 +145,8 @@ export function Header() {
           )}
         </div>
 
-        <button 
-          className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.menuOpen : ""}`} 
+        <button
+          className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.menuOpen : ""}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -115,7 +158,7 @@ export function Header() {
 
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             className={styles.mobileNav}
             initial="closed"
             animate="open"
@@ -125,14 +168,17 @@ export function Header() {
             {navLinks.map((link) => {
               let href = "/";
               if (link === "Discover") href = "/#discover";
-              else if (link !== "Home") href = `/${link.toLowerCase().replace(/\s+/g, '-')}`;
+              else if (link !== "Home")
+                href = `/${link.toLowerCase().replace(/\s+/g, "-")}`;
 
-              const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+              const isActive =
+                pathname === href ||
+                (href !== "/" && pathname.startsWith(href));
 
               return (
-                <Link 
-                  key={link} 
-                  href={href} 
+                <Link
+                  key={link}
+                  href={href}
                   className={`${styles.mobileNavLink} ${isActive ? styles.active : ""}`}
                   onClick={(e) => handleLinkClick(e, link)}
                 >
@@ -140,6 +186,16 @@ export function Header() {
                 </Link>
               );
             })}
+            {isAuthenticated && (
+              <button
+                type="button"
+                className={styles.mobileLogoutBtn}
+                onClick={handleLogout}
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
