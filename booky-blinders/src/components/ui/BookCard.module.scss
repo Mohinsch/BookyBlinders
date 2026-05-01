@@ -73,6 +73,19 @@
     }
   }
 
+  .actionBtnOwned {
+    background-color: rgba(20, 20, 20, 0.72);
+    border-color: rgba($color-primary, 0.45);
+    color: rgba($color-primary, 0.72);
+    cursor: default;
+
+    &:hover {
+      background-color: rgba(20, 20, 20, 0.72);
+      border-color: rgba($color-primary, 0.45);
+      color: rgba($color-primary, 0.72);
+    }
+  }
+
   .libraryDropdown {
     position: absolute;
     inset: 0;
@@ -98,14 +111,20 @@
       overflow-y: auto;
 
       li {
-        font-family: $font-accent;
-        color: $color-text-paper;
-        padding: 0.5rem 0;
-        cursor: pointer;
-        transition: color 0.2s ease;
+        button {
+          width: 100%;
+          text-align: left;
+          font-family: $font-accent;
+          color: $color-text-paper;
+          padding: 0.5rem 0;
+          cursor: pointer;
+          transition: color 0.2s ease;
+          background: transparent;
+          border: 0;
 
-        &:hover {
-          color: $color-primary;
+          &:hover {
+            color: $color-primary;
+          }
         }
       }
     }
@@ -157,6 +176,43 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .readingControls {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+
+      select,
+      button {
+        border: 1px solid rgba($color-primary, 0.35);
+        background: rgba($color-bg-base, 0.8);
+        color: $color-text-paper;
+        font-family: $font-accent;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.35rem;
+      }
+
+      button {
+        cursor: pointer;
+
+        &:hover {
+          border-color: $color-primary;
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}
+
+.ownedCard {
+  .coverWrapper {
+    background-color: rgba(255, 255, 255, 0.02);
+    border-color: rgba($color-primary, 0.12);
+
+    img {
+      opacity: 0.86;
+      filter: saturate(0.84) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45));
     }
   }
 }
