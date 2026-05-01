@@ -23,7 +23,6 @@
 
       @include respond-to('md') {
         gap: 1.5rem;
-       
       }
 
       &::before, &::after {
@@ -40,44 +39,10 @@
       }
     }
 
-    .searchBar {
+    .actionWrapper {
+      margin-top: 1.5rem;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid rgba($color-primary, 0.5);
-      padding: 0.8rem 1.5rem;
-      max-width: 400px;
-      width: 100%;
-      margin: 1.5rem auto 0;
-      border-radius: 2px;
-      transition: border-color 0.3s;
-      box-sizing: border-box;
-      background-color: $color-surface;
-
-      &:focus-within { 
-        border-color: $color-primary; 
-      }
-
-      input {
-        background: $color-surface;
-        border: none;
-        color: $color-text-main;
-        font-family: $font-main;
-        width: 100%;
-        outline: none;
-
-        &::placeholder {
-          color: rgba($color-primary, 0.5);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          font-size: 0.85rem;
-        }
-      }
-
-      svg { 
-        color: $color-primary;
-        flex-shrink: 0;
-      }
+      justify-content: center;
     }
   }
 
@@ -91,5 +56,13 @@
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: $spacing-lg;
     }
+  }
+
+  .emptyMessage {
+    text-align: center;
+    color: $color-text-dimmed;
+    font-family: $font-accent;
+    font-style: italic;
+    font-size: 1.2rem;
   }
 }

@@ -1,8 +1,11 @@
+// src/app/layout.tsx
+
 import type { Metadata } from "next";
 import { DM_Sans, EB_Garamond, Montserrat } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
-import "@/styles/main.scss"; 
 import { Header } from "@/components/layout/Header";
+import { SearchModal } from "@/components/search/SearchModal";
+import "@/styles/main.scss"; 
 
 const dmSans = DM_Sans({ 
   subsets: ["latin"],
@@ -43,6 +46,7 @@ export default function RootLayout({
           {children}
         </div>
         <Footer />
+        <SearchModal />
       </body>
     </html>
   );

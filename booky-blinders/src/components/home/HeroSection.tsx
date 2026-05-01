@@ -1,3 +1,5 @@
+// src/components/home/HeroSection.tsx
+
 "use client";
 
 import { motion, Variants } from "framer-motion";
@@ -5,8 +7,11 @@ import { Search, Star } from "lucide-react";
 import styles from "./HeroSection.module.scss";
 import BlurText from "../ui/BlurText";
 import { Button } from "@/components/ui/Button";
+import { useSearchStore } from "@/store/useSearchStore";
 
 export function HeroSection() {
+  const { openSearch } = useSearchStore();
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -70,7 +75,7 @@ export function HeroSection() {
           <Button variant="primary">
             Start your collection
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={openSearch}>
             Explore Books <Search size={16} />
           </Button>
         </motion.div>

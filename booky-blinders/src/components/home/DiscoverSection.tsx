@@ -3,7 +3,9 @@
 import { Search } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { BookCard } from "@/components/ui/BookCard";
+import { Button } from "@/components/ui/Button";
 import type { GoogleBookItem } from "@/types/google-books";
+import { useSearchStore } from "@/store/useSearchStore";
 import styles from "./DiscoverSection.module.scss";
 
 interface DiscoverSectionProps {
@@ -34,13 +36,16 @@ const itemVariants: Variants = {
 };
 
 export function DiscoverSection({ initialBooks = [] }: DiscoverSectionProps) {
+  const { openSearch } = useSearchStore();
+
   return (
     <section id="discover" className={styles.discover}>
       <div className={styles.discoverHeader}>
         <h2 className={styles.sectionTitle}>Discover & Search</h2>
-        <div className={styles.searchBar}>
-          <input type="text" placeholder="Explore Books" />
-          <Search size={18} />
+        <div className={styles.actionWrapper}>
+          <Button variant="outline" onClick={openSearch}>
+            Explore Books <Search size={16} />
+          </Button>
         </div>
       </div>
       
