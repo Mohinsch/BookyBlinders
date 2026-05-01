@@ -25,20 +25,20 @@ export function HeroSection() {
 
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 40 },
-    show: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        type: "spring", 
-        stiffness: 100, 
-        damping: 20 
-      } 
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+      },
     },
   };
 
   return (
     <section className={styles.hero}>
-      <motion.div 
+      <motion.div
         className={styles.container}
         initial="hidden"
         animate="show"
@@ -46,7 +46,7 @@ export function HeroSection() {
       >
         <motion.div className={styles.decorativeLine} variants={itemVariants}>
           <div className={styles.line} />
-          <span>EST. 1920</span>
+          <span>- Est.1920 -</span>
           <div className={styles.line} />
         </motion.div>
 
@@ -56,37 +56,39 @@ export function HeroSection() {
             delay={150}
             animateBy="letters"
             direction="top"
-            className={`${styles.title} ${styles.gold}`}
+            className={`${styles.title} ${styles.whiteTitle}`}
           />
           <BlurText
             text="Your Rules."
             delay={150}
             animateBy="letters"
             direction="top"
-            className={`${styles.title} ${styles.gold}`}
+            className={`${styles.title} ${styles.rulesTitle}`}
           />
         </motion.div>
-        
+
         <motion.p variants={itemVariants}>
-          A personal library for those who read with purpose. Search, collect, annotate, and curate your literary empire with the elegance it deserves.
+          A personal library for those who read with purpose. Search, collect,
+          annotate, and curate your literary empire with the elegance it
+          deserves.
         </motion.p>
-        
+
         <motion.div className={styles.ctaContainer} variants={itemVariants}>
-          <Button variant="primary">
-            Start your collection
-          </Button>
+          <Button variant="primary">Start your collection</Button>
           <Button variant="outline" onClick={openSearch}>
             Explore Books <Search size={16} />
           </Button>
         </motion.div>
-        
+
         <motion.div className={styles.stats} variants={itemVariants}>
           <div className={styles.statItem}>
             <strong>10 M+</strong>
             <span>Books</span>
           </div>
           <div className={styles.statItem}>
-            <strong>4.9 <Star size={20} className={styles.star} /></strong>
+            <strong>
+              4.9 <Star size={20} className={styles.star} />
+            </strong>
             <span>Rating</span>
           </div>
           <div className={styles.statItem}>

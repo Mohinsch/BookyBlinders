@@ -33,16 +33,23 @@
       width: 40px;
       background-color: rgba($color-primary, 0.4);
     }
+
+    span {
+      font-family: $font-main;
+      font-weight: 400;
+    }
   }
 
   .titleWrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 
   .title {
-    font-family: $font-accent;
+    font-family: $font-main;
+    font-weight: 400;
     font-size: 3.5rem;
     line-height: 1.1;
     color: $color-text-paper;
@@ -53,8 +60,13 @@
       font-size: 6rem;
     }
 
-    &.gold {
+    &.whiteTitle {
+      color: $color-text-paper;
+    }
+
+    &.rulesTitle {
       color: $color-primary;
+      letter-spacing: 0.01em;
     }
   }
 
