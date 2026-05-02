@@ -44,7 +44,12 @@ export function BookCard({
   const { data: session, isPending } = authClient.useSession();
   const isAuthenticated = !!session?.user;
   const [showLibrarySelect, setShowLibrarySelect] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const isClickable = !!onClick && !showLibrarySelect;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isOwned) {
@@ -80,7 +85,7 @@ export function BookCard({
 
         {showActions && (
           <div className={styles.actionOverlay}>
-            {isPending ? (
+            {!isMounted || isPending ? (
               <div
                 className={styles.actionBtn}
                 style={{ opacity: 0, cursor: "default" }}

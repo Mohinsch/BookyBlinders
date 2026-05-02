@@ -11,7 +11,7 @@
   - [ ] Configure GitHub OAuth provider
 - [ ] Codebase Refactoring & Maintenance @priority(medium)
   - [x] Rename src/middleware.ts to src/proxy.ts to comply with Next.js 16.1.6 deprecation warnings and clean up server log
-  - [ ] Add Given then when in all test files
+  - [ ] Add "Given then when" in all test files
   - [ ] Replace magic word in code , separation variable and const
 - [ ] E2E Testing Strategy Evolution @priority(medium)
   - [ ] Evaluate the transition from Cypress to Playwright for end-to-end testing. @id(test01)
