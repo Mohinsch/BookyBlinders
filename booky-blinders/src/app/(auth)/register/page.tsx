@@ -1,10 +1,5 @@
-// src/app/(auth)/register/page.tsx
-import { RegisterForm } from "@/components/auth/RegisterForm";
+import { redirect } from "next/navigation";
 
 export default function RegisterPage() {
-  return (
-    <main className="auth-page-container">
-      <RegisterForm />
-    </main>
-  );
+  redirect("/login?mode=register");
 }

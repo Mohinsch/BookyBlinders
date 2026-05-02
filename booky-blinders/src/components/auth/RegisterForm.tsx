@@ -2,20 +2,28 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
-import Link from "next/link";
+import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
+import styles from "./AuthPage.module.scss";
 
 // 1. Zod Schema
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters"),
 });
 
-export function RegisterForm() {
+interface RegisterFormProps {
+  onError?: (message: string) => void;
+  onSwitchToLogin?: () => void;
+}
+
+export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
   const router = useRouter();
   const [globalError, setGlobalError] = useState<string | null>(null);
 
@@ -28,7 +36,7 @@ export function RegisterForm() {
     },
     onSubmit: async ({ value }) => {
       setGlobalError(null);
-      
+
       const { error } = await authClient.signUp.email({
         name: value.name,
         email: value.email,
@@ -36,7 +44,10 @@ export function RegisterForm() {
       });
 
       if (error) {
-        setGlobalError(error.message || "An unexpected error occurred. Please try again.");
+        const errorMsg =
+          error.message || "Error during registration. Please try again.";
+        setGlobalError(errorMsg);
+        if (onError) onError(errorMsg);
         return;
       }
 
@@ -51,14 +62,25 @@ export function RegisterForm() {
         e.stopPropagation();
         form.handleSubmit();
       }}
-      className="auth-form"
+      className={styles.authForm}
     >
-      <div className="form-header">
-        <h2>Join the Clan</h2>
-        <p>Sign up to organize your books.</p>
+      <div className={styles.formHeader}>
+        <h2>Join the Club</h2>
+        <p>Organize your book collection.</p>
       </div>
 
-      {globalError && <div className="error-alert">{globalError}</div>}
+      <AnimatePresence>
+        {globalError && (
+          <motion.div
+            className={styles.inlineError}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            {globalError}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* NAME FIELD */}
       <form.Field
@@ -66,12 +88,12 @@ export function RegisterForm() {
         validators={{
           onChange: ({ value }) => {
             const res = registerSchema.shape.name.safeParse(value);
-            // ✅ Utilisation de .issues au lieu de .errors
-            return res.success ? undefined : res.error.issues[0].message; 
-          }
+            return res.success ? undefined : res.error.issues[0].message;
+          },
         }}
-        children={(field) => (
-          <div className="input-group">
+      >
+        {(field) => (
+          <div className={styles.inputGroup}>
             <label htmlFor={field.name}>Name</label>
             <input
               id={field.name}
@@ -81,13 +103,25 @@ export function RegisterForm() {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Thomas Shelby"
+              className={
+                field.state.meta.errors.length > 0 ? styles.inputError : ""
+              }
             />
-            {field.state.meta.errors.length > 0 ? (
-              <em className="field-error">{field.state.meta.errors.join(", ")}</em>
-            ) : null}
+            <AnimatePresence mode="wait">
+              {field.state.meta.errors.length > 0 ? (
+                <motion.p
+                  className={styles.fieldError}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                >
+                  {field.state.meta.errors.join(", ")}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </div>
         )}
-      />
+      </form.Field>
 
       {/* EMAIL FIELD */}
       <form.Field
@@ -95,12 +129,12 @@ export function RegisterForm() {
         validators={{
           onChange: ({ value }) => {
             const res = registerSchema.shape.email.safeParse(value);
-            // ✅ Utilisation de .issues au lieu de .errors
             return res.success ? undefined : res.error.issues[0].message;
-          }
+          },
         }}
-        children={(field) => (
-          <div className="input-group">
+      >
+        {(field) => (
+          <div className={styles.inputGroup}>
             <label htmlFor={field.name}>Email Address</label>
             <input
               id={field.name}
@@ -110,13 +144,25 @@ export function RegisterForm() {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="thomas@shelbycompany.com"
+              className={
+                field.state.meta.errors.length > 0 ? styles.inputError : ""
+              }
             />
-            {field.state.meta.errors.length > 0 ? (
-              <em className="field-error">{field.state.meta.errors.join(", ")}</em>
-            ) : null}
+            <AnimatePresence mode="wait">
+              {field.state.meta.errors.length > 0 ? (
+                <motion.p
+                  className={styles.fieldError}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                >
+                  {field.state.meta.errors.join(", ")}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </div>
         )}
-      />
+      </form.Field>
 
       {/* PASSWORD FIELD */}
       <form.Field
@@ -124,12 +170,12 @@ export function RegisterForm() {
         validators={{
           onChange: ({ value }) => {
             const res = registerSchema.shape.password.safeParse(value);
-            // ✅ Utilisation de .issues au lieu de .errors
             return res.success ? undefined : res.error.issues[0].message;
-          }
+          },
         }}
-        children={(field) => (
-          <div className="input-group">
+      >
+        {(field) => (
+          <div className={styles.inputGroup}>
             <label htmlFor={field.name}>Password</label>
             <input
               id={field.name}
@@ -139,31 +185,58 @@ export function RegisterForm() {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="••••••••"
+              className={
+                field.state.meta.errors.length > 0 ? styles.inputError : ""
+              }
             />
-            {field.state.meta.errors.length > 0 ? (
-              <em className="field-error">{field.state.meta.errors.join(", ")}</em>
-            ) : null}
+            <AnimatePresence mode="wait">
+              {field.state.meta.errors.length > 0 ? (
+                <motion.p
+                  className={styles.fieldError}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                >
+                  {field.state.meta.errors.join(", ")}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </div>
         )}
-      />
+      </form.Field>
 
       {/* SUBMIT BUTTON */}
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
-          <button 
-            type="submit" 
-            className="submit-btn" 
+      >
+        {([canSubmit, isSubmitting]) => (
+          <motion.button
+            type="submit"
+            className={styles.submitBtn}
             disabled={!canSubmit || isSubmitting}
+            whileHover={{ scale: canSubmit ? 1.02 : 1 }}
+            whileTap={{ scale: canSubmit ? 0.98 : 1 }}
           >
-            {isSubmitting ? "Enlisting..." : "Sign Up"}
-          </button>
+            {isSubmitting ? "Registering..." : "Sign Up"}
+          </motion.button>
         )}
-      />
+      </form.Subscribe>
 
-      <div className="auth-footer" style={{ marginTop: "1rem", textAlign: "center" }}>
-        <p>Already a member? <Link href="/login" style={{ color: "#b87333" }}>Sign in here</Link></p>
-      </div>
+      {/* SWITCH TO LOGIN */}
+      {onSwitchToLogin && (
+        <div className={styles.authFooter}>
+          <p>
+            Already have an account?{" "}
+            <button
+              type="button"
+              onClick={onSwitchToLogin}
+              className={styles.switchLink}
+            >
+              Sign in here
+            </button>
+          </p>
+        </div>
+      )}
     </form>
   );
 }
