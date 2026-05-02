@@ -23,6 +23,7 @@
     "better-auth": "^1.6.4",
     "drizzle-orm": "^0.45.2",
     "framer-motion": "^12.38.0",
+    "lru-cache": "^11.3.5",
     "lucide": "^1.11.0",
     "lucide-react": "^1.11.0",
     "motion": "^12.38.0",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
+    "@types/lru-cache": "^7.10.9",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^19",
