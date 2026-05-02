@@ -30,6 +30,11 @@ import {
   type GetUserLibraryInput,
 } from "@/lib/schemas";
 import { validateWithZod } from "@/lib/validation";
+import {
+  libraryOperationLimiter,
+  checkRateLimit,
+  trackViolation,
+} from "@/lib/rate-limit";
 
 /**
  * Validates the current session and retrieves the authenticated user.
@@ -146,6 +151,24 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
 
     const user = await requireAuth();
 
+    // ✅ Rate limiting: 100 operations per minute per user
+    const rateLimitKey = `library:${user.id}:create`;
+    const { allowed, error } = checkRateLimit(
+      libraryOperationLimiter,
+      rateLimitKey
+    );
+
+    if (!allowed) {
+      console.warn(
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+      );
+      trackViolation(user.id, "create-library", "server-action");
+      return {
+        success: false,
+        message: error || "Too many requests. Please try again later.",
+      };
+    }
+
     await db.insert(library).values({
       userId: user.id,
       name: validationResult.data!.name,
@@ -175,6 +198,24 @@ export async function renameLibrary(
     }
 
     const user = await requireAuth();
+
+    // ✅ Rate limiting: 100 operations per minute per user
+    const rateLimitKey = `library:${user.id}:rename`;
+    const { allowed, error } = checkRateLimit(
+      libraryOperationLimiter,
+      rateLimitKey
+    );
+
+    if (!allowed) {
+      console.warn(
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+      );
+      trackViolation(user.id, "rename-library", "server-action");
+      return {
+        success: false,
+        message: error || "Too many requests. Please try again later.",
+      };
+    }
 
     const ownedLibrary = await db.query.library.findFirst({
       where: and(eq(library.id, validationResult.data!.libraryId), eq(library.userId, user.id)),
@@ -215,6 +256,24 @@ export async function deleteLibrary(
     }
 
     const user = await requireAuth();
+
+    // ✅ Rate limiting: 100 operations per minute per user
+    const rateLimitKey = `library:${user.id}:delete`;
+    const { allowed, error } = checkRateLimit(
+      libraryOperationLimiter,
+      rateLimitKey
+    );
+
+    if (!allowed) {
+      console.warn(
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+      );
+      trackViolation(user.id, "delete-library", "server-action");
+      return {
+        success: false,
+        message: error || "Too many requests. Please try again later.",
+      };
+    }
 
     const userLibraries = await db.query.library.findMany({
       where: eq(library.userId, user.id),
@@ -272,6 +331,24 @@ export async function addBookToLibrary(
     }
 
     const user = await requireAuth();
+
+    // ✅ Rate limiting: 100 operations per minute per user
+    const rateLimitKey = `library:${user.id}:add-book`;
+    const { allowed, error } = checkRateLimit(
+      libraryOperationLimiter,
+      rateLimitKey
+    );
+
+    if (!allowed) {
+      console.warn(
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+      );
+      trackViolation(user.id, "add-book", "server-action");
+      return {
+        success: false,
+        message: error || "Too many requests. Please try again later.",
+      };
+    }
 
     // Fetch book metadata from external API
     const googleBookData = await getBookById(validationResult.data!.googleId);
@@ -394,6 +471,25 @@ export async function updateReadingStatus(
     }
 
     const user = await requireAuth();
+
+    // ✅ Rate limiting: 100 operations per minute per user
+    const rateLimitKey = `library:${user.id}:update-status`;
+    const { allowed, error } = checkRateLimit(
+      libraryOperationLimiter,
+      rateLimitKey
+    );
+
+    if (!allowed) {
+      console.warn(
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+      );
+      trackViolation(user.id, "update-status", "server-action");
+      return {
+        success: false,
+        message: error || "Too many requests. Please try again later.",
+      };
+    }
+
     const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
 
     let readStart: string | null = null;
@@ -455,6 +551,25 @@ export async function removeBookFromLibrary(
     }
 
     const user = await requireAuth();
+
+    // ✅ Rate limiting: 100 operations per minute per user
+    const rateLimitKey = `library:${user.id}:remove-book`;
+    const { allowed, error } = checkRateLimit(
+      libraryOperationLimiter,
+      rateLimitKey
+    );
+
+    if (!allowed) {
+      console.warn(
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+      );
+      trackViolation(user.id, "remove-book", "server-action");
+      return {
+        success: false,
+        message: error || "Too many requests. Please try again later.",
+      };
+    }
+
     const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
 
     await db
