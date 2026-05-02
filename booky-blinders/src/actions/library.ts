@@ -13,6 +13,23 @@ import type {
   UserLibraryBook,
   UserLibrarySummary,
 } from "@/types/library";
+import {
+  createLibrarySchema,
+  renameLibrarySchema,
+  deleteLibrarySchema,
+  addBookToLibrarySchema,
+  updateReadingStatusSchema,
+  removeBookFromLibrarySchema,
+  getUserLibrarySchema,
+  type CreateLibraryInput,
+  type RenameLibraryInput,
+  type DeleteLibraryInput,
+  type AddBookToLibraryInput,
+  type UpdateReadingStatusInput,
+  type RemoveBookFromLibraryInput,
+  type GetUserLibraryInput,
+} from "@/lib/schemas";
+import { validateWithZod } from "@/lib/validation";
 
 /**
  * Validates the current session and retrieves the authenticated user.
@@ -119,16 +136,19 @@ export async function getOwnedGoogleBookIds(): Promise<string[]> {
 
 export async function createLibrary(name: string): Promise<ActionResponse> {
   try {
-    const user = await requireAuth();
-    const trimmedName = name.trim();
-
-    if (!trimmedName) {
-      throw new Error("Library name is required");
+    const validationResult = validateWithZod<CreateLibraryInput>(
+      createLibrarySchema,
+      { name },
+    );
+    if (!validationResult.success) {
+      return { success: false, errors: validationResult.errors };
     }
+
+    const user = await requireAuth();
 
     await db.insert(library).values({
       userId: user.id,
-      name: trimmedName,
+      name: validationResult.data!.name,
       isPublic: false,
     });
 
@@ -136,7 +156,8 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
     return { success: true, message: "Library created" };
   } catch (error) {
     console.error("[Action Error] createLibrary:", error);
-    return { success: false, message: "Failed to create library" };
+    const message = error instanceof Error ? error.message : "Failed to create library";
+    return { success: false, message };
   }
 }
 
@@ -145,35 +166,42 @@ export async function renameLibrary(
   name: string,
 ): Promise<ActionResponse> {
   try {
-    const user = await requireAuth();
-    const trimmedName = name.trim();
-
-    if (!trimmedName) {
-      throw new Error("Library name is required");
+    const validationResult = validateWithZod<RenameLibraryInput>(renameLibrarySchema, {
+      libraryId,
+      name,
+    });
+    if (!validationResult.success) {
+      return { success: false, errors: validationResult.errors };
     }
 
+    const user = await requireAuth();
+
     const ownedLibrary = await db.query.library.findFirst({
-      where: and(eq(library.id, libraryId), eq(library.userId, user.id)),
+      where: and(eq(library.id, validationResult.data!.libraryId), eq(library.userId, user.id)),
       columns: { id: true },
     });
 
     if (!ownedLibrary) {
-      throw new Error("Library not found");
+      return {
+        success: false,
+        message: "Library not found or not authorized",
+      };
     }
 
     await db
       .update(library)
       .set({
-        name: trimmedName,
+        name: validationResult.data!.name,
         updatedAt: new Date(),
       })
-      .where(and(eq(library.id, libraryId), eq(library.userId, user.id)));
+      .where(and(eq(library.id, validationResult.data!.libraryId), eq(library.userId, user.id)));
 
     revalidatePath("/library");
     return { success: true, message: "Library renamed" };
   } catch (error) {
     console.error("[Action Error] renameLibrary:", error);
-    return { success: false, message: "Failed to rename library" };
+    const message = error instanceof Error ? error.message : "Failed to rename library";
+    return { success: false, message };
   }
 }
 
@@ -181,6 +209,11 @@ export async function deleteLibrary(
   libraryId: number,
 ): Promise<ActionResponse> {
   try {
+    const validationResult = validateWithZod<DeleteLibraryInput>(deleteLibrarySchema, { libraryId });
+    if (!validationResult.success) {
+      return { success: false, errors: validationResult.errors };
+    }
+
     const user = await requireAuth();
 
     const userLibraries = await db.query.library.findMany({
@@ -189,23 +222,30 @@ export async function deleteLibrary(
     });
 
     if (userLibraries.length <= 1) {
-      throw new Error("Cannot delete last library");
+      return {
+        success: false,
+        message: "Cannot delete your last library",
+      };
     }
 
-    const ownedLibrary = userLibraries.find((entry) => entry.id === libraryId);
+    const ownedLibrary = userLibraries.find((entry) => entry.id === validationResult.data!.libraryId);
     if (!ownedLibrary) {
-      throw new Error("Library not found");
+      return {
+        success: false,
+        message: "Library not found or not authorized",
+      };
     }
 
     await db
       .delete(library)
-      .where(and(eq(library.id, libraryId), eq(library.userId, user.id)));
+      .where(and(eq(library.id, validationResult.data!.libraryId), eq(library.userId, user.id)));
 
     revalidatePath("/library");
     return { success: true, message: "Library deleted" };
   } catch (error) {
     console.error("[Action Error] deleteLibrary:", error);
-    return { success: false, message: "Failed to delete library" };
+    const message = error instanceof Error ? error.message : "Failed to delete library";
+    return { success: false, message };
   }
 }
 
@@ -220,15 +260,28 @@ export async function addBookToLibrary(
   libraryId?: number,
 ): Promise<ActionResponse> {
   try {
+    const validationResult = validateWithZod<AddBookToLibraryInput>(
+      addBookToLibrarySchema,
+      {
+        googleId,
+        libraryId,
+      },
+    );
+    if (!validationResult.success) {
+      return { success: false, errors: validationResult.errors };
+    }
+
     const user = await requireAuth();
 
     // Fetch book metadata from external API
-    const googleBookData = await getBookById(googleId);
-    if (!googleBookData) throw new Error("Book not found");
+    const googleBookData = await getBookById(validationResult.data!.googleId);
+    if (!googleBookData) {
+      return { success: false, message: "Book not found" };
+    }
 
     // Check for existing book record to prevent duplicates
     let existingBook = await db.query.book.findFirst({
-      where: eq(book.googleId, googleId),
+      where: eq(book.googleId, validationResult.data!.googleId),
     });
 
     // Insert new book record if it does not exist
@@ -236,7 +289,7 @@ export async function addBookToLibrary(
       const insertedBooks = await db
         .insert(book)
         .values({
-          googleId: googleId,
+          googleId: validationResult.data!.googleId,
           title: googleBookData.volumeInfo.title,
           author: googleBookData.volumeInfo.authors?.join(", ") || null,
           description: googleBookData.volumeInfo.description || null,
@@ -248,7 +301,7 @@ export async function addBookToLibrary(
       existingBook = insertedBooks[0];
     }
 
-    const userLibrary = await ensureUserLibrary(user.id, libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
 
     // Create junction record. Ignores conflict if association already exists.
     await db
@@ -267,7 +320,8 @@ export async function addBookToLibrary(
     return { success: true, message: "Book added" };
   } catch (error) {
     console.error("[Action Error] addBookToLibrary:", error);
-    return { success: false, message: "Failed to add book" };
+    const message = error instanceof Error ? error.message : "Failed to add book";
+    return { success: false, message };
   }
 }
 
@@ -280,8 +334,16 @@ export async function getUserLibrary(
   libraryId?: number,
 ): Promise<UserLibraryBook[]> {
   try {
+    const validationResult = validateWithZod<GetUserLibraryInput>(getUserLibrarySchema, {
+      libraryId,
+    });
+    if (!validationResult.success) {
+      console.error("[Validation Error] getUserLibrary:", validationResult.errors);
+      return [];
+    }
+
     const user = await requireAuth();
-    const userLibrary = await ensureUserLibrary(user.id, libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
 
     const myBooks = await db
       .select({
@@ -319,8 +381,20 @@ export async function updateReadingStatus(
   libraryId?: number,
 ): Promise<ActionResponse> {
   try {
+    const validationResult = validateWithZod<UpdateReadingStatusInput>(
+      updateReadingStatusSchema,
+      {
+        bookId,
+        status,
+        libraryId,
+      },
+    );
+    if (!validationResult.success) {
+      return { success: false, errors: validationResult.errors };
+    }
+
     const user = await requireAuth();
-    const userLibrary = await ensureUserLibrary(user.id, libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
 
     let readStart: string | null = null;
     let readEnd: string | null = null;
@@ -328,9 +402,9 @@ export async function updateReadingStatus(
     const today = new Date().toISOString().split("T")[0];
 
     // Compute timestamps based on the provided status
-    if (status === "IN_PROGRESS") {
+    if (validationResult.data!.status === "IN_PROGRESS") {
       readStart = today;
-    } else if (status === "READ") {
+    } else if (validationResult.data!.status === "READ") {
       readStart = today;
       readEnd = today;
     }
@@ -344,7 +418,7 @@ export async function updateReadingStatus(
       })
       .where(
         and(
-          eq(libraryBook.bookId, bookId),
+          eq(libraryBook.bookId, validationResult.data!.bookId),
           eq(libraryBook.libraryId, userLibrary.id),
         ),
       );
@@ -353,7 +427,8 @@ export async function updateReadingStatus(
     return { success: true };
   } catch (error) {
     console.error("[Action Error] updateReadingStatus:", error);
-    return { success: false };
+    const message = error instanceof Error ? error.message : "Failed to update reading status";
+    return { success: false, message };
   }
 }
 
@@ -368,14 +443,25 @@ export async function removeBookFromLibrary(
   libraryId?: number,
 ): Promise<ActionResponse> {
   try {
+    const validationResult = validateWithZod<RemoveBookFromLibraryInput>(
+      removeBookFromLibrarySchema,
+      {
+        bookId,
+        libraryId,
+      },
+    );
+    if (!validationResult.success) {
+      return { success: false, errors: validationResult.errors };
+    }
+
     const user = await requireAuth();
-    const userLibrary = await ensureUserLibrary(user.id, libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
 
     await db
       .delete(libraryBook)
       .where(
         and(
-          eq(libraryBook.bookId, bookId),
+          eq(libraryBook.bookId, validationResult.data!.bookId),
           eq(libraryBook.libraryId, userLibrary.id),
         ),
       );
@@ -384,6 +470,7 @@ export async function removeBookFromLibrary(
     return { success: true };
   } catch (error) {
     console.error("[Action Error] removeBookFromLibrary:", error);
-    return { success: false };
+    const message = error instanceof Error ? error.message : "Failed to remove book";
+    return { success: false, message };
   }
 }
