@@ -8,8 +8,9 @@
   position: sticky;
   top: 0;
   z-index: 50;
+
   @include respond-to('md') {
-    padding: 2rem 0 1rem;  // Sur grand écran, on lui donne encore un peu plus de place
+    padding: 2rem 0 1rem;
   }
 }
 
@@ -20,10 +21,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative; // Required for absolute centering of the brand text on mobile
+  position: relative; 
 }
 
-/* --- BRANDING --- */
+/* Brand */
 .brand {
   display: flex;
   align-items: center;
@@ -86,9 +87,9 @@
   }
 }
 
-/* --- DESKTOP NAVIGATION --- */
+/* Desktop Navigation */
 .desktopActions {
-  display: none; // Hidden on mobile
+  display: none; 
 
   @include respond-to('md') {
     display: flex;
@@ -107,7 +108,7 @@
       text-decoration: none;
       transition: color 0.3s ease;
 
-      &:first-child, &:hover {
+      &.active, &:hover {
         color: $color-primary; 
       }
     }
@@ -121,6 +122,7 @@
     background: transparent;
     padding: 0.6rem 1.2rem;
     text-decoration: none;
+    cursor: pointer;
     transition: all 0.3s ease;
 
     &:hover {
@@ -128,9 +130,65 @@
       border-color: $color-primary;
     }
   }
+
+  .authActions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .logoutIconWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .logoutIconBtn {
+    @include flex-center;
+    width: 2.35rem;
+    height: 2.35rem;
+    background:
+      radial-gradient(circle at 22% 24%, rgba(255, 215, 145, 0.18), transparent 45%),
+      linear-gradient(145deg, rgba(120, 74, 34, 0.36), rgba(25, 18, 12, 0.92));
+    color: rgba($color-primary, 0.9);
+    border: 1px solid rgba($color-primary, 0.52);
+    border-radius: 3px;
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(166, 108, 52, 0.22);
+    cursor: pointer;
+    transition: all 0.28s ease;
+
+    &:hover {
+      color: #f1c47a;
+      border-color: rgba($color-primary, 0.85);
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 206, 136, 0.16),
+        0 0 15px rgba(181, 118, 63, 0.26);
+    }
+  }
+
+  .logoutHint {
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    right: 0;
+    white-space: nowrap;
+    font-family: $font-ui;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: rgba($color-primary, 0.9);
+    background: rgba(14, 11, 8, 0.95);
+    border: 1px solid rgba($color-primary, 0.38);
+    border-radius: 2px;
+    padding: 0.3rem 0.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+    z-index: 2;
+  }
 }
 
-/* --- MOBILE HAMBURGER MENU --- */
+/* Mobile Hamburger Menu */
 .mobileMenuBtn {
   display: flex;
   flex-direction: column;
@@ -153,5 +211,86 @@
     background-color: $color-primary;
     border-radius: 2px;
     transition: all 0.3s ease;
+  }
+
+  &.menuOpen span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  &.menuOpen span:nth-child(2) {
+    opacity: 0;
+  }
+  &.menuOpen span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+/* Mobile Navigation Overlay */
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: $color-bg-base;
+  border-top: 1px solid rgba($color-primary, 0.2);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.5);
+
+  @include respond-to('md') {
+    display: none;
+  }
+
+  .mobileNavLink {
+    font-family: $font-accent;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+
+    &.active {
+      color: $color-primary;
+    }
+  }
+
+  .enterBtnMobile {
+    font-family: $font-ui;
+    font-size: 1.2rem;
+    color: $color-primary;
+    border: 1px solid $color-primary;
+    background: transparent;
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+
+  .mobileLogoutBtn {
+    @include flex-center;
+    gap: 0.45rem;
+    font-family: $font-ui;
+    font-size: 1.05rem;
+    color: rgba($color-primary, 0.9);
+    border: 1px solid rgba($color-primary, 0.52);
+    background:
+      radial-gradient(circle at 22% 24%, rgba(255, 215, 145, 0.18), transparent 45%),
+      linear-gradient(145deg, rgba(120, 74, 34, 0.36), rgba(25, 18, 12, 0.92));
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(166, 108, 52, 0.22);
+    padding: 0.65rem 1.2rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.28s ease;
+
+    &:hover {
+      color: #f1c47a;
+      border-color: rgba($color-primary, 0.85);
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 206, 136, 0.16),
+        0 0 15px rgba(181, 118, 63, 0.26);
+    }
   }
 }

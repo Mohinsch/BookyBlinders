@@ -36,14 +36,11 @@ async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
 /**
  * Utility 1: Search books by title, author, or keywords. It returns a list of books matching the query.
  */
-export async function searchBooks(query: string, maxResults = 10): Promise<GoogleBookItem[]> {
-  if (!query) return [];
+export async function searchBooks(query: string, maxResults = 12) {
+  if (!query.trim()) return [];
 
-  const safeQuery = encodeURIComponent(query);
-  const endpoint = `?q=${safeQuery}&maxResults=${maxResults}&langRestrict=en,fr`;
-
+  const endpoint = `?q=${encodeURIComponent(query)}&maxResults=${maxResults}&langRestrict=en,fr`;
   const data = await fetchFromGoogleBooks<GoogleBooksResponse>(endpoint);
-  
   return data?.items || [];
 }
 

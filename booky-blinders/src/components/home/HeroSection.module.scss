@@ -1,0 +1,123 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.hero {
+  @include flex-column;
+  @include flex-center;
+  text-align: center;
+  width: 100%;
+  padding-top: 4rem;
+
+  @include respond-to('md') {
+    padding-top: 8rem;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .decorativeLine {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: $spacing-md;
+    color: $color-primary;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+
+    .line {
+      height: 1px;
+      width: 40px;
+      background-color: rgba($color-primary, 0.4);
+    }
+
+    span {
+      font-family: $font-main;
+      font-weight: 400;
+    }
+  }
+
+  .titleWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .title {
+    font-family: $font-main;
+    font-weight: 400;
+    font-size: 3.5rem;
+    line-height: 1.1;
+    color: $color-text-paper;
+    letter-spacing: 0.02em;
+    margin: 0;
+
+    @include respond-to('md') {
+      font-size: 6rem;
+    }
+
+    &.whiteTitle {
+      color: $color-text-paper;
+    }
+
+    &.rulesTitle {
+      color: $color-primary;
+      letter-spacing: 0.01em;
+    }
+  }
+
+  p {
+    @include text-classic;
+    color: $color-text-dimmed;
+    max-width: 700px;
+    margin: $spacing-md 0;
+  }
+
+  .ctaContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-md;
+    margin-top: $spacing-sm;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+    border-top: 1px solid rgba($color-primary, 0.2);
+    padding-top: 2rem;
+    width: 100%;
+    max-width: 600px;
+
+    .statItem {
+      @include flex-column;
+      align-items: center;
+      gap: 0.3rem;
+
+      strong {
+        font-family: $font-main;
+        font-size: 1.5rem;
+        color: $color-primary;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+
+        @include respond-to('md') { 
+          font-size: 2rem; 
+        }
+      }
+
+      span {
+        @include text-ui;
+        color: $color-text-dimmed;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

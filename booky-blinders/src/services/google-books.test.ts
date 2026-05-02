@@ -97,7 +97,8 @@ describe("Google Books Service", () => {
 
       // Verify the URL does NOT contain the 'key=' parameter
       expect(global.fetch).toHaveBeenCalledWith(
-        "https://www.googleapis.com/books/v1/volumes?q=test&maxResults=10&langRestrict=en,fr"      );
+        "https://www.googleapis.com/books/v1/volumes?q=test&maxResults=12&langRestrict=en,fr",
+      );
     });
 
     it("should return null and log an error if the response is not OK (e.g., 404, 500)", async () => {

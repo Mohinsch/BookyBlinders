@@ -9,9 +9,8 @@ WORKDIR /app
 RUN apk add --no-cache g++ make py3-pip libc6-compat
 
 # Layer caching for dependencies
-COPY package*.json ./
-RUN npm install
-
+COPY package.json ./
+RUN npm config set registry https://registry.npmjs.org/ && npm install
 # Copy source code so the image isn't empty
 COPY . .
 

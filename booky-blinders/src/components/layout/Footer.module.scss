@@ -104,11 +104,12 @@
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     transition: color 0.3s ease;
+
     @include respond-to('md') {
       font-size: 1rem;
-  }
+    }
 
-    &:first-child, &:hover {
+    &:hover, &.active {
       color: $color-primary; 
     }
   }

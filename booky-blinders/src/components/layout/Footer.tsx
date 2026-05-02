@@ -1,7 +1,12 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import styles from "./Footer.module.scss";
 
 export function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
   const navLinks = ["Home", "Discover", "Privacy", "Terms"];
 
@@ -20,15 +25,21 @@ export function Footer() {
           </div>
 
           <nav className={styles.nav} aria-label="Footer navigation">
-            {navLinks.map((item) => (
-              <a
-                key={item}
-                href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                className={styles.navLink}
-              >
-                {item}
-              </a>
-            ))}
+            {navLinks.map((item) => {
+              const href = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+              // Logique identique au header pour déterminer si le lien est actif
+              const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+
+              return (
+                <Link
+                  key={item}
+                  href={href}
+                  className={`${styles.navLink} ${isActive ? styles.active : ""}`}
+                >
+                  {item}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
