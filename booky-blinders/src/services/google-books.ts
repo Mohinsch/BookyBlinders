@@ -41,7 +41,7 @@ async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
 
 /**
  * Utility 1: Search books by title, author, or keywords. It returns a list of books matching the query.
- * ✅ Now includes caching to prevent quota exhaustion and improve performance
+ * includes caching to prevent quota exhaustion and improve performance
  */
 export async function searchBooks(query: string, maxResults = 12) {
   if (!query.trim()) return [];
@@ -72,7 +72,7 @@ export async function searchBooks(query: string, maxResults = 12) {
 
 /**
  * Utility 2: Fetch a specific book's full details using its Google Books ID. This is useful for the book details page where we want to show comprehensive information about a single book.
- * ✅ Now includes caching to prevent quota exhaustion
+ * includes caching to prevent quota exhaustion
  */
 export async function getBookById(
   googleId: string
