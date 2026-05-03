@@ -51,21 +51,43 @@ $danger-bg: rgba(213, 95, 95, 0.12);
 
 .panelStage {
   position: relative;
-  min-height: 700px;
+  display: grid;
+  overflow: hidden;
 }
 
 .formPanel {
-  padding: 1.4rem;
+  grid-area: 1 / 1;
+  padding: 2rem 1.4rem;
   background: linear-gradient(160deg, $panel-bg 0%, $panel-bg-muted 100%);
+  transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.panelRegister {
-  display: none;
+.modeLogin .panelLogin {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+  z-index: 2;
 }
 
-.modeLogin .panelLogin,
+.modeLogin .panelRegister {
+  opacity: 0;
+  transform: translateX(20px) scale(0.98);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.modeRegister .panelLogin {
+  opacity: 0;
+  transform: translateX(-20px) scale(0.98);
+  pointer-events: none;
+  z-index: 1;
+}
+
 .modeRegister .panelRegister {
-  display: block;
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+  z-index: 2;
 }
 
 .overlayPanel {
@@ -255,54 +277,6 @@ $danger-bg: rgba(213, 95, 95, 0.12);
   }
 }
 
-.errorContainer {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 60;
-  max-width: 360px;
-  border: 1px solid rgba(213, 95, 95, 0.46);
-  border-radius: 10px;
-  background: #2d1616;
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.48);
-  color: #ffdede;
-}
-
-.error {
-  background: #2d1616;
-}
-
-.warning {
-  background: #312713;
-  border-color: rgba(217, 178, 106, 0.5);
-  color: #fff4db;
-}
-
-.errorContent {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.8rem 0.9rem;
-}
-
-.errorIcon {
-  display: inline-flex;
-}
-
-.errorMessage {
-  margin: 0;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  flex: 1;
-}
-
-.errorClose {
-  border: none;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-}
-
 @media (min-width: 1024px) {
   .mobileIntro {
     display: none;
@@ -310,7 +284,7 @@ $danger-bg: rgba(213, 95, 95, 0.12);
 
   .panelStage {
     min-height: 640px;
-    position: relative;
+    display: block;
   }
 
   .formPanel {
@@ -321,17 +295,17 @@ $danger-bg: rgba(213, 95, 95, 0.12);
     display: flex;
     align-items: center;
     padding: 2.25rem;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
   .panelLogin {
     left: 0;
-    display: flex;
   }
 
   .panelRegister {
     left: 50%;
-    display: flex;
   }
 
   .overlayPanel {

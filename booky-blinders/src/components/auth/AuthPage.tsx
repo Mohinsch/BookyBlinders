@@ -43,7 +43,6 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
       type: "error",
     });
 
-    // Auto-dismiss after 5 seconds
     setTimeout(() => {
       setGlobalError(null);
     }, 5000);
@@ -64,37 +63,25 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
         </div>
 
         <div className={styles.panelStage}>
-          <motion.section
+          <section
             className={`${styles.formPanel} ${styles.panelLogin}`}
-            animate={
-              mode === "login"
-                ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 0.5, scale: 0.98, y: 6 }
-            }
-            transition={{ duration: 0.35, ease: "easeOut" }}
             aria-hidden={mode !== "login"}
           >
             <LoginForm
               onError={handleError}
               onSwitchToRegister={() => handleModeSwitch("register")}
             />
-          </motion.section>
+          </section>
 
-          <motion.section
+          <section
             className={`${styles.formPanel} ${styles.panelRegister}`}
-            animate={
-              mode === "register"
-                ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 0.5, scale: 0.98, y: 6 }
-            }
-            transition={{ duration: 0.35, ease: "easeOut" }}
             aria-hidden={mode !== "register"}
           >
             <RegisterForm
               onError={handleError}
               onSwitchToLogin={() => handleModeSwitch("login")}
             />
-          </motion.section>
+          </section>
 
           <motion.aside
             className={styles.overlayPanel}

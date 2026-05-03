@@ -65,7 +65,7 @@ export function AuthErrorDisplay({ error, onClose }: AuthErrorDisplayProps) {
           type="button"
           className={styles.errorClose}
           onClick={onClose}
-          aria-label="Fermer le message d'erreur"
+          aria-label="Close error message"
         >
           <X size={16} />
         </button>
