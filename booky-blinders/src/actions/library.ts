@@ -35,6 +35,7 @@ import {
   checkRateLimit,
   trackViolation,
 } from "@/lib/rate-limit";
+import { UI_TEXT, READING_STATUS, LOG_MESSAGES } from "@/constants";
 
 /**
  * Validates the current session and retrieves the authenticated user.
@@ -70,7 +71,7 @@ async function ensureUserLibrary(
       .insert(library)
       .values({
         userId,
-        name: "My Collection",
+        name: UI_TEXT.BOOK.DEFAULT_LIBRARY,
         isPublic: false,
       })
       .returning({
@@ -110,7 +111,7 @@ export async function getUserLibraries(): Promise<UserLibrarySummary[]> {
     if (userLibraries.length === 0) return [defaultLibrary];
     return userLibraries;
   } catch (error) {
-    console.error("[Action Error] getUserLibraries:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("getUserLibraries"), error);
     return [];
   }
 }
@@ -134,7 +135,7 @@ export async function getOwnedGoogleBookIds(): Promise<string[]> {
 
     return [...new Set(ownedIds)];
   } catch (error) {
-    console.error("[Action Error] getOwnedGoogleBookIds:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("getOwnedGoogleBookIds"), error);
     return [];
   }
 }
@@ -178,7 +179,7 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
     revalidatePath("/library");
     return { success: true, message: "Library created" };
   } catch (error) {
-    console.error("[Action Error] createLibrary:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("createLibrary"), error);
     const message = error instanceof Error ? error.message : "Failed to create library";
     return { success: false, message };
   }
@@ -240,7 +241,7 @@ export async function renameLibrary(
     revalidatePath("/library");
     return { success: true, message: "Library renamed" };
   } catch (error) {
-    console.error("[Action Error] renameLibrary:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("renameLibrary"), error);
     const message = error instanceof Error ? error.message : "Failed to rename library";
     return { success: false, message };
   }
@@ -302,7 +303,7 @@ export async function deleteLibrary(
     revalidatePath("/library");
     return { success: true, message: "Library deleted" };
   } catch (error) {
-    console.error("[Action Error] deleteLibrary:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("deleteLibrary"), error);
     const message = error instanceof Error ? error.message : "Failed to delete library";
     return { success: false, message };
   }
@@ -396,7 +397,7 @@ export async function addBookToLibrary(
 
     return { success: true, message: "Book added" };
   } catch (error) {
-    console.error("[Action Error] addBookToLibrary:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("addBookToLibrary"), error);
     const message = error instanceof Error ? error.message : "Failed to add book";
     return { success: false, message };
   }
@@ -415,7 +416,7 @@ export async function getUserLibrary(
       libraryId,
     });
     if (!validationResult.success) {
-      console.error("[Validation Error] getUserLibrary:", validationResult.errors);
+      console.error(LOG_MESSAGES.ACTION.VALIDATION_ERROR("getUserLibrary"), validationResult.errors);
       return [];
     }
 
@@ -441,7 +442,7 @@ export async function getUserLibrary(
 
     return myBooks;
   } catch (error) {
-    console.error("[Action Error] getUserLibrary:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("getUserLibrary"), error);
     return [];
   }
 }
@@ -498,9 +499,9 @@ export async function updateReadingStatus(
     const today = new Date().toISOString().split("T")[0];
 
     // Compute timestamps based on the provided status
-    if (validationResult.data!.status === "IN_PROGRESS") {
+    if (validationResult.data!.status === READING_STATUS.IN_PROGRESS) {
       readStart = today;
-    } else if (validationResult.data!.status === "READ") {
+    } else if (validationResult.data!.status === READING_STATUS.READ) {
       readStart = today;
       readEnd = today;
     }
@@ -522,7 +523,7 @@ export async function updateReadingStatus(
     revalidatePath("/library");
     return { success: true };
   } catch (error) {
-    console.error("[Action Error] updateReadingStatus:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("updateReadingStatus"), error);
     const message = error instanceof Error ? error.message : "Failed to update reading status";
     return { success: false, message };
   }
@@ -584,7 +585,7 @@ export async function removeBookFromLibrary(
     revalidatePath("/library");
     return { success: true };
   } catch (error) {
-    console.error("[Action Error] removeBookFromLibrary:", error);
+    console.error(LOG_MESSAGES.ACTION.ERROR("removeBookFromLibrary"), error);
     const message = error instanceof Error ? error.message : "Failed to remove book";
     return { success: false, message };
   }

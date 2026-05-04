@@ -4,6 +4,7 @@ import { Check, LogIn, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { UI_TEXT, ROUTES } from "@/constants";
 import styles from "./BookCard.module.scss";
 
 export interface LibraryOption {
@@ -61,7 +62,7 @@ export function BookCardActionButton({
           isOwned ? (
             <div
               className={`${styles.actionBtn} ${styles.actionBtnOwned}`}
-              title="Already in your Ledger"
+              title={UI_TEXT.BUTTON.ALREADY_OWNED}
             >
               <Check size={18} />
             </div>
@@ -73,16 +74,16 @@ export function BookCardActionButton({
                 e.stopPropagation();
                 setShowLibrarySelect((prev) => !prev);
               }}
-              title="Add to Library"
+              title={UI_TEXT.BUTTON.ADD_TO_LIBRARY}
             >
               {showLibrarySelect ? <X size={20} /> : <Plus size={20} />}
             </button>
           )
         ) : (
           <Link
-            href="/login"
+            href={ROUTES.LOGIN}
             className={styles.actionBtn}
-            title="Login to add"
+            title={UI_TEXT.BUTTON.LOGIN_TO_ADD}
             onClick={(e) => e.stopPropagation()}
           >
             <LogIn size={20} />
@@ -96,7 +97,7 @@ export function BookCardActionButton({
             isModal ? styles.libraryDropdownModal : ""
           }`}
         >
-          <span className={styles.dropdownTitle}>Select Library</span>
+          <span className={styles.dropdownTitle}>{UI_TEXT.BUTTON.SELECT_LIBRARY}</span>
           <ul className={styles.libraryList}>
             {availableLibraries.length > 0 ? (
               availableLibraries.map((lib) => (
@@ -123,7 +124,7 @@ export function BookCardActionButton({
                     setShowLibrarySelect(false);
                   }}
                 >
-                  My Collection (Default)
+                  {UI_TEXT.BUTTON.DEFAULT_LIBRARY}
                 </button>
               </li>
             )}

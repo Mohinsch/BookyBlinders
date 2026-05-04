@@ -9,15 +9,14 @@ import {
   storeInCache,
   isCached,
 } from "@/lib/cache";
-
-const BASE_URL = "https://www.googleapis.com/books/v1/volumes";
+import { GOOGLE_BOOKS_API, LOG_MESSAGES } from "@/constants";
 
 /**
  * Core wrapper for fetching data from the Google Books API. It handles URL construction, API key inclusion, error handling, and response parsing.
  */
 async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
   const apiKey = process.env.GOOGLE_BOOKS_API_KEY;
-  const url = new URL(`${BASE_URL}${endpoint}`);
+  const url = new URL(`${GOOGLE_BOOKS_API.BASE_URL}${endpoint}`);
 
   if (apiKey) {
     url.searchParams.append("key", apiKey);
@@ -27,14 +26,14 @@ async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
     const response = await fetch(url.toString());
 
     if (!response.ok) {
-      console.error(`[Google Books API] Error: ${response.status} - ${response.statusText}`);
+      console.error(LOG_MESSAGES.GOOGLE_BOOKS.API_ERROR(response.status, response.statusText));
       return null;
     }
 
     const data = await response.json();
     return data as T;
   } catch (error) {
-    console.error("[Google Books API] Network or Parsing Error:", error);
+    console.error(LOG_MESSAGES.GOOGLE_BOOKS.NETWORK_ERROR, error);
     return null;
   }
 }
@@ -43,28 +42,26 @@ async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
  * Utility 1: Search books by title, author, or keywords. It returns a list of books matching the query.
  * includes caching to prevent quota exhaustion and improve performance
  */
-export async function searchBooks(query: string, maxResults = 12) {
+export async function searchBooks(query: string, maxResults = GOOGLE_BOOKS_API.DEFAULT_MAX_RESULTS) {
   if (!query.trim()) return [];
 
   // Check cache first
   const cacheKey = getCacheKey("search", query.toLowerCase());
   const cached = getFromCache<GoogleBookItem[]>(cacheKey);
   if (cached) {
-    console.log(`[Google Books] Cache hit for query: "${query}"`);
+    console.log(LOG_MESSAGES.GOOGLE_BOOKS.CACHE_HIT(query));
     return cached;
   }
 
   // Fetch from API if not cached
-  const endpoint = `?q=${encodeURIComponent(query)}&maxResults=${maxResults}&langRestrict=en,fr`;
+  const endpoint = `?q=${encodeURIComponent(query)}&maxResults=${maxResults}&langRestrict=${GOOGLE_BOOKS_API.LANGUAGE_RESTRICT}`;
   const data = await fetchFromGoogleBooks<GoogleBooksResponse>(endpoint);
   const items = data?.items || [];
 
   // Store in cache for future requests
   if (items.length > 0) {
     storeInCache(cacheKey, items);
-    console.log(
-      `[Google Books] Cached ${items.length} results for query: "${query}"`
-    );
+    console.log(LOG_MESSAGES.GOOGLE_BOOKS.CACHE_STORED(items.length, query));
   }
 
   return items;
@@ -83,7 +80,7 @@ export async function getBookById(
   const cacheKey = getCacheKey("book", googleId);
   const cached = getFromCache<GoogleBookItem>(cacheKey);
   if (cached) {
-    console.log(`[Google Books] Cache hit for book ID: "${googleId}"`);
+    console.log(LOG_MESSAGES.GOOGLE_BOOKS.CACHE_HIT_BOOK(googleId));
     return cached;
   }
 
@@ -94,7 +91,7 @@ export async function getBookById(
   // Store in cache for future requests
   if (book) {
     storeInCache(cacheKey, book);
-    console.log(`[Google Books] Cached book details for ID: "${googleId}"`);
+    console.log(LOG_MESSAGES.GOOGLE_BOOKS.CACHE_STORED_BOOK(googleId));
   }
 
   return book;

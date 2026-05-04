@@ -14,6 +14,7 @@ import type { BookDetailsViewModel } from "@/lib/book-details";
 import { authClient } from "@/lib/auth-client";
 import type { UserLibrarySummary } from "@/types/library";
 import { BookCardActionButton } from "@/components/ui/BookCardActionButton";
+import { UI_TEXT, ANIMATIONS } from "@/constants";
 import styles from "./BookDetailsModal.module.scss";
 
 interface BookDetailsModalProps {
@@ -61,25 +62,25 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
     <AnimatePresence>
       <motion.div
         className={styles.overlay}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={ANIMATIONS.MODAL.OVERLAY_INITIAL}
+        animate={ANIMATIONS.MODAL.OVERLAY_ANIMATE}
+        exit={ANIMATIONS.MODAL.OVERLAY_EXIT}
         onClick={() => router.back()}
         role="presentation"
       >
         <motion.div
           className={styles.modalContainer}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          initial={ANIMATIONS.MODAL.CONTAINER_INITIAL}
+          animate={ANIMATIONS.MODAL.CONTAINER_ANIMATE}
+          exit={ANIMATIONS.MODAL.CONTAINER_EXIT}
+          transition={ANIMATIONS.MODAL.CONTAINER_TRANSITION}
           onClick={(e) => e.stopPropagation()}
         >
           <button
             type="button"
             className={styles.closeBtn}
             onClick={() => router.back()}
-            aria-label="Close book details"
+            aria-label={UI_TEXT.MODAL.CLOSE_TITLE}
           >
             <X size={24} />
           </button>
@@ -97,7 +98,7 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
                 />
               ) : (
                 <div className={styles.coverPlaceholder}>
-                  <span>No Cover</span>
+                  <span>{UI_TEXT.BOOK.NO_COVER}</span>
                 </div>
               )}
             </div>
@@ -119,7 +120,7 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
                 <p className={styles.authors}>
                   {bookDetails.authors.length > 0
                     ? bookDetails.authors.join(", ")
-                    : "Unknown Author"}
+                    : UI_TEXT.AUTHOR.UNKNOWN}
                 </p>
               </div>
 
@@ -130,25 +131,25 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
                 <div className={styles.metadata}>
                   {bookDetails.publisher && (
                     <div className={styles.metadataRow}>
-                      <label>Publisher:</label>
+                      <label>{UI_TEXT.MODAL.PUBLISHER_LABEL}</label>
                       <span>{bookDetails.publisher}</span>
                     </div>
                   )}
                   {bookDetails.publishedDate && (
                     <div className={styles.metadataRow}>
-                      <label>Published:</label>
+                      <label>{UI_TEXT.MODAL.PUBLISHED_LABEL}</label>
                       <span>{bookDetails.publishedDate}</span>
                     </div>
                   )}
                   {bookDetails.pageCount && (
                     <div className={styles.metadataRow}>
-                      <label>Pages:</label>
+                      <label>{UI_TEXT.MODAL.PAGES_LABEL}</label>
                       <span>{bookDetails.pageCount}</span>
                     </div>
                   )}
                   {bookDetails.isbn && (
                     <div className={styles.metadataRow}>
-                      <label>ISBN:</label>
+                      <label>{UI_TEXT.MODAL.ISBN_LABEL}</label>
                       <span>{bookDetails.isbn}</span>
                     </div>
                   )}
@@ -157,7 +158,7 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
 
               {bookDetails.categories.length > 0 && (
                 <div className={styles.categories}>
-                  <div className={styles.categoriesLabel}>Categories</div>
+                  <div className={styles.categoriesLabel}>{UI_TEXT.MODAL.CATEGORIES_LABEL}</div>
                   <div className={styles.categoryTags}>
                     {bookDetails.categories.map((category) => (
                       <span key={category} className={styles.categoryTag}>
@@ -169,7 +170,7 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
               )}
 
               <div className={styles.descriptionSection}>
-                <h2 className={styles.sectionTitle}>About</h2>
+                <h2 className={styles.sectionTitle}>{UI_TEXT.MODAL.ABOUT_SECTION}</h2>
                 <p className={styles.description}>
                   {bookDetails.description}
                 </p>

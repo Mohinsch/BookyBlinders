@@ -2,9 +2,10 @@ import { eq, or } from "drizzle-orm";
 import { db } from "@/db";
 import { book } from "@/db/schema";
 import { getBookById } from "@/services/google-books";
+import { BOOK_SOURCES, ISBN_TYPES, UI_TEXT, LOG_MESSAGES, CONSTRAINTS } from "@/constants";
 
 export interface BookDetailsViewModel {
-  source: "internal" | "external";
+  source: typeof BOOK_SOURCES[keyof typeof BOOK_SOURCES];
   routeId: string;
   internalId: number | null;
   googleId: string | null;
@@ -29,17 +30,17 @@ function extractIsbn(
   if (!industryIdentifiers || industryIdentifiers.length === 0) return null;
   
   const isbn13 = industryIdentifiers.find(
-    (id) => id.type.toUpperCase() === "ISBN_13",
+    (id) => id.type.toUpperCase() === ISBN_TYPES.ISBN_13,
   );
   if (isbn13) return isbn13.identifier;
   
   const isbn10 = industryIdentifiers.find(
-    (id) => id.type.toUpperCase() === "ISBN_10",
+    (id) => id.type.toUpperCase() === ISBN_TYPES.ISBN_10,
   );
   return isbn10?.identifier || null;
 }
 
-function getTopCategories(categories?: string[], limit = 2): string[] {
+function getTopCategories(categories?: string[], limit = CONSTRAINTS.CATEGORIES.MAX_DISPLAYED): string[] {
   if (!categories) return [];
   return categories.slice(0, limit);
 }
@@ -72,7 +73,7 @@ export async function getBookDetailsByRouteId(
 
     if (dbBook) {
       return {
-        source: "internal",
+        source: BOOK_SOURCES.INTERNAL,
         routeId: normalizedId,
         internalId: dbBook.id,
         googleId: dbBook.googleId,
@@ -88,12 +89,12 @@ export async function getBookDetailsByRouteId(
         categories: [],
         description: dbBook.description
           ? stripHtml(dbBook.description)
-          : "No description available.",
+          : UI_TEXT.BOOK.NO_DESCRIPTION,
       };
     }
   } catch (error) {
     console.error(
-      "[BookDetails] Database query failed, falling back to Google Books API:",
+      LOG_MESSAGES.BOOK_DETAILS.DB_FALLBACK,
       error,
     );
   }
@@ -102,7 +103,7 @@ export async function getBookDetailsByRouteId(
   if (!googleBook) return null;
 
   return {
-    source: "external",
+    source: BOOK_SOURCES.EXTERNAL,
     routeId: normalizedId,
     internalId: null,
     googleId: googleBook.id,
@@ -116,6 +117,6 @@ export async function getBookDetailsByRouteId(
     categories: getTopCategories(googleBook.volumeInfo.categories),
     description: googleBook.volumeInfo.description
       ? stripHtml(googleBook.volumeInfo.description)
-      : "No description available.",
+      : UI_TEXT.BOOK.NO_DESCRIPTION,
   };
 }
