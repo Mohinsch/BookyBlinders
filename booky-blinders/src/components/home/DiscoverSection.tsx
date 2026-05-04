@@ -88,6 +88,7 @@ export function DiscoverSection({ initialBooks = [] }: DiscoverSectionProps) {
           {initialBooks.map((book) => (
             <motion.div key={book.id} variants={itemVariants}>
               <BookCard
+                bookId={book.id}
                 title={book.volumeInfo.title}
                 authors={book.volumeInfo.authors}
                 thumbnail={book.volumeInfo.imageLinks?.thumbnail}

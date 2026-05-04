@@ -103,6 +103,7 @@ export function SearchModal() {
                   {results.map((book) => (
                     <BookCard
                       key={book.id}
+                      bookId={book.id}
                       title={book.volumeInfo.title}
                       authors={book.volumeInfo.authors}
                       thumbnail={book.volumeInfo.imageLinks?.thumbnail}

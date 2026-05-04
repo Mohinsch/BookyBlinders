@@ -323,6 +323,7 @@ export function LibraryDashboard({
             {filteredAndSortedBooks.map((book) => (
               <BookCard
                 key={book.id}
+                bookId={book.googleId || String(book.id)}
                 title={book.title}
                 authors={book.author ? [book.author] : []}
                 thumbnail={book.cover || undefined}

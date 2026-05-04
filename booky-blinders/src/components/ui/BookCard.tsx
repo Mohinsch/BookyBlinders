@@ -1,21 +1,19 @@
 "use client";
 
-import { Check, LogIn, Plus, X } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import type { ReadingStatus } from "@/types/library";
+import {
+  BookCardActionButton,
+  type LibraryOption,
+} from "./BookCardActionButton";
 import styles from "./BookCard.module.scss";
-
-export interface LibraryOption {
-  id: number;
-  name: string;
-}
 
 interface BookCardProps {
   title: string;
   authors?: string[];
   thumbnail?: string;
+  bookId?: string;
   onClick?: () => void;
   showActions?: boolean;
   availableLibraries?: LibraryOption[];
@@ -31,6 +29,7 @@ export function BookCard({
   title,
   authors,
   thumbnail,
+  bookId,
   onClick,
   showActions = true,
   availableLibraries = [],
@@ -41,32 +40,29 @@ export function BookCard({
   onRemoveFromLibrary,
   isOwned = false,
 }: BookCardProps) {
-  const { data: session, isPending } = authClient.useSession();
-  const isAuthenticated = !!session?.user;
-  const [showLibrarySelect, setShowLibrarySelect] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const isClickable = !!onClick && !showLibrarySelect;
+  const router = useRouter();
+  const [isLibrarySelectOpen, setIsLibrarySelectOpen] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (isOwned) {
-      setShowLibrarySelect(false);
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+    } else if (bookId) {
+      router.push(`/books/${bookId}`);
     }
-  }, [isOwned]);
+  };
+
+  const isClickable = !isLibrarySelectOpen;
 
   return (
     <article
       className={`${styles.bookCard} ${isOwned ? styles.ownedCard : ""}`}
-      onClick={isClickable ? onClick : undefined}
+      onClick={isClickable ? handleCardClick : undefined}
       onKeyDown={
         isClickable
           ? (e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                onClick?.();
+                handleCardClick();
               }
             }
           : undefined
@@ -83,83 +79,13 @@ export function BookCard({
           </div>
         )}
 
-        {showActions && (
-          <div className={styles.actionOverlay}>
-            {!isMounted || isPending ? (
-              <div
-                className={styles.actionBtn}
-                style={{ opacity: 0, cursor: "default" }}
-              />
-            ) : isAuthenticated ? (
-              isOwned ? (
-                <div
-                  className={`${styles.actionBtn} ${styles.actionBtnOwned}`}
-                  title="Already in your Ledger"
-                >
-                  <Check size={18} />
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  className={styles.actionBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowLibrarySelect(!showLibrarySelect);
-                  }}
-                  title="Add to Library"
-                >
-                  {showLibrarySelect ? <X size={20} /> : <Plus size={20} />}
-                </button>
-              )
-            ) : (
-              <Link
-                href="/login"
-                className={styles.actionBtn}
-                title="Login to add"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <LogIn size={20} />
-              </Link>
-            )}
-          </div>
-        )}
-
-        {showLibrarySelect && isAuthenticated && !isPending && !isOwned && (
-          <div className={styles.libraryDropdown}>
-            <span className={styles.dropdownTitle}>Select Library</span>
-            <ul className={styles.libraryList}>
-              {availableLibraries.length > 0 ? (
-                availableLibraries.map((lib) => (
-                  <li key={lib.id}>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onAddToLibrary?.(lib.id);
-                        setShowLibrarySelect(false);
-                      }}
-                    >
-                      {lib.name}
-                    </button>
-                  </li>
-                ))
-              ) : (
-                <li>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAddToLibrary?.(0);
-                      setShowLibrarySelect(false);
-                    }}
-                  >
-                    My Collection (Default)
-                  </button>
-                </li>
-              )}
-            </ul>
-          </div>
-        )}
+        <BookCardActionButton
+          showActions={showActions}
+          isOwned={isOwned}
+          availableLibraries={availableLibraries}
+          onAddToLibrary={onAddToLibrary}
+          onLibrarySelectOpenChange={setIsLibrarySelectOpen}
+        />
       </div>
 
       <div className={styles.info}>
