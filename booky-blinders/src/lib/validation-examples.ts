@@ -105,7 +105,11 @@ export async function handleUpdateReadingStatus(
 ) {
   // NOTE: This will fail validation because "status" is not one of the allowed values
   // The server will return: { success: false, errors: [{ field: "status", message: "Invalid reading status" }] }
-  const result = await updateReadingStatus(bookId, status as any, libraryId);
+  const result = await updateReadingStatus(
+    bookId,
+    status as "UNREAD" | "IN_PROGRESS" | "READ",
+    libraryId,
+  );
 
   if (!result.success && result.errors) {
     // Find validation errors

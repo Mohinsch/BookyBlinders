@@ -20,6 +20,7 @@ export function LogoutButton() {
 
   return (
     <button
+      type="button"
       onClick={handleLogout}
       className="logout-btn"
       style={{ padding: "0.5rem 1rem", cursor: "pointer" }}

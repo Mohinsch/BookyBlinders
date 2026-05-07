@@ -43,12 +43,14 @@ export default function TestCrudPage() {
 
       <div className="flex gap-4 mb-8">
         <button
+          type="button"
           onClick={handleAdd}
           className="px-4 py-2 bg-blue-600 text-white rounded"
         >
           1. Add Book (Peaky Blinders)
         </button>
         <button
+          type="button"
           onClick={handleFetch}
           className="px-4 py-2 bg-green-600 text-white rounded"
         >
@@ -74,12 +76,14 @@ export default function TestCrudPage() {
             </div>
             <div className="flex gap-2">
               <button
+                type="button"
                 onClick={() => handleUpdate(b.id)}
                 className="px-3 py-1 bg-yellow-600 text-white text-sm rounded"
               >
                 3. Set IN_PROGRESS
               </button>
               <button
+                type="button"
                 onClick={() => handleRemove(b.id)}
                 className="px-3 py-1 bg-red-600 text-white text-sm rounded"
               >

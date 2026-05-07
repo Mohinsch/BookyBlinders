@@ -22,7 +22,7 @@ export interface ValidationResult<T = unknown> {
  * @returns ValidationResult with either data or structured errors
  */
 export function validateWithZod<T>(
-  schema: ZodSchema<any>,
+  schema: ZodSchema,
   data: unknown,
 ): ValidationResult<T> {
   try {

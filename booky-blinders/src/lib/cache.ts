@@ -1,4 +1,7 @@
 import { LRUCache } from "lru-cache";
+import type { GoogleBookItem, GoogleBooksResponse } from "@/types/google-books";
+
+type CacheValue = GoogleBookItem | GoogleBooksResponse | unknown;
 
 /**
  * Cache for Google Books API responses
@@ -6,7 +9,7 @@ import { LRUCache } from "lru-cache";
  * - 1000 entries max (books, searches)
  * - 24 hour TTL per entry
  */
-export const googleBooksCache = new LRUCache<string, any>({
+export const googleBooksCache = new LRUCache<string, CacheValue>({
   max: 1000,
   ttl: 24 * 60 * 60 * 1000, // 24 hours
 });
@@ -25,7 +28,9 @@ export function getCacheKey(
 /**
  * Get from cache with type safety
  */
-export function getFromCache<T = any>(key: string): T | undefined {
+export function getFromCache<T extends CacheValue = CacheValue>(
+  key: string,
+): T | undefined {
   const cached = googleBooksCache.get(key);
   return cached as T | undefined;
 }
@@ -33,7 +38,10 @@ export function getFromCache<T = any>(key: string): T | undefined {
 /**
  * Store in cache with TTL
  */
-export function storeInCache<T = any>(key: string, value: T): void {
+export function storeInCache<T extends CacheValue = CacheValue>(
+  key: string,
+  value: T,
+): void {
   googleBooksCache.set(key, value);
 }
 

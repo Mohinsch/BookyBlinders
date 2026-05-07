@@ -111,6 +111,7 @@ export function Header() {
                 My Library
               </Link>
               <div
+                role="tooltip"
                 className={styles.logoutIconWrap}
                 onMouseEnter={() => setShowLogoutHint(true)}
                 onMouseLeave={() => setShowLogoutHint(false)}
@@ -146,6 +147,7 @@ export function Header() {
         </div>
 
         <button
+          type="button"
           className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.menuOpen : ""}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"

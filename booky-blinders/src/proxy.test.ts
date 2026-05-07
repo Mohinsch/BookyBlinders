@@ -26,7 +26,9 @@ describe("Security Proxy (Middleware)", () => {
 
   it("should redirect unauthenticated users from /library to /login", async () => {
     // Simulate an API response where no active session is found
-    vi.mocked(betterFetch).mockResolvedValue({ data: null } as SessionResponse as never);
+    vi.mocked(betterFetch).mockResolvedValue({
+      data: null,
+    } as SessionResponse as never);
 
     const request = new NextRequest(new URL("http://localhost:3000/library"));
     const response = await authMiddleware(request);
@@ -67,4 +69,3 @@ describe("Security Proxy (Middleware)", () => {
     expect(response.status).toBe(200);
   });
 });
-

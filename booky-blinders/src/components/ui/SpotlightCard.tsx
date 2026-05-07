@@ -27,6 +27,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
 
   return (
     <div
+      role="region"
       ref={divRef}
       onMouseMove={handleMouseMove}
       className={`card-spotlight ${className}`}
