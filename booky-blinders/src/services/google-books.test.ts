@@ -53,6 +53,12 @@ describe("Google Books Service", () => {
       // Verify URL construction, URL encoding, and API key inclusion
       expect(global.fetch).toHaveBeenCalledWith(
         "https://www.googleapis.com/books/v1/volumes?q=harry+potter&maxResults=5&langRestrict=en%2Cfr&key=test-api-key",
+        expect.objectContaining({
+          next: expect.objectContaining({
+            revalidate: 86400,
+            tags: expect.arrayContaining(["google-books", "search", "harry potter"]),
+          }),
+        }),
       );
     });
 
@@ -92,6 +98,12 @@ describe("Google Books Service", () => {
       expect(result).toEqual(mockBook);
       expect(global.fetch).toHaveBeenCalledWith(
         "https://www.googleapis.com/books/v1/volumes/google-123?key=test-api-key",
+        expect.objectContaining({
+          next: expect.objectContaining({
+            revalidate: 86400,
+            tags: expect.arrayContaining(["google-books", "book-google-123"]),
+          }),
+        }),
       );
     });
   });
@@ -110,6 +122,12 @@ describe("Google Books Service", () => {
       // Verify the URL does NOT contain the 'key=' parameter
       expect(global.fetch).toHaveBeenCalledWith(
         "https://www.googleapis.com/books/v1/volumes?q=test&maxResults=12&langRestrict=en,fr",
+        expect.objectContaining({
+          next: expect.objectContaining({
+            revalidate: 86400,
+            tags: expect.arrayContaining(["google-books", "search", "test"]),
+          }),
+        }),
       );
     });
 

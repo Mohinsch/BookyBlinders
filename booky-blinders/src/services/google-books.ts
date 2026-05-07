@@ -53,7 +53,7 @@ export async function searchBooks(
   if (!query.trim()) return [];
 
   const endpoint = `?q=${encodeURIComponent(query)}&maxResults=${maxResults}&langRestrict=${GOOGLE_BOOKS_API.LANGUAGE_RESTRICT}`;
-  
+
   const data = await fetchFromGoogleBooks<GoogleBooksResponse>(endpoint, {
     next: {
       revalidate: 86400,
