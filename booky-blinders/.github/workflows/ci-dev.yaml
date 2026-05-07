@@ -1,0 +1,144 @@
+name: CI-dev
+
+on:
+  push:
+    branches:
+      - feat/ci-cd
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  # Run linting and type checking
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: booky-blinders/package-lock.json
+
+      - name: Install dependencies
+        working-directory: booky-blinders
+        run: npm ci
+
+      - name: Run linting
+        working-directory: booky-blinders
+        run: npm run lint
+
+  # Run tests
+  test:
+    runs-on: ubuntu-latest
+    environment: Dev
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+      BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
+      NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+      GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: booky-blinders/package-lock.json
+
+      - name: Install dependencies
+        working-directory: booky-blinders
+        run: npm ci
+
+      - name: Run tests
+        working-directory: booky-blinders
+        run: npm run test
+
+      - name: Generate coverage report
+        working-directory: booky-blinders
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./booky-blinders/coverage/coverage-final.json
+          flags: unittests
+          fail_ci_if_error: false
+
+  # Build the Next.js application
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    environment: Dev
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+      BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
+      NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+      GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: booky-blinders/package-lock.json
+
+      - name: Install dependencies
+        working-directory: booky-blinders
+        run: npm ci
+
+      - name: Build application
+        working-directory: booky-blinders
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextjs-build
+          path: booky-blinders/.next
+          retention-days: 1
+
+  # Optional: Test with Docker Compose (disabled until deployment infrastructure is ready)
+  docker-integration:
+    runs-on: ubuntu-latest
+    needs: build
+    if: false
+    environment: Dev
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Docker
+        run: docker --version
+
+      - name: Build and start containers
+        working-directory: booky-blinders
+        run: |
+          docker compose -f docker-compose.yml up -d --build
+
+      - name: Wait for services to be ready
+        run: |
+          max_attempts=10
+          attempt=1
+          until docker exec booky-blinders-postgres pg_isready -U postgres || [ $attempt -ge $max_attempts ]; do
+            echo "Waiting for PostgreSQL..."
+            sleep 5
+            attempt=$((attempt + 1))
+          done
+
+          if [ $attempt -ge $max_attempts ]; then
+            echo "PostgreSQL failed to start!"
+            docker compose logs
+            exit 1
+          fi
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down
