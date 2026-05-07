@@ -2,11 +2,12 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod"; 
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
-import Link from "next/link";
+import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
+import styles from "./AuthPage.module.scss";
 
 // 1. Zod Schema
 const loginSchema = z.object({
@@ -14,7 +15,12 @@ const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-export function LoginForm() {
+interface LoginFormProps {
+  onError?: (message: string) => void;
+  onSwitchToRegister?: () => void;
+}
+
+export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
   const router = useRouter();
   const [globalError, setGlobalError] = useState<string | null>(null);
 
@@ -26,14 +32,16 @@ export function LoginForm() {
     },
     onSubmit: async ({ value }) => {
       setGlobalError(null);
-      
+
       const { error } = await authClient.signIn.email({
         email: value.email,
         password: value.password,
       });
 
       if (error) {
-        setGlobalError(error.message || "Invalid credentials. By order of the Peaky Blinders, try again.");
+        const errorMsg = error.message || "Invalid credentials. Please try again.";
+        setGlobalError(errorMsg);
+        if (onError) onError(errorMsg);
         return;
       }
 
@@ -48,26 +56,38 @@ export function LoginForm() {
         e.stopPropagation();
         form.handleSubmit();
       }}
-      className="auth-form"
+      className={styles.authForm}
     >
-      <div className="form-header">
-        <h2>Welcome Back</h2>
+      <div className={styles.formHeader}>
+        <h2>Welcome</h2>
         <p>Return to your private collection.</p>
       </div>
 
-      {globalError && <div className="error-alert">{globalError}</div>}
+      <AnimatePresence>
+        {globalError && (
+          <motion.div
+            className={styles.inlineError}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            {globalError}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* EMAIL FIELD - Validation Zod Native */}
+      {/* EMAIL FIELD - Native Zod Validation */}
       <form.Field
         name="email"
         validators={{
           onChange: ({ value }) => {
             const res = loginSchema.shape.email.safeParse(value);
             return res.success ? undefined : res.error.issues[0].message;
-          }
+          },
         }}
-        children={(field) => (
-          <div className="input-group">
+      >
+        {(field) => (
+          <div className={styles.inputGroup}>
             <label htmlFor={field.name}>Email Address</label>
             <input
               id={field.name}
@@ -77,25 +97,38 @@ export function LoginForm() {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="thomas@shelbycompany.com"
+              className={
+                field.state.meta.errors.length > 0 ? styles.inputError : ""
+              }
             />
-            {field.state.meta.errors.length > 0 ? (
-              <em className="field-error">{field.state.meta.errors.join(", ")}</em>
-            ) : null}
+            <AnimatePresence mode="wait">
+              {field.state.meta.errors.length > 0 ? (
+                <motion.p
+                  className={styles.fieldError}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                >
+                  {field.state.meta.errors.join(", ")}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </div>
         )}
-      />
+      </form.Field>
 
-      {/* PASSWORD FIELD - Validation Zod Native */}
+      {/* PASSWORD FIELD - Native Zod Validation */}
       <form.Field
         name="password"
         validators={{
           onChange: ({ value }) => {
             const res = loginSchema.shape.password.safeParse(value);
             return res.success ? undefined : res.error.issues[0].message;
-          }
+          },
         }}
-        children={(field) => (
-          <div className="input-group">
+      >
+        {(field) => (
+          <div className={styles.inputGroup}>
             <label htmlFor={field.name}>Password</label>
             <input
               id={field.name}
@@ -105,31 +138,58 @@ export function LoginForm() {
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="••••••••"
+              className={
+                field.state.meta.errors.length > 0 ? styles.inputError : ""
+              }
             />
-            {field.state.meta.errors.length > 0 ? (
-              <em className="field-error">{field.state.meta.errors.join(", ")}</em>
-            ) : null}
+            <AnimatePresence mode="wait">
+              {field.state.meta.errors.length > 0 ? (
+                <motion.p
+                  className={styles.fieldError}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                >
+                  {field.state.meta.errors.join(", ")}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </div>
         )}
-      />
+      </form.Field>
 
       {/* SUBMIT BUTTON */}
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
-          <button 
-            type="submit" 
-            className="submit-btn" 
+      >
+        {([canSubmit, isSubmitting]) => (
+          <motion.button
+            type="submit"
+            className={styles.submitBtn}
             disabled={!canSubmit || isSubmitting}
+            whileHover={{ scale: canSubmit ? 1.02 : 1 }}
+            whileTap={{ scale: canSubmit ? 0.98 : 1 }}
           >
-            {isSubmitting ? "Authenticating..." : "Sign In"}
-          </button>
+            {isSubmitting ? "Verifying..." : "Sign In"}
+          </motion.button>
         )}
-      />
+      </form.Subscribe>
 
-      <div className="auth-footer" style={{ marginTop: "1rem", textAlign: "center" }}>
-        <p>Not part of the clan yet? <Link href="/register" style={{ color: "#b87333" }}>Enlist here</Link></p>
-      </div>
+      {/* SWITCH TO REGISTER */}
+      {onSwitchToRegister && (
+        <div className={styles.authFooter}>
+          <p>
+            Don't have an account yet?{" "}
+            <button
+              type="button"
+              onClick={onSwitchToRegister}
+              className={styles.switchLink}
+            >
+              Sign up here
+            </button>
+          </p>
+        </div>
+      )}
     </form>
   );
 }

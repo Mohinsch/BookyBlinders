@@ -1,7 +1,7 @@
 import Link from "next/link";
-import styles from "./about.module.scss";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import { Button } from "@/components/ui/Button";
+import styles from "./about.module.scss";
 
 export default function AboutUsPage() {
   return (
@@ -22,8 +22,8 @@ export default function AboutUsPage() {
             precision and elegance as a family empire.
           </p>
           <p>
-            No more lost titles. No more forgotten stories. Your books, your rules,
-            under our protection.
+            No more lost titles. No more forgotten stories. Your books, your
+            rules, under our protection.
           </p>
         </div>
 
@@ -36,7 +36,8 @@ export default function AboutUsPage() {
             </div>
             <p>
               The visionary behind the code. Responsible for the architecture,
-              the security of the ledger, and the seamless experience of our members.
+              the security of the ledger, and the seamless experience of our
+              members.
             </p>
           </div>
 
@@ -47,7 +48,7 @@ export default function AboutUsPage() {
               <span>Strategic Support</span>
             </div>
             <p>
-              Providing the technical wisdom and tactical guidance required to 
+              Providing the technical wisdom and tactical guidance required to
               keep our infrastructure ahead of the rivals.
             </p>
           </div>
@@ -56,7 +57,7 @@ export default function AboutUsPage() {
 
       <section className={styles.cta}>
         <h2>Ready to join the family?</h2>
-        <Link href="/register">
+        <Link href="/login?mode=register">
           <Button variant="primary">Enlist Now</Button>
         </Link>
       </section>

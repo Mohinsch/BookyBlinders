@@ -5,6 +5,8 @@ export interface GoogleBookVolumeInfo {
   authors?: string[];
   description?: string;
   publishedDate?: string;
+  publisher?: string;
+  pageCount?: number;
   imageLinks?: {
     thumbnail?: string;
     smallThumbnail?: string;

@@ -1,10 +1,17 @@
-// src/app/(auth)/login/page.tsx
-import { LoginForm } from "@/components/auth/LoginForm";
+import { AuthPage } from "@/components/auth/AuthPage";
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams?: {
+    mode?: string;
+  };
+}
+
+export default function LoginPage({ searchParams }: LoginPageProps) {
+  const initialMode = searchParams?.mode === "register" ? "register" : "login";
+
   return (
-    <main className="auth-page-container">
-      <LoginForm />
+    <main>
+      <AuthPage initialMode={initialMode} />
     </main>
   );
 }

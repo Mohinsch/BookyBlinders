@@ -11,7 +11,7 @@ export function LogoutButton() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          // Une fois le cookie détruit, on redirige vers le login
+          // After sign out, redirect to login
           router.push("/login");
         },
       },
