@@ -26,7 +26,7 @@ jobs:
         working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm install
+          npm install --no-package-lock --no-audit --no-fund
 
       - name: Run linting
         working-directory: booky-blinders
@@ -55,7 +55,7 @@ jobs:
         working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm install
+          npm install --no-package-lock --no-audit --no-fund
 
       - name: Run tests
         working-directory: booky-blinders
@@ -94,7 +94,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: booky-blinders
-        run: npm ci
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm install --no-package-lock --no-audit --no-fund
 
       - name: Build application
         working-directory: booky-blinders
