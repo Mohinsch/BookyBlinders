@@ -117,7 +117,7 @@ describe("Library Server Actions", () => {
       const result = await addBookToLibrary("test-id");
 
       // Verify the catch block gracefully handles the thrown error.
-      expect(result).toEqual({ success: false, message: "Failed to add book" });
+      expect(result).toEqual({ success: false, message: "Unauthorized" });
     });
 
     it("should return success: false if book is not found in Google API", async () => {
@@ -129,7 +129,7 @@ describe("Library Server Actions", () => {
 
       const result = await addBookToLibrary("unknown-id");
 
-      expect(result).toEqual({ success: false, message: "Failed to add book" });
+      expect(result).toEqual({ success: false, message: "Book not found" });
     });
 
     it("should add a book successfully when user is authenticated", async () => {
