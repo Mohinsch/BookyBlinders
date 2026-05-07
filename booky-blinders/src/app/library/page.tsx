@@ -1,3 +1,6 @@
+// Force dynamic rendering: This page relies on request-specific data (headers/cookies for auth) 
+// and cannot be statically generated at build time.
+export const dynamic = "force-dynamic";
 import { getUserLibraries, getUserLibrary } from "@/actions/library";
 import { LibraryDashboard } from "@/components/library/LibraryDashboard";
 
