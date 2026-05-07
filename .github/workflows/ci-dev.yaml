@@ -24,7 +24,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: booky-blinders
-        run: npm install
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm install
 
       - name: Run linting
         working-directory: booky-blinders
@@ -51,7 +53,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: booky-blinders
-        run: npm ci
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm install
 
       - name: Run tests
         working-directory: booky-blinders
