@@ -36,7 +36,7 @@ import {
   trackViolation,
 } from "@/lib/rate-limit";
 import { UI_TEXT, READING_STATUS, LOG_MESSAGES } from "@/constants";
-
+import { ensureCategoriesExist, linkBookToCategories } from "@/lib/category-utils";
 /**
  * Validates the current session and retrieves the authenticated user.
  * * @throws {Error} If the session is invalid or user is not authenticated
