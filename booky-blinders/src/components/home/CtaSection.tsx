@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
+import { AuthCTA } from "@/components/ui/AuthCTA";
 import styles from "./CtaSection.module.scss";
 
 export function CtaSection() {
@@ -11,9 +11,9 @@ export function CtaSection() {
         Join the discerning readers who have chosen Booky Blinders as their
         personal library companion.
       </p>
-      <Button variant="primary">
+      <AuthCTA variant="primary">
         Start your collection
-      </Button>
+      </AuthCTA>
     </section>
   );
 }

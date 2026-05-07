@@ -6,6 +6,7 @@ import { motion, Variants } from "framer-motion";
 import { Search, Star } from "lucide-react";
 import styles from "./HeroSection.module.scss";
 import BlurText from "../ui/BlurText";
+import { AuthCTA } from "@/components/ui/AuthCTA";
 import { Button } from "@/components/ui/Button";
 import { useSearchStore } from "@/store/useSearchStore";
 
@@ -74,7 +75,7 @@ export function HeroSection() {
         </motion.p>
 
         <motion.div className={styles.ctaContainer} variants={itemVariants}>
-          <Button variant="primary">Start your collection</Button>
+          <AuthCTA variant="primary">Start your collection</AuthCTA>
           <Button variant="outline" onClick={openSearch}>
             Explore Books <Search size={16} />
           </Button>
