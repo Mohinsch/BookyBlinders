@@ -49,12 +49,11 @@ export const addBookToLibrarySchema = z.object({
 
 export const updateReadingStatusSchema = z.object({
   bookId: z.number().int().positive("Invalid book ID"),
-  status: z.string().refine(
-    (val) => ["TO_READ", "IN_PROGRESS", "READ"].includes(val),
-    {
+  status: z
+    .string()
+    .refine((val) => ["TO_READ", "IN_PROGRESS", "READ"].includes(val), {
       message: "Invalid reading status",
-    },
-  ) as z.ZodType<ReadingStatus>,
+    }) as z.ZodType<ReadingStatus>,
   libraryId: z.number().int().positive("Invalid library ID").optional(),
 });
 
@@ -76,6 +75,10 @@ export type CreateLibraryInput = z.infer<typeof createLibrarySchema>;
 export type RenameLibraryInput = z.infer<typeof renameLibrarySchema>;
 export type DeleteLibraryInput = z.infer<typeof deleteLibrarySchema>;
 export type AddBookToLibraryInput = z.infer<typeof addBookToLibrarySchema>;
-export type UpdateReadingStatusInput = z.infer<typeof updateReadingStatusSchema>;
-export type RemoveBookFromLibraryInput = z.infer<typeof removeBookFromLibrarySchema>;
+export type UpdateReadingStatusInput = z.infer<
+  typeof updateReadingStatusSchema
+>;
+export type RemoveBookFromLibraryInput = z.infer<
+  typeof removeBookFromLibrarySchema
+>;
 export type GetUserLibraryInput = z.infer<typeof getUserLibrarySchema>;

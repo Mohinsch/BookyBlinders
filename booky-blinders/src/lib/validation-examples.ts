@@ -1,15 +1,22 @@
 /**
  * Example: Consuming Server Actions with Validation Errors
- * 
+ *
  * This file demonstrates how to use the validated Server Actions
  * and handle the validation errors returned.
  */
 
 "use client";
 
-import { createLibrary, renameLibrary, updateReadingStatus } from "@/actions/library";
-import { errorsToFieldMap, getFieldError, formatErrors } from "@/lib/validation";
-import type { ActionResponse } from "@/types/library";
+import {
+  createLibrary,
+  renameLibrary,
+  updateReadingStatus,
+} from "@/actions/library";
+import {
+  errorsToFieldMap,
+  formatErrors,
+  getFieldError,
+} from "@/lib/validation";
 
 /**
  * Example 1: Simple error handling with message display
@@ -98,11 +105,7 @@ export async function handleUpdateReadingStatus(
 ) {
   // NOTE: This will fail validation because "status" is not one of the allowed values
   // The server will return: { success: false, errors: [{ field: "status", message: "Invalid reading status" }] }
-  const result = await updateReadingStatus(
-    bookId,
-    status as any,
-    libraryId,
-  );
+  const result = await updateReadingStatus(bookId, status as any, libraryId);
 
   if (!result.success && result.errors) {
     // Find validation errors
@@ -116,13 +119,13 @@ export async function handleUpdateReadingStatus(
 
 /**
  * Error Response Structure
- * 
+ *
  * Success response:
  * {
  *   success: true,
  *   message?: "Library created"
  * }
- * 
+ *
  * Validation error response:
  * {
  *   success: false,
@@ -131,7 +134,7 @@ export async function handleUpdateReadingStatus(
  *     { field: "libraryId", message: "Invalid library ID" }
  *   ]
  * }
- * 
+ *
  * Server error response:
  * {
  *   success: false,
@@ -141,7 +144,7 @@ export async function handleUpdateReadingStatus(
 
 /**
  * Best Practices
- * 
+ *
  * 1. Always check result.success first
  * 2. Use errorsToFieldMap() for form rendering
  * 3. Use getFieldError() to get individual field errors

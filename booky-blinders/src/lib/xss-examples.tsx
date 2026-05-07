@@ -1,11 +1,11 @@
 /**
  * XSS Security Examples
- * 
+ *
  * This file demonstrates how React automatically prevents XSS attacks
  * by showing examples of dangerous input and how they're safely handled.
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 /**
  * Example 1: Script Tag Injection
@@ -13,7 +13,7 @@ import React, { useState } from "react";
  */
 export function ScriptInjectionExample() {
   const [displayText] = useState(
-    "<script>alert('This would be dangerous!')</script>"
+    "<script>alert('This would be dangerous!')</script>",
   );
 
   return (
@@ -37,9 +37,7 @@ export function ScriptInjectionExample() {
  * React escapes attribute values
  */
 export function EventHandlerInjectionExample() {
-  const [maliciousAttribute] = useState(
-    '" onmouseover="alert(\'XSS Attack\')'
-  );
+  const [maliciousAttribute] = useState("\" onmouseover=\"alert('XSS Attack')");
 
   return (
     <div>
@@ -47,11 +45,15 @@ export function EventHandlerInjectionExample() {
       <p>
         Dangerous input: <code>{maliciousAttribute}</code>
       </p>
-      <div title={maliciousAttribute} style={{ border: "1px solid #ccc", padding: "10px" }}>
+      <div
+        title={maliciousAttribute}
+        style={{ border: "1px solid #ccc", padding: "10px" }}
+      >
         Hover over this box - nothing happens! The event handler is escaped.
       </div>
       <p style={{ fontSize: "0.9em", color: "#666" }}>
-        The onmouseover attribute is part of the title string, not a real event handler
+        The onmouseover attribute is part of the title string, not a real event
+        handler
       </p>
     </div>
   );
@@ -62,9 +64,7 @@ export function EventHandlerInjectionExample() {
  * React escapes HTML tags
  */
 export function ImageErrorInjectionExample() {
-  const [imageTag] = useState(
-    '<img src=x onerror="alert(\'XSS\')"/>'
-  );
+  const [imageTag] = useState("<img src=x onerror=\"alert('XSS')\"/>");
 
   return (
     <div>
@@ -93,9 +93,7 @@ export function ImageErrorInjectionExample() {
  * React safely escapes attribute values
  */
 export function FormAttributeInjectionExample() {
-  const [name, setName] = useState(
-    'John" onblur="alert(\'XSS\') data-info="'
-  );
+  const [name, _setName] = useState('John" onblur="alert(\'XSS\') data-info="');
 
   return (
     <div>
@@ -116,8 +114,8 @@ export function FormAttributeInjectionExample() {
         }}
       />
       <p style={{ fontSize: "0.9em", color: "#666" }}>
-        Even though this string contains quotes and event handlers,
-        React renders it safely as the input's value
+        Even though this string contains quotes and event handlers, React
+        renders it safely as the input's value
       </p>
     </div>
   );
@@ -129,7 +127,7 @@ export function FormAttributeInjectionExample() {
  */
 export function UnicodeBypassExample() {
   const [maliciousCode] = useState(
-    "&#60;script&#62;alert('XSS')&#60;/script&#62;"
+    "&#60;script&#62;alert('XSS')&#60;/script&#62;",
   );
 
   return (
@@ -248,9 +246,7 @@ export function DangerousPatternExample() {
       <p>
         If we used this pattern with input: <code>{maliciousInput}</code>
       </p>
-      <p style={{ color: "red" }}>
-        The script WOULD EXECUTE and be dangerous!
-      </p>
+      <p style={{ color: "red" }}>The script WOULD EXECUTE and be dangerous!</p>
 
       <pre
         style={{
@@ -303,9 +299,7 @@ export function XSSSecurityDemo() {
           borderRadius: "4px",
         }}
       >
-        <h3 style={{ color: "#2e7d32", margin: "0 0 10px 0" }}>
-          ✅ Summary
-        </h3>
+        <h3 style={{ color: "#2e7d32", margin: "0 0 10px 0" }}>✅ Summary</h3>
         <ul style={{ margin: "0", paddingLeft: "20px" }}>
           <li>React escapes all content in JSX automatically</li>
           <li>Your app uses React components exclusively</li>

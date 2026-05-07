@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { DoorOpen, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { DoorOpen, LogOut } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
 import { BBMonogram } from "@/components/ui/BBMonogram";
+import { authClient } from "@/lib/auth-client";
 import styles from "./Header.module.scss";
 
 export function Header() {

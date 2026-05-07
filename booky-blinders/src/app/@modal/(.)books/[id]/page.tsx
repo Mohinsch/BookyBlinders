@@ -1,5 +1,5 @@
-import { getBookDetailsByRouteId } from "@/lib/book-details";
 import { BookDetailsModal } from "@/components/modal/BookDetailsModal";
+import { getBookDetailsByRouteId } from "@/lib/book-details";
 
 interface BookDetailsPageProps {
   params: Promise<{ id: string }>;

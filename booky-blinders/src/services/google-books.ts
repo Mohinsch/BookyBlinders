@@ -2,14 +2,9 @@
 // This file contains all the logic to interact with the Google Books API.
 // It abstracts away the API details and provides clean functions for searching and fetching book details.
 
-import type { GoogleBookItem, GoogleBooksResponse } from "@/types/google-books";
-import {
-  getCacheKey,
-  getFromCache,
-  storeInCache,
-  isCached,
-} from "@/lib/cache";
 import { GOOGLE_BOOKS_API, LOG_MESSAGES } from "@/constants";
+import { getCacheKey, getFromCache, storeInCache } from "@/lib/cache";
+import type { GoogleBookItem, GoogleBooksResponse } from "@/types/google-books";
 
 /**
  * Core wrapper for fetching data from the Google Books API. It handles URL construction, API key inclusion, error handling, and response parsing.
@@ -26,7 +21,12 @@ async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
     const response = await fetch(url.toString());
 
     if (!response.ok) {
-      console.error(LOG_MESSAGES.GOOGLE_BOOKS.API_ERROR(response.status, response.statusText));
+      console.error(
+        LOG_MESSAGES.GOOGLE_BOOKS.API_ERROR(
+          response.status,
+          response.statusText,
+        ),
+      );
       return null;
     }
 
@@ -42,7 +42,10 @@ async function fetchFromGoogleBooks<T>(endpoint: string): Promise<T | null> {
  * Utility 1: Search books by title, author, or keywords. It returns a list of books matching the query.
  * includes caching to prevent quota exhaustion and improve performance
  */
-export async function searchBooks(query: string, maxResults = GOOGLE_BOOKS_API.DEFAULT_MAX_RESULTS) {
+export async function searchBooks(
+  query: string,
+  maxResults = GOOGLE_BOOKS_API.DEFAULT_MAX_RESULTS,
+) {
   if (!query.trim()) return [];
 
   // Check cache first
@@ -72,7 +75,7 @@ export async function searchBooks(query: string, maxResults = GOOGLE_BOOKS_API.D
  * includes caching to prevent quota exhaustion
  */
 export async function getBookById(
-  googleId: string
+  googleId: string,
 ): Promise<GoogleBookItem | null> {
   if (!googleId) return null;
 

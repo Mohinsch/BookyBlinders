@@ -1,4 +1,4 @@
-import { LRUCache } from 'lru-cache';
+import { LRUCache } from "lru-cache";
 
 /**
  * Cache for Google Books API responses
@@ -15,7 +15,10 @@ export const googleBooksCache = new LRUCache<string, any>({
  * Cache management utilities
  */
 
-export function getCacheKey(type: 'search' | 'book', identifier: string): string {
+export function getCacheKey(
+  type: "search" | "book",
+  identifier: string,
+): string {
   return `${type}:${identifier}`;
 }
 

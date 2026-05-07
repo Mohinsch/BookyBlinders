@@ -1,4 +1,4 @@
-import { z, ZodSchema, ZodError } from "zod";
+import type { ZodSchema } from "zod";
 
 /**
  * Structured validation error type that can be easily consumed by the client
@@ -44,7 +44,7 @@ export function validateWithZod<T>(
       success: true,
       data: result.data as T,
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       globalError: "An unexpected validation error occurred",

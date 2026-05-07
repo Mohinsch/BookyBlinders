@@ -110,12 +110,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -192,9 +188,7 @@
         "book_google_id_unique": {
           "name": "book_google_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "google_id"
-          ]
+          "columns": ["google_id"]
         }
       },
       "policies": {},
@@ -261,12 +255,8 @@
           "name": "book_category_category_id_category_id_fk",
           "tableFrom": "book_category",
           "tableTo": "category",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["category_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -274,12 +264,8 @@
           "name": "book_category_book_id_book_id_fk",
           "tableFrom": "book_category",
           "tableTo": "book",
-          "columnsFrom": [
-            "book_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["book_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -289,10 +275,7 @@
         "book_category_book_id_category_id_unique": {
           "name": "book_category_book_id_category_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "book_id",
-            "category_id"
-          ]
+          "columns": ["book_id", "category_id"]
         }
       },
       "policies": {},
@@ -330,9 +313,7 @@
         "category_name_unique": {
           "name": "category_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -395,12 +376,8 @@
           "name": "library_user_id_user_id_fk",
           "tableFrom": "library",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -503,12 +480,8 @@
           "name": "library_book_book_id_book_id_fk",
           "tableFrom": "library_book",
           "tableTo": "book",
-          "columnsFrom": [
-            "book_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["book_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -516,12 +489,8 @@
           "name": "library_book_library_id_library_id_fk",
           "tableFrom": "library_book",
           "tableTo": "library",
-          "columnsFrom": [
-            "library_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["library_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -531,10 +500,7 @@
         "library_book_library_id_book_id_unique": {
           "name": "library_book_library_id_book_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "library_id",
-            "book_id"
-          ]
+          "columns": ["library_id", "book_id"]
         }
       },
       "policies": {},
@@ -602,12 +568,8 @@
           "name": "review_book_id_book_id_fk",
           "tableFrom": "review",
           "tableTo": "book",
-          "columnsFrom": [
-            "book_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["book_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -615,12 +577,8 @@
           "name": "review_user_id_user_id_fk",
           "tableFrom": "review",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -707,12 +665,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -722,9 +676,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -801,9 +753,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -870,12 +820,8 @@
           "name": "user_category_category_id_category_id_fk",
           "tableFrom": "user_category",
           "tableTo": "category",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["category_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -883,12 +829,8 @@
           "name": "user_category_user_id_user_id_fk",
           "tableFrom": "user_category",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -898,10 +840,7 @@
         "user_category_user_id_category_id_unique": {
           "name": "user_category_user_id_category_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id",
-            "category_id"
-          ]
+          "columns": ["user_id", "category_id"]
         }
       },
       "policies": {},

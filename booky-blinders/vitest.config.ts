@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   resolve: {
@@ -6,16 +6,16 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: 'node',
+    environment: "node",
     restoreMocks: true,
     coverage: {
-      include: ['src/**/*.{ts,tsx}'],
+      include: ["src/**/*.{ts,tsx}"],
       exclude: [
-        'src/components/**/*', 
-        'src/app/**/*',        
-        'src/db/**/*',         
-        'src/types/**/*',      
-        'src/lib/**/*',       
+        "src/components/**/*",
+        "src/app/**/*",
+        "src/db/**/*",
+        "src/types/**/*",
+        "src/lib/**/*",
       ],
     },
   },

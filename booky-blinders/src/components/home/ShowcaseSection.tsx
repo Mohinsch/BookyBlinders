@@ -1,7 +1,7 @@
 "use client";
 
-import { Quote, Star } from "lucide-react";
 import { motion } from "framer-motion";
+import { Quote, Star } from "lucide-react";
 import TiltedCard from "@/components/ui/TiltedCard";
 import styles from "./ShowcaseSection.module.scss";
 
@@ -11,14 +11,14 @@ export function ShowcaseSection() {
       title: "The Great Gatsby",
       author: "F. Scott Fitzgerald",
       quote: "A masterpiece of the jazz age. The green light beckons us all.",
-      rating: 5
+      rating: 5,
     },
     {
       title: "Crime and Punishment",
       author: "Fyodor Dostoevsky",
       quote: "The depths of human conscience, laid bare on every page.",
-      rating: 5
-    }
+      rating: 5,
+    },
   ];
 
   return (
@@ -29,8 +29,8 @@ export function ShowcaseSection() {
           altText="Thomas Shelfy"
           containerHeight="600px"
           containerWidth="100%"
-          imageHeight="600px"    
-          imageWidth="500px"    
+          imageHeight="600px"
+          imageWidth="500px"
           rotateAmplitude={12}
           scaleOnHover={1.03}
           showTooltip={false}
@@ -38,7 +38,9 @@ export function ShowcaseSection() {
         >
           <div className={styles.quoteOverlay}>
             <Quote size={20} className={styles.quoteIcon} />
-            <blockquote>"A man who reads lives a thousand lives before he dies."</blockquote>
+            <blockquote>
+              "A man who reads lives a thousand lives before he dies."
+            </blockquote>
             <cite>Thomas Shelfy</cite>
           </div>
         </TiltedCard>
@@ -47,12 +49,15 @@ export function ShowcaseSection() {
       <div className={styles.textColumn}>
         <span className={styles.label}>Thomas Shelfy's Collection</span>
         <h2>A gentleman's library</h2>
-        <p>Every great mind curates their shelf with care. Here's a glimpse into one reader's world.</p>
-        
+        <p>
+          Every great mind curates their shelf with care. Here's a glimpse into
+          one reader's world.
+        </p>
+
         <div className={styles.showcaseList}>
           {books.map((book, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               className={styles.showcaseItem}
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}

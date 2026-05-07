@@ -2,13 +2,13 @@
 
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Search, Star } from "lucide-react";
-import styles from "./HeroSection.module.scss";
-import BlurText from "../ui/BlurText";
 import { AuthCTA } from "@/components/ui/AuthCTA";
 import { Button } from "@/components/ui/Button";
 import { useSearchStore } from "@/store/useSearchStore";
+import BlurText from "../ui/BlurText";
+import styles from "./HeroSection.module.scss";
 
 export function HeroSection() {
   const { openSearch } = useSearchStore();

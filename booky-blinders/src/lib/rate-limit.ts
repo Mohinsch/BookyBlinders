@@ -1,4 +1,4 @@
-import { LRUCache } from 'lru-cache';
+import { LRUCache } from "lru-cache";
 
 /**
  * Rate Limiting Configuration
@@ -93,13 +93,13 @@ export const apiLimiter = createRateLimiter({
  */
 export function checkRateLimit(
   limiter: ReturnType<typeof createRateLimiter>,
-  key: string
+  key: string,
 ): { allowed: boolean; error?: string; result: RateLimitResult } {
   const result = limiter(key);
 
   if (!result.allowed) {
     const retryAfter = Math.ceil(
-      (result.resetTime.getTime() - Date.now()) / 1000
+      (result.resetTime.getTime() - Date.now()) / 1000,
     );
     return {
       allowed: false,
@@ -129,7 +129,7 @@ const violationTracker = new LRUCache<
 export function trackViolation(
   userId: string,
   action: string,
-  ipAddress: string
+  _ipAddress: string,
 ): { violationCount: number; shouldAlert: boolean } {
   const key = `violation:${userId}:${action}`;
   const now = Date.now();
@@ -152,12 +152,12 @@ export function trackViolation(
 /**
  * Get violation stats for a user
  */
-export function getViolationStats(userId: string) {
+export function getViolationStats(_userId: string) {
   const stats: Record<string, number> = {};
-  
+
   // This is limited - for production, query database instead
   // Keeping this for demonstration purposes
-  
+
   return stats;
 }
 

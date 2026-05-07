@@ -112,8 +112,8 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
                   <>
                     <h2>Welcome to the Club</h2>
                     <p>
-                      New to the family? Create your account to open
-                      your private registry.
+                      New to the family? Create your account to open your
+                      private registry.
                     </p>
                     <button
                       type="button"

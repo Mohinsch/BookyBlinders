@@ -6,9 +6,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./Button";
-import { ROUTES } from "@/constants";
 
 interface AuthCTAProps {
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 import styles from "./Button.module.scss";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,11 +8,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-export function Button({ 
-  variant = "primary", 
-  children, 
-  className = "", 
-  ...props 
+export function Button({
+  variant = "primary",
+  children,
+  className = "",
+  ...props
 }: ButtonProps) {
   const buttonClass = `${styles.btn} ${styles[variant]} ${className}`;
 

@@ -1,20 +1,20 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
 import {
   addBookToLibrary,
   getOwnedGoogleBookIds,
   getUserLibraries,
 } from "@/actions/library";
-import type { BookDetailsViewModel } from "@/lib/book-details";
-import { authClient } from "@/lib/auth-client";
-import type { UserLibrarySummary } from "@/types/library";
 import { BookCardActionButton } from "@/components/ui/BookCardActionButton";
-import { UI_TEXT, ANIMATIONS } from "@/constants";
+import { ANIMATIONS, UI_TEXT } from "@/constants";
+import { authClient } from "@/lib/auth-client";
+import type { BookDetailsViewModel } from "@/lib/book-details";
+import type { UserLibrarySummary } from "@/types/library";
 import styles from "./BookDetailsModal.module.scss";
 
 interface BookDetailsModalProps {
@@ -39,7 +39,7 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
     };
 
     void loadLibraries();
-  }, [session?.user?.id]);
+  }, [session?.user?.id, session?.user]);
 
   const isOwned = bookDetails.googleId
     ? ownedGoogleIds.includes(bookDetails.googleId)
@@ -158,7 +158,9 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
 
               {bookDetails.categories.length > 0 && (
                 <div className={styles.categories}>
-                  <div className={styles.categoriesLabel}>{UI_TEXT.MODAL.CATEGORIES_LABEL}</div>
+                  <div className={styles.categoriesLabel}>
+                    {UI_TEXT.MODAL.CATEGORIES_LABEL}
+                  </div>
                   <div className={styles.categoryTags}>
                     {bookDetails.categories.map((category) => (
                       <span key={category} className={styles.categoryTag}>
@@ -170,10 +172,10 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
               )}
 
               <div className={styles.descriptionSection}>
-                <h2 className={styles.sectionTitle}>{UI_TEXT.MODAL.ABOUT_SECTION}</h2>
-                <p className={styles.description}>
-                  {bookDetails.description}
-                </p>
+                <h2 className={styles.sectionTitle}>
+                  {UI_TEXT.MODAL.ABOUT_SECTION}
+                </h2>
+                <p className={styles.description}>{bookDetails.description}</p>
               </div>
             </div>
           </div>

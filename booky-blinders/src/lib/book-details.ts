@@ -1,11 +1,17 @@
 import { eq, or } from "drizzle-orm";
+import {
+  BOOK_SOURCES,
+  CONSTRAINTS,
+  ISBN_TYPES,
+  LOG_MESSAGES,
+  UI_TEXT,
+} from "@/constants";
 import { db } from "@/db";
 import { book } from "@/db/schema";
 import { getBookById } from "@/services/google-books";
-import { BOOK_SOURCES, ISBN_TYPES, UI_TEXT, LOG_MESSAGES, CONSTRAINTS } from "@/constants";
 
 export interface BookDetailsViewModel {
-  source: typeof BOOK_SOURCES[keyof typeof BOOK_SOURCES];
+  source: (typeof BOOK_SOURCES)[keyof typeof BOOK_SOURCES];
   routeId: string;
   internalId: number | null;
   googleId: string | null;
@@ -28,19 +34,22 @@ function extractIsbn(
   industryIdentifiers?: Array<{ type: string; identifier: string }>,
 ): string | null {
   if (!industryIdentifiers || industryIdentifiers.length === 0) return null;
-  
+
   const isbn13 = industryIdentifiers.find(
     (id) => id.type.toUpperCase() === ISBN_TYPES.ISBN_13,
   );
   if (isbn13) return isbn13.identifier;
-  
+
   const isbn10 = industryIdentifiers.find(
     (id) => id.type.toUpperCase() === ISBN_TYPES.ISBN_10,
   );
   return isbn10?.identifier || null;
 }
 
-function getTopCategories(categories?: string[], limit = CONSTRAINTS.CATEGORIES.MAX_DISPLAYED): string[] {
+function getTopCategories(
+  categories?: string[],
+  limit = CONSTRAINTS.CATEGORIES.MAX_DISPLAYED,
+): string[] {
   if (!categories) return [];
   return categories.slice(0, limit);
 }
@@ -52,7 +61,8 @@ export async function getBookDetailsByRouteId(
   if (!normalizedId) return null;
 
   const numericId = Number.parseInt(normalizedId, 10);
-  const isNumeric = Number.isInteger(numericId) && String(numericId) === normalizedId;
+  const isNumeric =
+    Number.isInteger(numericId) && String(numericId) === normalizedId;
 
   try {
     const dbBook = await db.query.book.findFirst({
@@ -93,10 +103,7 @@ export async function getBookDetailsByRouteId(
       };
     }
   } catch (error) {
-    console.error(
-      LOG_MESSAGES.BOOK_DETAILS.DB_FALLBACK,
-      error,
-    );
+    console.error(LOG_MESSAGES.BOOK_DETAILS.DB_FALLBACK, error);
   }
 
   const googleBook = await getBookById(normalizedId);

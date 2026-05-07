@@ -16,7 +16,7 @@ export interface GoogleBookVolumeInfo {
 }
 
 export interface GoogleBookItem {
-  id: string; 
+  id: string;
   volumeInfo: GoogleBookVolumeInfo;
 }
 

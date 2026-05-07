@@ -1,5 +1,5 @@
-import { getBookDetailsByRouteId } from "@/lib/book-details";
 import { BookDetailsModal } from "@/components/modal/BookDetailsModal";
+import { getBookDetailsByRouteId } from "@/lib/book-details";
 
 interface BookDetailsPageProps {
   params: Promise<{ id: string }>;
@@ -13,13 +13,15 @@ export default async function BookDetailsPage({
 
   if (!bookDetails) {
     return (
-      <div style={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
-        minHeight: "100vh",
-        fontSize: "18px"
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          fontSize: "18px",
+        }}
+      >
         Book not found
       </div>
     );
