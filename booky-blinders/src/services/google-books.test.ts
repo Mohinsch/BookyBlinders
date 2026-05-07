@@ -56,7 +56,11 @@ describe("Google Books Service", () => {
         expect.objectContaining({
           next: expect.objectContaining({
             revalidate: 86400,
-            tags: expect.arrayContaining(["google-books", "search", "harry potter"]),
+            tags: expect.arrayContaining([
+              "google-books",
+              "search",
+              "harry potter",
+            ]),
           }),
         }),
       );
