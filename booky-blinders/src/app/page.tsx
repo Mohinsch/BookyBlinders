@@ -20,10 +20,6 @@ export default async function HomePage() {
       <ShowcaseSection />
       <DiscoverSection initialBooks={books} />
       <CtaSection />
-
-      <footer style={{ marginTop: "5rem", textAlign: "center", opacity: 0.5 }}>
-        <p className="text-quote">By order of the Booky Blinders</p>
-      </footer>
     </main>
   );
 }
