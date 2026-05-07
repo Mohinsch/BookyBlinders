@@ -26,8 +26,8 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   };
 
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: visual effect only
     <div
-      role="region"
       ref={divRef}
       onMouseMove={handleMouseMove}
       className={`card-spotlight ${className}`}

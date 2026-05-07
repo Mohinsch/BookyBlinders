@@ -131,25 +131,33 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
                 <div className={styles.metadata}>
                   {bookDetails.publisher && (
                     <div className={styles.metadataRow}>
-                      <label>{UI_TEXT.MODAL.PUBLISHER_LABEL}</label>
+                      <span className={styles.label}>
+                        {UI_TEXT.MODAL.PUBLISHER_LABEL}
+                      </span>
                       <span>{bookDetails.publisher}</span>
                     </div>
                   )}
                   {bookDetails.publishedDate && (
                     <div className={styles.metadataRow}>
-                      <label>{UI_TEXT.MODAL.PUBLISHED_LABEL}</label>
+                      <span className={styles.label}>
+                        {UI_TEXT.MODAL.PUBLISHED_LABEL}
+                      </span>
                       <span>{bookDetails.publishedDate}</span>
                     </div>
                   )}
                   {bookDetails.pageCount && (
                     <div className={styles.metadataRow}>
-                      <label>{UI_TEXT.MODAL.PAGES_LABEL}</label>
+                      <span className={styles.label}>
+                        {UI_TEXT.MODAL.PAGES_LABEL}
+                      </span>
                       <span>{bookDetails.pageCount}</span>
                     </div>
                   )}
                   {bookDetails.isbn && (
                     <div className={styles.metadataRow}>
-                      <label>{UI_TEXT.MODAL.ISBN_LABEL}</label>
+                      <span className={styles.label}>
+                        {UI_TEXT.MODAL.ISBN_LABEL}
+                      </span>
                       <span>{bookDetails.isbn}</span>
                     </div>
                   )}

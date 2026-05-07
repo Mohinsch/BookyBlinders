@@ -417,7 +417,7 @@ export default function DecryptedText({
 
           return (
             <span
-              key={index}
+              key={`char-${index}-${char}`}
               className={isRevealedOrDone ? className : encryptedClassName}
             >
               {char}

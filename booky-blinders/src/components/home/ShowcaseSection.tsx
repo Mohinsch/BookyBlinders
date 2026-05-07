@@ -55,20 +55,24 @@ export function ShowcaseSection() {
         </p>
 
         <div className={styles.showcaseList}>
-          {books.map((book, index) => (
+          {books.map((book) => (
             <motion.div
-              key={index}
+              key={book.title}
               className={styles.showcaseItem}
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.2 }}
+              transition={{ delay: books.indexOf(book) * 0.2 }}
               viewport={{ once: true }}
             >
               <div className={styles.itemHeader}>
                 <h4>{book.title}</h4>
                 <div className={styles.stars}>
                   {[...Array(book.rating)].map((_, i) => (
-                    <Star key={i} size={14} fill="currentColor" />
+                    <Star
+                      key={`${book.title}-star-${i}`}
+                      size={14}
+                      fill="currentColor"
+                    />
                   ))}
                 </div>
               </div>

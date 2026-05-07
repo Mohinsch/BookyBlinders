@@ -112,7 +112,7 @@ const BlurText: React.FC<BlurTextProps> = ({
 
         return (
           <motion.span
-            key={index}
+            key={`element-${index}-${segment}`}
             initial={fromSnapshot}
             animate={inView ? animateKeyframes : fromSnapshot}
             transition={spanTransition}
