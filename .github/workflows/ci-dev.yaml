@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: booky-blinders
-        run: npm ci
+        run: npm install
 
       - name: Run linting
         working-directory: booky-blinders
