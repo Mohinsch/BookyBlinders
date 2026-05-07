@@ -172,7 +172,7 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
 
     await db.insert(library).values({
       userId: user.id,
-      name: validationResult.data?.name,
+      name: validationResult.data!.name,
       isPublic: false,
     });
 
@@ -224,7 +224,7 @@ export async function renameLibrary(
 
     const ownedLibrary = await db.query.library.findFirst({
       where: and(
-        eq(library.id, validationResult.data?.libraryId),
+        eq(library.id, validationResult.data!.libraryId),
         eq(library.userId, user.id),
       ),
       columns: { id: true },
@@ -240,12 +240,12 @@ export async function renameLibrary(
     await db
       .update(library)
       .set({
-        name: validationResult.data?.name,
+        name: validationResult.data!.name,
         updatedAt: new Date(),
       })
       .where(
         and(
-          eq(library.id, validationResult.data?.libraryId),
+          eq(library.id, validationResult.data!.libraryId),
           eq(library.userId, user.id),
         ),
       );
@@ -305,7 +305,7 @@ export async function deleteLibrary(
     }
 
     const ownedLibrary = userLibraries.find(
-      (entry) => entry.id === validationResult.data?.libraryId,
+      (entry) => entry.id === validationResult.data!.libraryId,
     );
     if (!ownedLibrary) {
       return {
@@ -318,7 +318,7 @@ export async function deleteLibrary(
       .delete(library)
       .where(
         and(
-          eq(library.id, validationResult.data?.libraryId),
+          eq(library.id, validationResult.data!.libraryId),
           eq(library.userId, user.id),
         ),
       );
@@ -376,14 +376,14 @@ export async function addBookToLibrary(
     }
 
     // Fetch book metadata from external API
-    const googleBookData = await getBookById(validationResult.data?.googleId);
+    const googleBookData = await getBookById(validationResult.data!.googleId);
     if (!googleBookData) {
       return { success: false, message: "Book not found" };
     }
 
     // Check for existing book record to prevent duplicates
     let existingBook = await db.query.book.findFirst({
-      where: eq(book.googleId, validationResult.data?.googleId),
+      where: eq(book.googleId, validationResult.data!.googleId),
     });
 
     // Insert new book record if it does not exist
@@ -391,7 +391,7 @@ export async function addBookToLibrary(
       const insertedBooks = await db
         .insert(book)
         .values({
-          googleId: validationResult.data?.googleId,
+          googleId: validationResult.data!.googleId,
           title: googleBookData.volumeInfo.title,
           author: googleBookData.volumeInfo.authors?.join(", ") || null,
           description: googleBookData.volumeInfo.description || null,
@@ -405,7 +405,7 @@ export async function addBookToLibrary(
 
     const userLibrary = await ensureUserLibrary(
       user.id,
-      validationResult.data?.libraryId,
+      validationResult.data!.libraryId,
     );
 
     // Create junction record. Ignores conflict if association already exists.
@@ -457,7 +457,7 @@ export async function getUserLibrary(
     const user = await requireAuth();
     const userLibrary = await ensureUserLibrary(
       user.id,
-      validationResult.data?.libraryId,
+      validationResult.data!.libraryId,
     );
 
     const myBooks = await db
@@ -530,7 +530,7 @@ export async function updateReadingStatus(
 
     const userLibrary = await ensureUserLibrary(
       user.id,
-      validationResult.data?.libraryId,
+      validationResult.data!.libraryId,
     );
 
     let readStart: string | null = null;
@@ -539,9 +539,9 @@ export async function updateReadingStatus(
     const today = new Date().toISOString().split("T")[0];
 
     // Compute timestamps based on the provided status
-    if (validationResult.data?.status === READING_STATUS.IN_PROGRESS) {
+    if (validationResult.data!.status === READING_STATUS.IN_PROGRESS) {
       readStart = today;
-    } else if (validationResult.data?.status === READING_STATUS.READ) {
+    } else if (validationResult.data!.status === READING_STATUS.READ) {
       readStart = today;
       readEnd = today;
     }
@@ -555,7 +555,7 @@ export async function updateReadingStatus(
       })
       .where(
         and(
-          eq(libraryBook.bookId, validationResult.data?.bookId),
+          eq(libraryBook.bookId, validationResult.data!.bookId),
           eq(libraryBook.libraryId, userLibrary.id),
         ),
       );
@@ -616,14 +616,14 @@ export async function removeBookFromLibrary(
 
     const userLibrary = await ensureUserLibrary(
       user.id,
-      validationResult.data?.libraryId,
+      validationResult.data!.libraryId,
     );
 
     await db
       .delete(libraryBook)
       .where(
         and(
-          eq(libraryBook.bookId, validationResult.data?.bookId),
+          eq(libraryBook.bookId, validationResult.data!.bookId),
           eq(libraryBook.libraryId, userLibrary.id),
         ),
       );
