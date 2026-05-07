@@ -23,7 +23,6 @@
     "better-auth": "^1.6.4",
     "drizzle-orm": "^0.45.2",
     "framer-motion": "^12.38.0",
-    "lru-cache": "^11.3.5",
     "lucide": "^1.11.0",
     "lucide-react": "^1.11.0",
     "motion": "^12.38.0",
