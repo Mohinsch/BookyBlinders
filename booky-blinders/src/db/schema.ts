@@ -110,8 +110,12 @@ export const libraryBook = pgTable("library_book", {
   bookId: integer("book_id").notNull().references(() => book.id, { onDelete: "cascade" }),
   libraryId: integer("library_id").notNull().references(() => library.id, { onDelete: "cascade" }),
 }, (t) => ({
-  // Prevents adding the same book to the same library multiple times
+  // Composite unique constraint: prevents adding the same book to the same library multiple times
   unq: unique().on(t.libraryId, t.bookId),
+  // Index for fast lookups by library
+  libraryIdx: index("library_book_library_id_idx").on(t.libraryId),
+  // Index for fast lookups by book
+  bookIdx: index("library_book_book_id_idx").on(t.bookId),
 }));
 
 export const category = pgTable("category", {
@@ -125,8 +129,12 @@ export const bookCategory = pgTable("book_category", {
   categoryId: integer("category_id").notNull().references(() => category.id, { onDelete: "cascade" }),
   bookId: integer("book_id").notNull().references(() => book.id, { onDelete: "cascade" }),
 }, (t) => ({
-  // Prevents linking the same category to the same book multiple times
+  // Composite unique constraint: prevents duplicate book-category links
   unq: unique().on(t.bookId, t.categoryId),
+  // Index for fast lookups by book
+  bookIdx: index("book_category_book_id_idx").on(t.bookId),
+  // Index for fast lookups by category
+  categoryIdx: index("book_category_category_id_idx").on(t.categoryId),
 }));
 
 export const userCategory = pgTable("user_category", {
@@ -134,8 +142,12 @@ export const userCategory = pgTable("user_category", {
   categoryId: integer("category_id").notNull().references(() => category.id, { onDelete: "cascade" }),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
 }, (t) => ({
-  // Prevents a user from having duplicate favorite categories
+  // Composite unique constraint: prevents a user from having duplicate favorite categories
   unq: unique().on(t.userId, t.categoryId),
+  // Index for fast lookups by user
+  userIdx: index("user_category_user_id_idx").on(t.userId),
+  // Index for fast lookups by category
+  categoryIdx: index("user_category_category_id_idx").on(t.categoryId),
 }));
 
 // ==========================================
