@@ -15,7 +15,9 @@ export const auth = betterAuth({
     },
   }),
   emailAndPassword: {
-    enabled: true, // Login with email and password
+    enabled: true,
   },
-  // To add later: Google, GitHub, social networks
+  passwordReset: {
+    expiresIn: 900, // 15 minutes
+  },
 });

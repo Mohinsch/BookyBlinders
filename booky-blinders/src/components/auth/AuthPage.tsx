@@ -53,9 +53,7 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
             aria-hidden={mode !== "register"}
           >
             {/* Suppression de la prop onError ici */}
-            <RegisterForm
-              onSwitchToLogin={() => handleModeSwitch("login")}
-            />
+            <RegisterForm onSwitchToLogin={() => handleModeSwitch("login")} />
           </section>
 
           <motion.aside
