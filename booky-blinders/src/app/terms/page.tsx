@@ -2,7 +2,8 @@ import styles from "@/app/legal.module.scss";
 
 export const metadata = {
   title: "Terms of Service | Booky Blinders",
-  description: "Terms of Service for Booky Blinders personal library application",
+  description:
+    "Terms of Service for Booky Blinders personal library application",
 };
 
 export default function TermsPage() {
@@ -15,8 +16,8 @@ export default function TermsPage() {
         <h2>1. Acceptance of Terms</h2>
         <p>
           By accessing and using Booky Blinders ("Service"), you accept and
-          agree to be bound by the terms and provision of this agreement. If
-          you do not agree to abide by the above, please do not use this service.
+          agree to be bound by the terms and provision of this agreement. If you
+          do not agree to abide by the above, please do not use this service.
         </p>
       </section>
 
@@ -25,8 +26,8 @@ export default function TermsPage() {
         <p>
           Permission is granted to temporarily download one copy of the
           materials (information or software) on Booky Blinders for personal,
-          non-commercial transitory viewing only. This is the grant of a license,
-          not a transfer of title, and under this license you may not:
+          non-commercial transitory viewing only. This is the grant of a
+          license, not a transfer of title, and under this license you may not:
         </p>
         <ul>
           <li>Modifying or copying the materials</li>
@@ -41,8 +42,8 @@ export default function TermsPage() {
             materials on any other server
           </li>
           <li>
-            Violating any applicable laws or regulations related to access to
-            or use of the Service
+            Violating any applicable laws or regulations related to access to or
+            use of the Service
           </li>
           <li>Harassing or causing distress or inconvenience to any person</li>
           <li>
@@ -81,8 +82,8 @@ export default function TermsPage() {
           The materials appearing on Booky Blinders could include technical,
           typographical, or photographic errors. Booky Blinders does not warrant
           that any of the materials on its website are accurate, complete, or
-          current. Booky Blinders may make changes to the materials contained
-          on its website at any time without notice.
+          current. Booky Blinders may make changes to the materials contained on
+          its website at any time without notice.
         </p>
       </section>
 
@@ -99,9 +100,7 @@ export default function TermsPage() {
 
       <section className={styles.section}>
         <h2>7. Third-Party Material Attribution</h2>
-        <p>
-          Booky Blinders uses the following third-party services:
-        </p>
+        <p>Booky Blinders uses the following third-party services:</p>
         <ul>
           <li>
             <strong>Google Books API:</strong> Book metadata and cover images
@@ -157,15 +156,13 @@ export default function TermsPage() {
 
         <h3>11.1 Account Responsibility</h3>
         <p>
-          You are responsible for maintaining the confidentiality of your account
-          credentials and for all activities that occur under your account. You
-          agree to:
+          You are responsible for maintaining the confidentiality of your
+          account credentials and for all activities that occur under your
+          account. You agree to:
         </p>
         <ul>
           <li>Provide accurate and complete information during registration</li>
-          <li>
-            Notify us immediately of any unauthorized use of your account
-          </li>
+          <li>Notify us immediately of any unauthorized use of your account</li>
           <li>
             Not share your password with anyone or use another person's account
           </li>
@@ -182,10 +179,11 @@ export default function TermsPage() {
       <section className={styles.section}>
         <h2>12. User-Generated Content</h2>
         <p>
-          You retain ownership of any content you create in your personal library
-          (notes, categories, reading status). By using the Service, you grant
-          Booky Blinders a non-exclusive license to use, store, transmit, and
-          display your content solely for the purpose of providing the Service.
+          You retain ownership of any content you create in your personal
+          library (notes, categories, reading status). By using the Service, you
+          grant Booky Blinders a non-exclusive license to use, store, transmit,
+          and display your content solely for the purpose of providing the
+          Service.
         </p>
 
         <div className={styles.highlight}>
@@ -198,9 +196,7 @@ export default function TermsPage() {
 
       <section className={styles.section}>
         <h2>13. Restrictions on Use</h2>
-        <p>
-          You agree not to use Booky Blinders to:
-        </p>
+        <p>You agree not to use Booky Blinders to:</p>
         <ul>
           <li>Violate any applicable law or regulation</li>
           <li>Infringe on anyone's intellectual property rights</li>
@@ -254,11 +250,11 @@ export default function TermsPage() {
       <section className={styles.section}>
         <h2>18. Contact Information</h2>
         <div className={styles.contact}>
-          <strong>If you have questions about these Terms of Service, please contact:</strong>
+          <strong>
+            If you have questions about these Terms of Service, please contact:
+          </strong>
           <p>Email: support@bookybinders.app</p>
-          <p>
-            We will respond to your inquiry within 30 days of receipt.
-          </p>
+          <p>We will respond to your inquiry within 30 days of receipt.</p>
         </div>
       </section>
     </div>

@@ -1,7 +1,7 @@
 "use server";
 
-import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
+import { headers } from "next/headers";
 import { db } from "@/db";
 import { user } from "@/db/schema";
 import { auth } from "@/lib/auth";
@@ -40,7 +40,10 @@ export async function changePassword(
       return { success: false, message: "New password is required" };
     }
     if (newPassword.length < 8) {
-      return { success: false, message: "Password must be at least 8 characters" };
+      return {
+        success: false,
+        message: "Password must be at least 8 characters",
+      };
     }
     if (currentPassword === newPassword) {
       return { success: false, message: "New password must be different" };
@@ -75,7 +78,8 @@ export async function changePassword(
     return { success: true, message: "Password changed successfully" };
   } catch (error) {
     console.error("[Action Error] changePassword:", error);
-    const message = error instanceof Error ? error.message : "Failed to change password";
+    const message =
+      error instanceof Error ? error.message : "Failed to change password";
     return { success: false, message };
   }
 }
@@ -88,27 +92,27 @@ export async function deleteAccount(password: string): Promise<ActionResponse> {
     const currentUser = await requireAuth();
 
     if (!password?.trim()) {
-      return { success: false, message: "Password is required to delete account" };
+      return {
+        success: false,
+        message: "Password is required to delete account",
+      };
     }
 
     // For security, verify password by calling Better Auth
     const baseURL = process.env.BETTER_AUTH_URL || "http://localhost:3000";
     const headersList = await headers();
 
-    const verifyResponse = await fetch(
-      `${baseURL}/api/auth/verify-password`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          cookie: headersList.get("cookie") || "",
-          origin: baseURL,
-        },
-        body: JSON.stringify({
-          password,
-        }),
+    const verifyResponse = await fetch(`${baseURL}/api/auth/verify-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        cookie: headersList.get("cookie") || "",
+        origin: baseURL,
       },
-    );
+      body: JSON.stringify({
+        password,
+      }),
+    });
 
     if (!verifyResponse.ok) {
       return { success: false, message: "Incorrect password" };
@@ -143,7 +147,8 @@ export async function deleteAccount(password: string): Promise<ActionResponse> {
     };
   } catch (error) {
     console.error("[Action Error] deleteAccount:", error);
-    const message = error instanceof Error ? error.message : "Failed to delete account";
+    const message =
+      error instanceof Error ? error.message : "Failed to delete account";
     return { success: false, message };
   }
 }

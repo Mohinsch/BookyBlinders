@@ -25,9 +25,7 @@ export default function PrivacyPage() {
         <h2>2. Information We Collect</h2>
 
         <h3>2.1 Information You Provide Directly</h3>
-        <p>
-          When you create an account and use our service, we collect:
-        </p>
+        <p>When you create an account and use our service, we collect:</p>
         <ul>
           <li>
             <strong>Account Information:</strong> Name, email address, and
@@ -71,8 +69,8 @@ export default function PrivacyPage() {
         <ul>
           <li>
             <strong>Google Books API:</strong> We query Google Books to retrieve
-            book metadata, covers, and descriptions. Searches are cached
-            locally to minimize API calls.
+            book metadata, covers, and descriptions. Searches are cached locally
+            to minimize API calls.
           </li>
           <li>
             <strong>Supabase:</strong> Our database provider that stores your
@@ -92,9 +90,7 @@ export default function PrivacyPage() {
         <ul>
           <li>Create and maintain your personal library</li>
           <li>Authenticate your account and maintain session security</li>
-          <li>
-            Search for and display book information from Google Books API
-          </li>
+          <li>Search for and display book information from Google Books API</li>
           <li>Store your reading preferences and custom categories</li>
           <li>Improve our application and user experience</li>
           <li>Comply with legal obligations</li>
@@ -194,9 +190,7 @@ export default function PrivacyPage() {
 
       <section className={styles.section}>
         <h2>7. Cookies and Tracking</h2>
-        <p>
-          We use cookies and similar technologies to:
-        </p>
+        <p>We use cookies and similar technologies to:</p>
         <ul>
           <li>Maintain your authentication session</li>
           <li>Remember your preferences</li>
@@ -204,16 +198,14 @@ export default function PrivacyPage() {
           <li>Improve performance and security</li>
         </ul>
         <p>
-          You can control cookies through your browser settings, though this
-          may affect functionality.
+          You can control cookies through your browser settings, though this may
+          affect functionality.
         </p>
       </section>
 
       <section className={styles.section}>
         <h2>8. Your Privacy Rights</h2>
-        <p>
-          Depending on your location, you may have the right to:
-        </p>
+        <p>Depending on your location, you may have the right to:</p>
         <ul>
           <li>Access your personal data</li>
           <li>Correct inaccurate information</li>
@@ -248,11 +240,11 @@ export default function PrivacyPage() {
       <section className={styles.section}>
         <h2>11. Contact Us</h2>
         <div className={styles.contact}>
-          <strong>For questions about this Privacy Policy, please contact:</strong>
+          <strong>
+            For questions about this Privacy Policy, please contact:
+          </strong>
           <p>Email: privacy@bookybinders.app</p>
-          <p>
-            We will respond to your inquiry within 30 days of receipt.
-          </p>
+          <p>We will respond to your inquiry within 30 days of receipt.</p>
         </div>
       </section>
     </div>
