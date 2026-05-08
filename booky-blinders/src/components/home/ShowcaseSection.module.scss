@@ -119,7 +119,7 @@
 
     p {
       @include text-classic;
-      color: $color-text-dimmed;
+      color: var(--color-text-dimmed);
       margin-bottom: 2rem;
     }
 
@@ -152,6 +152,7 @@
             border: none;
             padding: 0;
             margin: 0;
+            color: #FFFFFF;
           }
 
           .stars {
@@ -163,7 +164,7 @@
 
         .author {
           @include text-ui;
-          color: $color-text-dimmed;
+          color: #FFFFFF;
           display: block;
           margin-bottom: 0.8rem;
           font-style: italic;
@@ -171,7 +172,7 @@
 
         p {
           font-family: $font-main;
-          color: $color-text-main;
+          color: $color-text-main !important;
           font-size: 0.9rem;
           font-style: italic;
           margin: 0;

@@ -5,6 +5,7 @@ import { DM_Sans, EB_Garamond, Montserrat } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SearchModal } from "@/components/search/SearchModal";
+import { Providers } from "@/app/providers";
 import "@/styles/main.scss";
 
 const dmSans = DM_Sans({
@@ -38,16 +39,18 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${dmSans.variable} ${garamond.variable} ${montserrat.variable}`}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
-        <Header />
-        <div style={{ flex: 1 }}>{children}</div>
-        <Footer />
-        <SearchModal />
-        {modal}
+        <Providers>
+          <Header />
+          <div style={{ flex: 1 }}>{children}</div>
+          <Footer />
+          <SearchModal />
+          {modal}
+        </Providers>
       </body>
     </html>
   );
