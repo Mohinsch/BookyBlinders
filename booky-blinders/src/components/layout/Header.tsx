@@ -1,11 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { DoorOpen, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { BBMonogram } from "@/components/ui/BBMonogram";
+import { UserDropdown } from "@/components/header/UserDropdown";
 import { authClient } from "@/lib/auth-client";
 import styles from "./Header.module.scss";
 
@@ -13,7 +14,6 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showLogoutHint, setShowLogoutHint] = useState(false);
 
   const { data: session, isPending } = authClient.useSession();
   const isAuthenticated = !!session?.user;
@@ -110,34 +110,7 @@ export function Header() {
               <Link href="/library" className={styles.enterBtn}>
                 My Library
               </Link>
-              <div
-                role="tooltip"
-                className={styles.logoutIconWrap}
-                onMouseEnter={() => setShowLogoutHint(true)}
-                onMouseLeave={() => setShowLogoutHint(false)}
-              >
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className={styles.logoutIconBtn}
-                  aria-label="Sign out"
-                >
-                  <DoorOpen size={18} />
-                </button>
-                <AnimatePresence>
-                  {showLogoutHint && (
-                    <motion.span
-                      className={styles.logoutHint}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 4 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      Close the Ledger
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </div>
+              <UserDropdown />
             </div>
           ) : (
             <Link href="/login" className={styles.enterBtn}>
@@ -189,14 +162,19 @@ export function Header() {
               );
             })}
             {isAuthenticated && (
-              <button
-                type="button"
-                className={styles.mobileLogoutBtn}
-                onClick={handleLogout}
-              >
-                <LogOut size={18} />
-                Logout
-              </button>
+              <>
+                <Link href="/account" className={styles.mobileNavLink}>
+                  Account Settings
+                </Link>
+                <button
+                  type="button"
+                  className={styles.mobileLogoutBtn}
+                  onClick={handleLogout}
+                >
+                  <LogOut size={18} />
+                  Logout
+                </button>
+              </>
             )}
           </motion.div>
         )}

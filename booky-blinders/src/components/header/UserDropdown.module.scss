@@ -1,0 +1,145 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.triggerWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  background:
+    radial-gradient(circle at 22% 24%, rgba(255, 215, 145, 0.18), transparent 45%),
+    linear-gradient(145deg, rgba(120, 74, 34, 0.36), rgba(25, 18, 12, 0.92));
+  color: rgba($color-primary, 0.9);
+  border: 1px solid rgba($color-primary, 0.52);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(166, 108, 52, 0.22);
+  cursor: pointer;
+  transition: all 0.28s ease;
+
+  &:hover {
+    color: #f1c47a;
+    border-color: rgba($color-primary, 0.85);
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 206, 136, 0.16),
+      0 0 15px rgba(181, 118, 63, 0.26);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 206, 136, 0.6);
+    outline-offset: 2px;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  white-space: nowrap;
+  font-family: $font-ui;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: rgba($color-primary, 0.9);
+  background: rgba(14, 11, 8, 0.95);
+  border: 1px solid rgba($color-primary, 0.38);
+  border-radius: 2px;
+  padding: 0.3rem 0.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  margin-top: 8px;
+  background-color: $color-bg-base;
+  border: 1px solid rgba($color-primary, 0.3);
+  border-radius: 2px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+  overflow: hidden;
+}
+
+.header {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba($color-primary, 0.2);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.userName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: $color-primary;
+  margin: 0;
+}
+
+.userEmail {
+  font-size: 0.8rem;
+  color: rgba($color-primary, 0.6);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.divider {
+  height: 1px;
+  background-color: rgba($color-primary, 0.2);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  color: rgba($color-primary, 0.85);
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-align: left;
+  text-decoration: none;
+  transition: all 0.28s ease;
+  font-family: inherit;
+
+  &:hover {
+    background-color: rgba(120, 74, 34, 0.2);
+    color: #f1c47a;
+  }
+
+  &:active {
+    background-color: rgba(120, 74, 34, 0.35);
+  }
+
+  svg {
+    opacity: 0.8;
+    transition: opacity 0.28s ease;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+}
