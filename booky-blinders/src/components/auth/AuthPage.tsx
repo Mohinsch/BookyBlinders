@@ -2,18 +2,11 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { AuthErrorDisplay } from "./AuthErrorDisplay";
 import styles from "./AuthPage.module.scss";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 
 type AuthMode = "login" | "register";
-
-interface AuthError {
-  id: string;
-  message: string;
-  type: "error" | "warning";
-}
 
 interface AuthPageProps {
   initialMode?: AuthMode;
@@ -21,7 +14,6 @@ interface AuthPageProps {
 
 export function AuthPage({ initialMode = "login" }: AuthPageProps) {
   const [mode, setMode] = useState<AuthMode>(initialMode);
-  const [globalError, setGlobalError] = useState<AuthError | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleModeSwitch = (newMode: AuthMode) => {
@@ -29,27 +21,10 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
 
     setMode(newMode);
     setIsAnimating(true);
-    setGlobalError(null);
 
     setTimeout(() => {
       setIsAnimating(false);
     }, 650);
-  };
-
-  const handleError = (message: string) => {
-    setGlobalError({
-      id: `error-${Date.now()}`,
-      message,
-      type: "error",
-    });
-
-    setTimeout(() => {
-      setGlobalError(null);
-    }, 5000);
-  };
-
-  const handleClearError = () => {
-    setGlobalError(null);
   };
 
   return (
@@ -67,8 +42,8 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
             className={`${styles.formPanel} ${styles.panelLogin}`}
             aria-hidden={mode !== "login"}
           >
+            {/* Suppression de la prop onError ici */}
             <LoginForm
-              onError={handleError}
               onSwitchToRegister={() => handleModeSwitch("register")}
             />
           </section>
@@ -77,8 +52,8 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
             className={`${styles.formPanel} ${styles.panelRegister}`}
             aria-hidden={mode !== "register"}
           >
+            {/* Suppression de la prop onError ici */}
             <RegisterForm
-              onError={handleError}
               onSwitchToLogin={() => handleModeSwitch("login")}
             />
           </section>
@@ -112,8 +87,8 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
                   <>
                     <h2>Welcome to the Club</h2>
                     <p>
-                      New to the family? Create your account to open
-                      your private registry.
+                      New to the family? Create your account to open your
+                      private registry.
                     </p>
                     <button
                       type="button"
@@ -146,12 +121,6 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
           </motion.aside>
         </div>
       </div>
-
-      <AnimatePresence>
-        {globalError && (
-          <AuthErrorDisplay error={globalError} onClose={handleClearError} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

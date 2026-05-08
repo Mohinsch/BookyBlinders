@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { DoorOpen, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { DoorOpen, LogOut } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
 import { BBMonogram } from "@/components/ui/BBMonogram";
+import { authClient } from "@/lib/auth-client";
 import styles from "./Header.module.scss";
 
 export function Header() {
@@ -111,6 +111,7 @@ export function Header() {
                 My Library
               </Link>
               <div
+                role="tooltip"
                 className={styles.logoutIconWrap}
                 onMouseEnter={() => setShowLogoutHint(true)}
                 onMouseLeave={() => setShowLogoutHint(false)}
@@ -146,6 +147,7 @@ export function Header() {
         </div>
 
         <button
+          type="button"
           className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.menuOpen : ""}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"

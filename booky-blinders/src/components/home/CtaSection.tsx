@@ -11,9 +11,7 @@ export function CtaSection() {
         Join the discerning readers who have chosen Booky Blinders as their
         personal library companion.
       </p>
-      <AuthCTA variant="primary">
-        Start your collection
-      </AuthCTA>
+      <AuthCTA variant="primary">Start your collection</AuthCTA>
     </section>
   );
 }

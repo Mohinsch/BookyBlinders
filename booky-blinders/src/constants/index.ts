@@ -156,10 +156,12 @@ export const CONSTRAINTS = {
 
 export const LOG_MESSAGES = {
   GOOGLE_BOOKS: {
-    CACHE_HIT: (query: string) => `[Google Books] Cache hit for query: "${query}"`,
+    CACHE_HIT: (query: string) =>
+      `[Google Books] Cache hit for query: "${query}"`,
     CACHE_STORED: (count: number, query: string) =>
       `[Google Books] Cached ${count} results for query: "${query}"`,
-    CACHE_HIT_BOOK: (id: string) => `[Google Books] Cache hit for book ID: "${id}"`,
+    CACHE_HIT_BOOK: (id: string) =>
+      `[Google Books] Cache hit for book ID: "${id}"`,
     CACHE_STORED_BOOK: (id: string) =>
       `[Google Books] Cached book details for ID: "${id}"`,
     API_ERROR: (status: number, statusText: string) =>

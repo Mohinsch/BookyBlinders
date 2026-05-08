@@ -3,8 +3,8 @@
 import { Check, LogIn, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ROUTES, UI_TEXT } from "@/constants";
 import { authClient } from "@/lib/auth-client";
-import { UI_TEXT, ROUTES } from "@/constants";
 import styles from "./BookCard.module.scss";
 
 export interface LibraryOption {
@@ -97,7 +97,9 @@ export function BookCardActionButton({
             isModal ? styles.libraryDropdownModal : ""
           }`}
         >
-          <span className={styles.dropdownTitle}>{UI_TEXT.BUTTON.SELECT_LIBRARY}</span>
+          <span className={styles.dropdownTitle}>
+            {UI_TEXT.BUTTON.SELECT_LIBRARY}
+          </span>
           <ul className={styles.libraryList}>
             {availableLibraries.length > 0 ? (
               availableLibraries.map((lib) => (

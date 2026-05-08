@@ -3,9 +3,32 @@
 import { and, desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { LOG_MESSAGES, READING_STATUS, UI_TEXT } from "@/constants";
 import { db } from "@/db";
 import { book, library, libraryBook } from "@/db/schema";
 import { auth } from "@/lib/auth";
+import {
+  checkRateLimit,
+  libraryOperationLimiter,
+  trackViolation,
+} from "@/lib/rate-limit";
+import {
+  type AddBookToLibraryInput,
+  addBookToLibrarySchema,
+  type CreateLibraryInput,
+  createLibrarySchema,
+  type DeleteLibraryInput,
+  deleteLibrarySchema,
+  type GetUserLibraryInput,
+  getUserLibrarySchema,
+  type RemoveBookFromLibraryInput,
+  type RenameLibraryInput,
+  removeBookFromLibrarySchema,
+  renameLibrarySchema,
+  type UpdateReadingStatusInput,
+  updateReadingStatusSchema,
+} from "@/lib/schemas";
+import { validateWithZod } from "@/lib/validation";
 import { getBookById } from "@/services/google-books";
 import type {
   ActionResponse,
@@ -13,30 +36,7 @@ import type {
   UserLibraryBook,
   UserLibrarySummary,
 } from "@/types/library";
-import {
-  createLibrarySchema,
-  renameLibrarySchema,
-  deleteLibrarySchema,
-  addBookToLibrarySchema,
-  updateReadingStatusSchema,
-  removeBookFromLibrarySchema,
-  getUserLibrarySchema,
-  type CreateLibraryInput,
-  type RenameLibraryInput,
-  type DeleteLibraryInput,
-  type AddBookToLibraryInput,
-  type UpdateReadingStatusInput,
-  type RemoveBookFromLibraryInput,
-  type GetUserLibraryInput,
-} from "@/lib/schemas";
-import { validateWithZod } from "@/lib/validation";
-import {
-  libraryOperationLimiter,
-  checkRateLimit,
-  trackViolation,
-} from "@/lib/rate-limit";
-import { UI_TEXT, READING_STATUS, LOG_MESSAGES } from "@/constants";
-import { ensureCategoriesExist, linkBookToCategories } from "@/lib/category-utils";
+
 /**
  * Validates the current session and retrieves the authenticated user.
  * * @throws {Error} If the session is invalid or user is not authenticated
@@ -150,18 +150,19 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
       return { success: false, errors: validationResult.errors };
     }
 
+    const validData = validationResult.data!;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:create`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
-      rateLimitKey
+      rateLimitKey,
     );
 
     if (!allowed) {
       console.warn(
-        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`,
       );
       trackViolation(user.id, "create-library", "server-action");
       return {
@@ -172,7 +173,7 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
 
     await db.insert(library).values({
       userId: user.id,
-      name: validationResult.data!.name,
+      name: validData.name,
       isPublic: false,
     });
 
@@ -180,7 +181,8 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
     return { success: true, message: "Library created" };
   } catch (error) {
     console.error(LOG_MESSAGES.ACTION.ERROR("createLibrary"), error);
-    const message = error instanceof Error ? error.message : "Failed to create library";
+    const message =
+      error instanceof Error ? error.message : "Failed to create library";
     return { success: false, message };
   }
 }
@@ -190,26 +192,30 @@ export async function renameLibrary(
   name: string,
 ): Promise<ActionResponse> {
   try {
-    const validationResult = validateWithZod<RenameLibraryInput>(renameLibrarySchema, {
-      libraryId,
-      name,
-    });
+    const validationResult = validateWithZod<RenameLibraryInput>(
+      renameLibrarySchema,
+      {
+        libraryId,
+        name,
+      },
+    );
     if (!validationResult.success) {
       return { success: false, errors: validationResult.errors };
     }
 
+    const validData = validationResult.data!;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:rename`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
-      rateLimitKey
+      rateLimitKey,
     );
 
     if (!allowed) {
       console.warn(
-        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`,
       );
       trackViolation(user.id, "rename-library", "server-action");
       return {
@@ -219,7 +225,10 @@ export async function renameLibrary(
     }
 
     const ownedLibrary = await db.query.library.findFirst({
-      where: and(eq(library.id, validationResult.data!.libraryId), eq(library.userId, user.id)),
+      where: and(
+        eq(library.id, validData.libraryId),
+        eq(library.userId, user.id),
+      ),
       columns: { id: true },
     });
 
@@ -233,16 +242,19 @@ export async function renameLibrary(
     await db
       .update(library)
       .set({
-        name: validationResult.data!.name,
+        name: validData.name,
         updatedAt: new Date(),
       })
-      .where(and(eq(library.id, validationResult.data!.libraryId), eq(library.userId, user.id)));
+      .where(
+        and(eq(library.id, validData.libraryId), eq(library.userId, user.id)),
+      );
 
     revalidatePath("/library");
     return { success: true, message: "Library renamed" };
   } catch (error) {
     console.error(LOG_MESSAGES.ACTION.ERROR("renameLibrary"), error);
-    const message = error instanceof Error ? error.message : "Failed to rename library";
+    const message =
+      error instanceof Error ? error.message : "Failed to rename library";
     return { success: false, message };
   }
 }
@@ -251,23 +263,27 @@ export async function deleteLibrary(
   libraryId: number,
 ): Promise<ActionResponse> {
   try {
-    const validationResult = validateWithZod<DeleteLibraryInput>(deleteLibrarySchema, { libraryId });
+    const validationResult = validateWithZod<DeleteLibraryInput>(
+      deleteLibrarySchema,
+      { libraryId },
+    );
     if (!validationResult.success) {
       return { success: false, errors: validationResult.errors };
     }
 
+    const validData = validationResult.data!;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:delete`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
-      rateLimitKey
+      rateLimitKey,
     );
 
     if (!allowed) {
       console.warn(
-        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`,
       );
       trackViolation(user.id, "delete-library", "server-action");
       return {
@@ -288,7 +304,9 @@ export async function deleteLibrary(
       };
     }
 
-    const ownedLibrary = userLibraries.find((entry) => entry.id === validationResult.data!.libraryId);
+    const ownedLibrary = userLibraries.find(
+      (entry) => entry.id === validData.libraryId,
+    );
     if (!ownedLibrary) {
       return {
         success: false,
@@ -298,13 +316,16 @@ export async function deleteLibrary(
 
     await db
       .delete(library)
-      .where(and(eq(library.id, validationResult.data!.libraryId), eq(library.userId, user.id)));
+      .where(
+        and(eq(library.id, validData.libraryId), eq(library.userId, user.id)),
+      );
 
     revalidatePath("/library");
     return { success: true, message: "Library deleted" };
   } catch (error) {
     console.error(LOG_MESSAGES.ACTION.ERROR("deleteLibrary"), error);
-    const message = error instanceof Error ? error.message : "Failed to delete library";
+    const message =
+      error instanceof Error ? error.message : "Failed to delete library";
     return { success: false, message };
   }
 }
@@ -331,18 +352,19 @@ export async function addBookToLibrary(
       return { success: false, errors: validationResult.errors };
     }
 
+    const validData = validationResult.data!;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:add-book`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
-      rateLimitKey
+      rateLimitKey,
     );
 
     if (!allowed) {
       console.warn(
-        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`,
       );
       trackViolation(user.id, "add-book", "server-action");
       return {
@@ -352,14 +374,14 @@ export async function addBookToLibrary(
     }
 
     // Fetch book metadata from external API
-    const googleBookData = await getBookById(validationResult.data!.googleId);
+    const googleBookData = await getBookById(validData.googleId);
     if (!googleBookData) {
       return { success: false, message: "Book not found" };
     }
 
     // Check for existing book record to prevent duplicates
     let existingBook = await db.query.book.findFirst({
-      where: eq(book.googleId, validationResult.data!.googleId),
+      where: eq(book.googleId, validData.googleId),
     });
 
     // Insert new book record if it does not exist
@@ -367,7 +389,7 @@ export async function addBookToLibrary(
       const insertedBooks = await db
         .insert(book)
         .values({
-          googleId: validationResult.data!.googleId,
+          googleId: validData.googleId,
           title: googleBookData.volumeInfo.title,
           author: googleBookData.volumeInfo.authors?.join(", ") || null,
           description: googleBookData.volumeInfo.description || null,
@@ -379,7 +401,7 @@ export async function addBookToLibrary(
       existingBook = insertedBooks[0];
     }
 
-    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validData.libraryId);
 
     // Create junction record. Ignores conflict if association already exists.
     await db
@@ -398,7 +420,8 @@ export async function addBookToLibrary(
     return { success: true, message: "Book added" };
   } catch (error) {
     console.error(LOG_MESSAGES.ACTION.ERROR("addBookToLibrary"), error);
-    const message = error instanceof Error ? error.message : "Failed to add book";
+    const message =
+      error instanceof Error ? error.message : "Failed to add book";
     return { success: false, message };
   }
 }
@@ -412,16 +435,23 @@ export async function getUserLibrary(
   libraryId?: number,
 ): Promise<UserLibraryBook[]> {
   try {
-    const validationResult = validateWithZod<GetUserLibraryInput>(getUserLibrarySchema, {
-      libraryId,
-    });
+    const validationResult = validateWithZod<GetUserLibraryInput>(
+      getUserLibrarySchema,
+      {
+        libraryId,
+      },
+    );
     if (!validationResult.success) {
-      console.error(LOG_MESSAGES.ACTION.VALIDATION_ERROR("getUserLibrary"), validationResult.errors);
+      console.error(
+        LOG_MESSAGES.ACTION.VALIDATION_ERROR("getUserLibrary"),
+        validationResult.errors,
+      );
       return [];
     }
 
+    const validData = validationResult.data!;
     const user = await requireAuth();
-    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validData.libraryId);
 
     const myBooks = await db
       .select({
@@ -471,18 +501,19 @@ export async function updateReadingStatus(
       return { success: false, errors: validationResult.errors };
     }
 
+    const validData = validationResult.data!;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:update-status`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
-      rateLimitKey
+      rateLimitKey,
     );
 
     if (!allowed) {
       console.warn(
-        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`,
       );
       trackViolation(user.id, "update-status", "server-action");
       return {
@@ -491,7 +522,7 @@ export async function updateReadingStatus(
       };
     }
 
-    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validData.libraryId);
 
     let readStart: string | null = null;
     let readEnd: string | null = null;
@@ -499,9 +530,9 @@ export async function updateReadingStatus(
     const today = new Date().toISOString().split("T")[0];
 
     // Compute timestamps based on the provided status
-    if (validationResult.data!.status === READING_STATUS.IN_PROGRESS) {
+    if (validData.status === READING_STATUS.IN_PROGRESS) {
       readStart = today;
-    } else if (validationResult.data!.status === READING_STATUS.READ) {
+    } else if (validData.status === READING_STATUS.READ) {
       readStart = today;
       readEnd = today;
     }
@@ -515,7 +546,7 @@ export async function updateReadingStatus(
       })
       .where(
         and(
-          eq(libraryBook.bookId, validationResult.data!.bookId),
+          eq(libraryBook.bookId, validData.bookId),
           eq(libraryBook.libraryId, userLibrary.id),
         ),
       );
@@ -524,7 +555,10 @@ export async function updateReadingStatus(
     return { success: true };
   } catch (error) {
     console.error(LOG_MESSAGES.ACTION.ERROR("updateReadingStatus"), error);
-    const message = error instanceof Error ? error.message : "Failed to update reading status";
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Failed to update reading status";
     return { success: false, message };
   }
 }
@@ -551,18 +585,19 @@ export async function removeBookFromLibrary(
       return { success: false, errors: validationResult.errors };
     }
 
+    const validData = validationResult.data!;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:remove-book`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
-      rateLimitKey
+      rateLimitKey,
     );
 
     if (!allowed) {
       console.warn(
-        `[Action] Rate limit exceeded for user ${user.id}: ${error}`
+        `[Action] Rate limit exceeded for user ${user.id}: ${error}`,
       );
       trackViolation(user.id, "remove-book", "server-action");
       return {
@@ -571,13 +606,13 @@ export async function removeBookFromLibrary(
       };
     }
 
-    const userLibrary = await ensureUserLibrary(user.id, validationResult.data!.libraryId);
+    const userLibrary = await ensureUserLibrary(user.id, validData.libraryId);
 
     await db
       .delete(libraryBook)
       .where(
         and(
-          eq(libraryBook.bookId, validationResult.data!.bookId),
+          eq(libraryBook.bookId, validData.bookId),
           eq(libraryBook.libraryId, userLibrary.id),
         ),
       );
@@ -586,7 +621,8 @@ export async function removeBookFromLibrary(
     return { success: true };
   } catch (error) {
     console.error(LOG_MESSAGES.ACTION.ERROR("removeBookFromLibrary"), error);
-    const message = error instanceof Error ? error.message : "Failed to remove book";
+    const message =
+      error instanceof Error ? error.message : "Failed to remove book";
     return { success: false, message };
   }
 }

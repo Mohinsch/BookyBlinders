@@ -1,7 +1,8 @@
 // src/middleware.ts
-import { NextResponse, type NextRequest } from "next/server";
+
 import { betterFetch } from "@better-fetch/fetch";
 import type { Session } from "better-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 export default async function authMiddleware(request: NextRequest) {
   // Ping the auth API to check if the current user has a valid session cookie.

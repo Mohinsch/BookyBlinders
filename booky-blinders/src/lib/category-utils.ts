@@ -3,21 +3,21 @@
  * Handles category creation and linking with proper error handling
  */
 
-import { db } from "@/db";
-import { category, bookCategory } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
+import { db } from "@/db";
+import { bookCategory, category } from "@/db/schema";
 
 /**
  * Ensures categories exist in the database.
  * Creates missing categories and returns their IDs.
- * 
+ *
  * Handles category hierarchies: "Science Fiction / Fantasy" → ["Science Fiction", "Fantasy"]
- * 
+ *
  * @param categoryNames - Array of category names (may contain "/" for hierarchies)
  * @returns Array of category IDs
  */
 export async function ensureCategoriesExist(
-  categoryNames: string[] | undefined | null
+  categoryNames: string[] | undefined | null,
 ): Promise<number[]> {
   if (!categoryNames || categoryNames.length === 0) {
     return [];
@@ -42,14 +42,14 @@ export async function ensureCategoriesExist(
     });
 
     const existingNames = new Set(
-      existingCategories.map((c) => c.name.toLowerCase())
+      existingCategories.map((c) => c.name.toLowerCase()),
     );
     const missingNames = uniqueNames.filter(
-      (name) => !existingNames.has(name.toLowerCase())
+      (name) => !existingNames.has(name.toLowerCase()),
     );
 
     // Insert missing categories
-    let newCategories: typeof category.$inferSelect[] = [];
+    let newCategories: (typeof category.$inferSelect)[] = [];
     if (missingNames.length > 0) {
       newCategories = await db
         .insert(category)
@@ -74,7 +74,7 @@ export async function ensureCategoriesExist(
  */
 export async function linkBookToCategories(
   bookId: number,
-  categoryIds: number[]
+  categoryIds: number[],
 ): Promise<void> {
   if (!bookId || categoryIds.length === 0) {
     return;
@@ -99,9 +99,7 @@ export async function removeBookCategories(bookId: number): Promise<void> {
   if (!bookId) return;
 
   try {
-    await db
-      .delete(bookCategory)
-      .where(eq(bookCategory.bookId, bookId));
+    await db.delete(bookCategory).where(eq(bookCategory.bookId, bookId));
   } catch (error) {
     console.error("[Database] Error removing book categories:", error);
   }
@@ -115,7 +113,7 @@ export async function removeBookCategories(bookId: number): Promise<void> {
  */
 export async function updateBookCategories(
   bookId: number,
-  categoryNames: string[] | undefined | null
+  categoryNames: string[] | undefined | null,
 ): Promise<void> {
   await removeBookCategories(bookId);
 

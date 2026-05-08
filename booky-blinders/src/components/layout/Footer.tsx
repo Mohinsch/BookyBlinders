@@ -13,7 +13,6 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        
         {/* --- Logo + Nav --- */}
         <div className={styles.topSection}>
           <div className={styles.brand}>
@@ -28,7 +27,9 @@ export function Footer() {
             {navLinks.map((item) => {
               const href = item === "Home" ? "/" : `/${item.toLowerCase()}`;
               // Logique identique au header pour déterminer si le lien est actif
-              const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+              const isActive =
+                pathname === href ||
+                (href !== "/" && pathname.startsWith(href));
 
               return (
                 <Link
@@ -48,11 +49,8 @@ export function Footer() {
           <p className={styles.copyright}>
             &copy; {currentYear} Booky Blinders. All rights reserved.
           </p>
-          <p className={styles.quote}>
-            “By order of the Booky Blinders”
-          </p>
+          <p className={styles.quote}>“By order of the Booky Blinders”</p>
         </div>
-
       </div>
     </footer>
   );

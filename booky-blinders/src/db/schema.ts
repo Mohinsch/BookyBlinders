@@ -1,6 +1,18 @@
 // src/db/schema.ts
-import { pgTable, text, timestamp, boolean, serial, varchar, date, integer, unique, index } from "drizzle-orm/pg-core";
+
 import { relations } from "drizzle-orm";
+import {
+  boolean,
+  date,
+  index,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  unique,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 // ==========================================
 // 1. BETTER-AUTH CORE TABLES (Merged & Optimized)
@@ -21,58 +33,64 @@ export const user = pgTable("user", {
   deletedAt: timestamp("deleted_at"), // Added: soft delete
 });
 
-export const session = pgTable("session", {
-  id: text("id").primaryKey(),
-  expiresAt: timestamp("expires_at").notNull(),
-  token: text("token").notNull().unique(), // Required by Better-Auth
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .$onUpdate(() => new Date())
-    .notNull(),
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-}, (table) => [
-  index("session_userId_idx").on(table.userId)
-]);
+export const session = pgTable(
+  "session",
+  {
+    id: text("id").primaryKey(),
+    expiresAt: timestamp("expires_at").notNull(),
+    token: text("token").notNull().unique(), // Required by Better-Auth
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .$onUpdate(() => new Date())
+      .notNull(),
+    ipAddress: text("ip_address"),
+    userAgent: text("user_agent"),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (table) => [index("session_userId_idx").on(table.userId)],
+);
 
-export const account = pgTable("account", {
-  id: text("id").primaryKey(),
-  accountId: text("account_id").notNull(),
-  providerId: text("provider_id").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  accessToken: text("access_token"),
-  refreshToken: text("refresh_token"),
-  idToken: text("id_token"),
-  accessTokenExpiresAt: timestamp("access_token_expires_at"), // Better-Auth specific
-  refreshTokenExpiresAt: timestamp("refresh_token_expires_at"), // Better-Auth specific
-  scope: text("scope"),
-  password: text("password"), // hashed
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .$onUpdate(() => new Date())
-    .notNull(),
-}, (table) => [
-  index("account_userId_idx").on(table.userId)
-]);
+export const account = pgTable(
+  "account",
+  {
+    id: text("id").primaryKey(),
+    accountId: text("account_id").notNull(),
+    providerId: text("provider_id").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    accessToken: text("access_token"),
+    refreshToken: text("refresh_token"),
+    idToken: text("id_token"),
+    accessTokenExpiresAt: timestamp("access_token_expires_at"), // Better-Auth specific
+    refreshTokenExpiresAt: timestamp("refresh_token_expires_at"), // Better-Auth specific
+    scope: text("scope"),
+    password: text("password"), // hashed
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("account_userId_idx").on(table.userId)],
+);
 
-export const verification = pgTable("verification", {
-  id: text("id").primaryKey(),
-  identifier: text("identifier").notNull(),
-  value: text("value").notNull(),
-  expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-}, (table) => [
-  index("verification_identifier_idx").on(table.identifier)
-]);
+export const verification = pgTable(
+  "verification",
+  {
+    id: text("id").primaryKey(),
+    identifier: text("identifier").notNull(),
+    value: text("value").notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("verification_identifier_idx").on(table.identifier)],
+);
 
 // ==========================================
 // 2. MVP CORE TABLES (Business Logic)
@@ -85,7 +103,9 @@ export const library = pgTable("library", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   deletedAt: timestamp("deleted_at"),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
 });
 
 export const book = pgTable("book", {
@@ -100,23 +120,31 @@ export const book = pgTable("book", {
   publishedAt: varchar("published_at", { length: 20 }),
 });
 
-export const libraryBook = pgTable("library_book", {
-  id: serial("id").primaryKey(),
-  comment: text("comment"), // personal note
-  readStart: date("read_start"),
-  readEnd: date("read_end"),
-  addedAt: timestamp("added_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-  bookId: integer("book_id").notNull().references(() => book.id, { onDelete: "cascade" }),
-  libraryId: integer("library_id").notNull().references(() => library.id, { onDelete: "cascade" }),
-}, (t) => ({
-  // Composite unique constraint: prevents adding the same book to the same library multiple times
-  unq: unique().on(t.libraryId, t.bookId),
-  // Index for fast lookups by library
-  libraryIdx: index("library_book_library_id_idx").on(t.libraryId),
-  // Index for fast lookups by book
-  bookIdx: index("library_book_book_id_idx").on(t.bookId),
-}));
+export const libraryBook = pgTable(
+  "library_book",
+  {
+    id: serial("id").primaryKey(),
+    comment: text("comment"), // personal note
+    readStart: date("read_start"),
+    readEnd: date("read_end"),
+    addedAt: timestamp("added_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    bookId: integer("book_id")
+      .notNull()
+      .references(() => book.id, { onDelete: "cascade" }),
+    libraryId: integer("library_id")
+      .notNull()
+      .references(() => library.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    // Composite unique constraint: prevents adding the same book to the same library multiple times
+    unq: unique().on(t.libraryId, t.bookId),
+    // Index for fast lookups by library
+    libraryIdx: index("library_book_library_id_idx").on(t.libraryId),
+    // Index for fast lookups by book
+    bookIdx: index("library_book_book_id_idx").on(t.bookId),
+  }),
+);
 
 export const category = pgTable("category", {
   id: serial("id").primaryKey(),
@@ -124,31 +152,47 @@ export const category = pgTable("category", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
-export const bookCategory = pgTable("book_category", {
-  id: serial("id").primaryKey(),
-  categoryId: integer("category_id").notNull().references(() => category.id, { onDelete: "cascade" }),
-  bookId: integer("book_id").notNull().references(() => book.id, { onDelete: "cascade" }),
-}, (t) => ({
-  // Composite unique constraint: prevents duplicate book-category links
-  unq: unique().on(t.bookId, t.categoryId),
-  // Index for fast lookups by book
-  bookIdx: index("book_category_book_id_idx").on(t.bookId),
-  // Index for fast lookups by category
-  categoryIdx: index("book_category_category_id_idx").on(t.categoryId),
-}));
+export const bookCategory = pgTable(
+  "book_category",
+  {
+    id: serial("id").primaryKey(),
+    categoryId: integer("category_id")
+      .notNull()
+      .references(() => category.id, { onDelete: "cascade" }),
+    bookId: integer("book_id")
+      .notNull()
+      .references(() => book.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    // Composite unique constraint: prevents duplicate book-category links
+    unq: unique().on(t.bookId, t.categoryId),
+    // Index for fast lookups by book
+    bookIdx: index("book_category_book_id_idx").on(t.bookId),
+    // Index for fast lookups by category
+    categoryIdx: index("book_category_category_id_idx").on(t.categoryId),
+  }),
+);
 
-export const userCategory = pgTable("user_category", {
-  id: serial("id").primaryKey(),
-  categoryId: integer("category_id").notNull().references(() => category.id, { onDelete: "cascade" }),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-}, (t) => ({
-  // Composite unique constraint: prevents a user from having duplicate favorite categories
-  unq: unique().on(t.userId, t.categoryId),
-  // Index for fast lookups by user
-  userIdx: index("user_category_user_id_idx").on(t.userId),
-  // Index for fast lookups by category
-  categoryIdx: index("user_category_category_id_idx").on(t.categoryId),
-}));
+export const userCategory = pgTable(
+  "user_category",
+  {
+    id: serial("id").primaryKey(),
+    categoryId: integer("category_id")
+      .notNull()
+      .references(() => category.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    // Composite unique constraint: prevents a user from having duplicate favorite categories
+    unq: unique().on(t.userId, t.categoryId),
+    // Index for fast lookups by user
+    userIdx: index("user_category_user_id_idx").on(t.userId),
+    // Index for fast lookups by category
+    categoryIdx: index("user_category_category_id_idx").on(t.categoryId),
+  }),
+);
 
 // ==========================================
 // 3. EVOLUTION TABLES (V2)
@@ -161,8 +205,12 @@ export const review = pgTable("review", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   deletedAt: timestamp("deleted_at"),
-  bookId: integer("book_id").notNull().references(() => book.id, { onDelete: "cascade" }),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  bookId: integer("book_id")
+    .notNull()
+    .references(() => book.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
 });
 
 // ==========================================

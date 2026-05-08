@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { ReadingStatus } from "@/types/library";
+import styles from "./BookCard.module.scss";
 import {
   BookCardActionButton,
   type LibraryOption,
 } from "./BookCardActionButton";
-import styles from "./BookCard.module.scss";
 
 interface BookCardProps {
   title: string;

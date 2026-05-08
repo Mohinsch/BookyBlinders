@@ -39,7 +39,8 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
       });
 
       if (error) {
-        const errorMsg = error.message || "Invalid credentials. Please try again.";
+        const errorMsg =
+          error.message || "Invalid credentials. Please try again.";
         setGlobalError(errorMsg);
         if (onError) onError(errorMsg);
         return;

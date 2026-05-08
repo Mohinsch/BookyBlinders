@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  addBookToLibrary, 
-  getUserLibrary, 
-  updateReadingStatus, 
-  removeBookFromLibrary 
+import {
+  addBookToLibrary,
+  getUserLibrary,
+  removeBookFromLibrary,
+  updateReadingStatus,
 } from "@/actions/library";
 import type { UserLibraryBook } from "@/types/library";
 
@@ -14,7 +14,7 @@ export default function TestCrudPage() {
   const [logs, setLogs] = useState<string>("");
 
   const handleAdd = async () => {
-    const res = await addBookToLibrary("jCd3nQAACAAJ"); 
+    const res = await addBookToLibrary("jCd3nQAACAAJ");
     setLogs(`Add: ${JSON.stringify(res)}`);
     handleFetch();
   };
@@ -40,15 +40,17 @@ export default function TestCrudPage() {
   return (
     <main className="p-8 font-sans">
       <h1 className="text-2xl mb-6 font-bold">CRUD Sandbox</h1>
-      
+
       <div className="flex gap-4 mb-8">
-        <button 
+        <button
+          type="button"
           onClick={handleAdd}
           className="px-4 py-2 bg-blue-600 text-white rounded"
         >
           1. Add Book (Peaky Blinders)
         </button>
-        <button 
+        <button
+          type="button"
           onClick={handleFetch}
           className="px-4 py-2 bg-green-600 text-white rounded"
         >
@@ -62,19 +64,26 @@ export default function TestCrudPage() {
 
       <div className="grid gap-4">
         {books.map((b) => (
-          <div key={b.id} className="border p-4 rounded flex items-center justify-between">
+          <div
+            key={b.id}
+            className="border p-4 rounded flex items-center justify-between"
+          >
             <div>
               <p className="font-bold">{b.title}</p>
-              <p className="text-sm text-gray-500">Read Start: {b.readStart || "null"}</p>
+              <p className="text-sm text-gray-500">
+                Read Start: {b.readStart || "null"}
+              </p>
             </div>
             <div className="flex gap-2">
-              <button 
+              <button
+                type="button"
                 onClick={() => handleUpdate(b.id)}
                 className="px-3 py-1 bg-yellow-600 text-white text-sm rounded"
               >
                 3. Set IN_PROGRESS
               </button>
-              <button 
+              <button
+                type="button"
                 onClick={() => handleRemove(b.id)}
                 className="px-3 py-1 bg-red-600 text-white text-sm rounded"
               >

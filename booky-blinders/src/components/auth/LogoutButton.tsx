@@ -1,8 +1,8 @@
 // src/components/auth/LogoutButton.tsx
 "use client";
 
-import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -19,8 +19,9 @@ export function LogoutButton() {
   };
 
   return (
-    <button 
-      onClick={handleLogout} 
+    <button
+      type="button"
+      onClick={handleLogout}
       className="logout-btn"
       style={{ padding: "0.5rem 1rem", cursor: "pointer" }}
     >

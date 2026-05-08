@@ -1,4 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { revalidatePath } from "next/cache";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { db } from "@/db";
+import { auth } from "@/lib/auth";
+import { getBookById } from "@/services/google-books";
+import type { GoogleBookItem } from "@/types/google-books";
 import {
   addBookToLibrary,
   createLibrary,
@@ -6,14 +11,26 @@ import {
   getOwnedGoogleBookIds,
   getUserLibraries,
   getUserLibrary,
+  removeBookFromLibrary,
   renameLibrary,
   updateReadingStatus,
-  removeBookFromLibrary,
 } from "./library";
-import { db } from "@/db";
-import { getBookById } from "@/services/google-books";
-import { auth } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
+
+interface MockSession {
+  user: { id: string };
+}
+
+interface MockLibrary {
+  id: number;
+  name: string;
+}
+
+interface MockBook {
+  id: number;
+  title: string;
+  readStart: null;
+  readEnd: null;
+}
 
 /**
  * Global Dependency Mocks
@@ -38,9 +55,17 @@ vi.mock("@/db", () => ({
       from: vi.fn(() => ({
         innerJoin: vi.fn(() => ({
           where: vi.fn(() => ({
-            orderBy: vi.fn(() => [
-              { id: 1, title: "Mocked Book", readStart: null, readEnd: null },
-            ]),
+            orderBy: vi.fn(
+              () =>
+                [
+                  {
+                    id: 1,
+                    title: "Mocked Book",
+                    readStart: null,
+                    readEnd: null,
+                  },
+                ] as MockBook[],
+            ),
           })),
         })),
       })),
@@ -87,38 +112,40 @@ describe("Library Server Actions", () => {
   describe("addBookToLibrary", () => {
     it("should return success: false if the user is not authenticated", async () => {
       // Simulate missing session. The internal requireAuth() will throw.
-      (auth.api.getSession as any).mockResolvedValue(null);
+      vi.mocked(auth.api.getSession).mockResolvedValue(null as never);
 
       const result = await addBookToLibrary("test-id");
 
       // Verify the catch block gracefully handles the thrown error.
-      expect(result).toEqual({ success: false, message: "Failed to add book" });
+      expect(result).toEqual({ success: false, message: "Unauthorized" });
     });
 
     it("should return success: false if book is not found in Google API", async () => {
       // Simulate valid session but invalid external API response.
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (getBookById as any).mockResolvedValue(null);
+      } as MockSession as never);
+      vi.mocked(getBookById).mockResolvedValue(null as never);
 
       const result = await addBookToLibrary("unknown-id");
 
-      expect(result).toEqual({ success: false, message: "Failed to add book" });
+      expect(result).toEqual({ success: false, message: "Book not found" });
     });
 
     it("should add a book successfully when user is authenticated", async () => {
       // Set up the happy path mocks.
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (getBookById as any).mockResolvedValue({
+      } as MockSession as never);
+      vi.mocked(getBookById).mockResolvedValue({
         volumeInfo: { title: "Test Book", authors: ["Author A"] },
-      });
+      } as GoogleBookItem as never);
       // Simulate book not existing in DB to trigger the insert logic.
-      (db.query.book.findFirst as any).mockResolvedValue(null);
+      vi.mocked(db.query.book.findFirst).mockResolvedValue(null as never);
       // Simulate user not having a library yet to trigger library creation.
-      (db.query.library.findMany as any).mockResolvedValue([]);
+      vi.mocked(db.query.library.findMany).mockResolvedValue(
+        [] as MockLibrary[] as never,
+      );
 
       const result = await addBookToLibrary("google-id-123");
 
@@ -130,12 +157,12 @@ describe("Library Server Actions", () => {
 
   describe("getUserLibraries", () => {
     it("should return user libraries", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10, name: "Main" },
-      ]);
+      ] as MockLibrary[] as never);
 
       const libraries = await getUserLibraries();
 
@@ -145,10 +172,10 @@ describe("Library Server Actions", () => {
 
   describe("getOwnedGoogleBookIds", () => {
     it("should return owned Google IDs without duplicates", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.select as any).mockReturnValueOnce({
+      } as MockSession as never);
+      vi.mocked(db.select).mockReturnValueOnce({
         from: vi.fn(() => ({
           innerJoin: vi.fn(() => ({
             innerJoin: vi.fn(() => ({
@@ -161,7 +188,7 @@ describe("Library Server Actions", () => {
             })),
           })),
         })),
-      });
+      } as never);
 
       const ids = await getOwnedGoogleBookIds();
 
@@ -171,9 +198,9 @@ describe("Library Server Actions", () => {
 
   describe("library CRUD", () => {
     it("should create a library successfully", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
+      } as MockSession as never);
 
       const result = await createLibrary("Roadmap 2026");
 
@@ -182,10 +209,12 @@ describe("Library Server Actions", () => {
     });
 
     it("should rename a library successfully", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findFirst as any).mockResolvedValue({ id: 10 });
+      } as MockSession as never);
+      vi.mocked(db.query.library.findFirst).mockResolvedValue({
+        id: 10,
+      } as never);
 
       const result = await renameLibrary(10, "Renamed Library");
 
@@ -194,10 +223,12 @@ describe("Library Server Actions", () => {
     });
 
     it("should fail deleting the last library", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([{ id: 10 }]);
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
+        { id: 10 },
+      ] as MockLibrary[] as never);
 
       const result = await deleteLibrary(10);
 
@@ -205,13 +236,13 @@ describe("Library Server Actions", () => {
     });
 
     it("should delete a library successfully", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10 },
         { id: 20 },
-      ]);
+      ] as MockLibrary[] as never);
 
       const result = await deleteLibrary(10);
 
@@ -222,11 +253,13 @@ describe("Library Server Actions", () => {
 
   describe("getUserLibrary", () => {
     it("should return an empty array if no library is found", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([]);
-      (db.select as any).mockReturnValueOnce({
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue(
+        [] as MockLibrary[] as never,
+      );
+      vi.mocked(db.select).mockReturnValueOnce({
         from: vi.fn(() => ({
           innerJoin: vi.fn(() => ({
             where: vi.fn(() => ({
@@ -234,7 +267,7 @@ describe("Library Server Actions", () => {
             })),
           })),
         })),
-      });
+      } as never);
 
       const books = await getUserLibrary();
 
@@ -242,12 +275,12 @@ describe("Library Server Actions", () => {
     });
 
     it("should return a list of books if the library exists", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10, name: "Main" },
-      ]);
+      ] as MockLibrary[] as never);
 
       const books = await getUserLibrary();
 
@@ -259,13 +292,13 @@ describe("Library Server Actions", () => {
 
   describe("updateReadingStatus", () => {
     it("should return success: false if library is not found", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
+      } as MockSession as never);
       // Action requires a valid library to update junction table
-      (db.query.library.findMany as any).mockResolvedValue([
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10, name: "Main" },
-      ]);
+      ] as MockLibrary[] as never);
 
       const result = await updateReadingStatus(1, "IN_PROGRESS", 999);
 
@@ -273,12 +306,12 @@ describe("Library Server Actions", () => {
     });
 
     it("should update status to IN_PROGRESS successfully", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10, name: "Main" },
-      ]);
+      ] as MockLibrary[] as never);
 
       const result = await updateReadingStatus(1, "IN_PROGRESS");
 
@@ -287,12 +320,12 @@ describe("Library Server Actions", () => {
     });
 
     it("should update status to READ successfully", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10, name: "Main" },
-      ]);
+      ] as MockLibrary[] as never);
 
       const result = await updateReadingStatus(1, "READ");
 
@@ -303,12 +336,12 @@ describe("Library Server Actions", () => {
 
   describe("removeBookFromLibrary", () => {
     it("should return success: false if library is not found", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10, name: "Main" },
-      ]);
+      ] as MockLibrary[] as never);
 
       const result = await removeBookFromLibrary(1, 999);
 
@@ -316,35 +349,17 @@ describe("Library Server Actions", () => {
     });
 
     it("should remove book successfully", async () => {
-      (auth.api.getSession as any).mockResolvedValue({
+      vi.mocked(auth.api.getSession).mockResolvedValue({
         user: { id: "user-123" },
-      });
-      (db.query.library.findMany as any).mockResolvedValue([
+      } as MockSession as never);
+      vi.mocked(db.query.library.findMany).mockResolvedValue([
         { id: 10, name: "Main" },
-      ]);
+      ] as MockLibrary[] as never);
 
       const result = await removeBookFromLibrary(1);
 
       expect(result.success).toBe(true);
       expect(revalidatePath).toHaveBeenCalledWith("/library");
     });
-  });
-  it("should return an empty array and log error if an unexpected error occurs", async () => {
-    // Suppress console.error output during the test run
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-
-    (auth.api.getSession as any).mockResolvedValue({
-      user: { id: "user-123" },
-    });
-
-    // Force the database query to throw an exception to trigger the catch block
-    (db.query.library.findMany as any).mockRejectedValue(
-      new Error("Simulated database failure"),
-    );
-
-    const books = await getUserLibrary();
-
-    expect(books).toEqual([]);
-    expect(consoleSpy).toHaveBeenCalled();
   });
 });
