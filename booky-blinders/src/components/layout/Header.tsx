@@ -8,17 +8,25 @@ import { useState } from "react";
 import { UserDropdown } from "@/components/header/UserDropdown";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import { authClient } from "@/lib/auth-client";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./Header.module.scss";
 
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
 
   const { data: session, isPending } = authClient.useSession();
   const isAuthenticated = !!session?.user;
 
-  const navLinks = ["Home", "Discover", "About Us"];
+  const navLinks = [
+    { label: "Home", key: "header.home" },
+    { label: "Discover", key: "header.discover" },
+    { label: "About Us", key: "header.aboutUs" },
+  ];
 
   const handleLogout = async () => {
     await authClient.signOut({
@@ -78,11 +86,11 @@ export function Header() {
 
         <div className={styles.desktopActions}>
           <nav className={styles.nav} aria-label="Main navigation">
-            {navLinks.map((link) => {
+            {navLinks.map(({ label, key }) => {
               let href = "/";
-              if (link === "Discover") href = "/#discover";
-              else if (link !== "Home")
-                href = `/${link.toLowerCase().replace(/\s+/g, "-")}`;
+              if (label === "Discover") href = "/#discover";
+              else if (label !== "Home")
+                href = `/${label.toLowerCase().replace(/\s+/g, "-")}`;
 
               const isActive =
                 pathname === href ||
@@ -90,12 +98,12 @@ export function Header() {
 
               return (
                 <Link
-                  key={link}
+                  key={label}
                   href={href}
                   className={`${styles.navLink} ${isActive ? styles.active : ""}`}
-                  onClick={(e) => handleLinkClick(e, link)}
+                  onClick={(e) => handleLinkClick(e, label)}
                 >
-                  {link}
+                  {t(key)}
                 </Link>
               );
             })}
@@ -103,18 +111,18 @@ export function Header() {
 
           {isPending ? (
             <span className={styles.enterBtn} style={{ opacity: 0.5 }}>
-              Loading...
+              {t("common.loading")}
             </span>
           ) : isAuthenticated ? (
             <div className={styles.authActions}>
               <Link href="/library" className={styles.enterBtn}>
-                My Library
+                {t("header.myLibrary")}
               </Link>
               <UserDropdown />
             </div>
           ) : (
             <Link href="/login" className={styles.enterBtn}>
-              Open the Ledger
+              {t("header.openTheLedger")}
             </Link>
           )}
         </div>
@@ -140,11 +148,11 @@ export function Header() {
             exit="closed"
             variants={menuVariants}
           >
-            {navLinks.map((link) => {
+            {navLinks.map(({ label, key }) => {
               let href = "/";
-              if (link === "Discover") href = "/#discover";
-              else if (link !== "Home")
-                href = `/${link.toLowerCase().replace(/\s+/g, "-")}`;
+              if (label === "Discover") href = "/#discover";
+              else if (label !== "Home")
+                href = `/${label.toLowerCase().replace(/\s+/g, "-")}`;
 
               const isActive =
                 pathname === href ||
@@ -152,12 +160,12 @@ export function Header() {
 
               return (
                 <Link
-                  key={link}
+                  key={label}
                   href={href}
                   className={`${styles.mobileNavLink} ${isActive ? styles.active : ""}`}
-                  onClick={(e) => handleLinkClick(e, link)}
+                  onClick={(e) => handleLinkClick(e, label)}
                 >
-                  {link}
+                  {t(key)}
                 </Link>
               );
             })}

@@ -3,7 +3,6 @@ name: CI-Prod
 on:
   push:
     branches:
-      - feat/ci-cd
       - dev
       - main
   pull_request:

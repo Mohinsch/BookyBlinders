@@ -79,7 +79,7 @@
 .triggerButton {
   padding: 10px 16px;
   background: #ef4444;
-  color: white;
+  color: var(--text-primary, #ffffff);
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -124,7 +124,7 @@
 .deleteButton {
   padding: 10px 16px;
   background: #ef4444;
-  color: white;
+  color: var(--text-primary, #ffffff);
   border: none;
   border-radius: 8px;
   font-size: 14px;

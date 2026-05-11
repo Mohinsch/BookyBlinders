@@ -6,7 +6,7 @@
   margin: 0 auto;
   padding: 4rem $spacing-md;
   min-height: 100vh;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--color-text-main);
 }
 
 .title {
@@ -22,7 +22,7 @@
 
 .lastUpdated {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-dimmed);
   margin-bottom: 3rem;
   font-style: italic;
 }
@@ -54,7 +54,7 @@
     line-height: 1.8;
     margin-bottom: 1rem;
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--color-text-main);
   }
 
   ul {
@@ -65,7 +65,7 @@
       line-height: 1.8;
       margin-bottom: 0.5rem;
       font-size: 1rem;
-      color: rgba(255, 255, 255, 0.95);
+      color: var(--color-text-main);
     }
   }
 
@@ -83,7 +83,7 @@
 
   p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--color-text-main);
   }
 
   strong {
@@ -94,7 +94,7 @@
 .contact {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba($color-primary, 0.2);
 
   strong {
     display: block;
@@ -103,7 +103,7 @@
   }
 
   p {
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--color-text-main);
   }
 
   a {

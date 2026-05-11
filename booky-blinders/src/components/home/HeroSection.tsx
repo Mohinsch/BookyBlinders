@@ -6,11 +6,15 @@ import { motion, type Variants } from "framer-motion";
 import { Search, Star } from "lucide-react";
 import { AuthCTA } from "@/components/ui/AuthCTA";
 import { Button } from "@/components/ui/Button";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import { useSearchStore } from "@/store/useSearchStore";
 import BlurText from "../ui/BlurText";
 import styles from "./HeroSection.module.scss";
 
 export function HeroSection() {
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
   const { openSearch } = useSearchStore();
 
   const containerVariants: Variants = {
@@ -53,14 +57,14 @@ export function HeroSection() {
 
         <motion.div variants={itemVariants} className={styles.titleWrapper}>
           <BlurText
-            text="Your Books."
+            text={t("hero.title")}
             delay={150}
             animateBy="letters"
             direction="top"
             className={`${styles.title} ${styles.whiteTitle}`}
           />
           <BlurText
-            text="Your Rules."
+            text={t("hero.yourRules")}
             delay={150}
             animateBy="letters"
             direction="top"
@@ -69,32 +73,30 @@ export function HeroSection() {
         </motion.div>
 
         <motion.p variants={itemVariants}>
-          A personal library for those who read with purpose. Search, collect,
-          annotate, and curate your literary empire with the elegance it
-          deserves.
+          {t("hero.subtitle")}
         </motion.p>
 
         <motion.div className={styles.ctaContainer} variants={itemVariants}>
-          <AuthCTA variant="primary">Start your collection</AuthCTA>
+          <AuthCTA variant="primary">{t("hero.ctaButton")}</AuthCTA>
           <Button variant="outline" onClick={openSearch}>
-            Explore Books <Search size={16} />
+            {t("hero.exploreBooks")} <Search size={16} />
           </Button>
         </motion.div>
 
         <motion.div className={styles.stats} variants={itemVariants}>
           <div className={styles.statItem}>
             <strong>10 M+</strong>
-            <span>Books</span>
+            <span>{t("hero.stats.books")}</span>
           </div>
           <div className={styles.statItem}>
             <strong>
               4.9 <Star size={20} className={styles.star} />
             </strong>
-            <span>Rating</span>
+            <span>{t("hero.stats.rating")}</span>
           </div>
           <div className={styles.statItem}>
             <strong>Free</strong>
-            <span>Forever</span>
+            <span>{t("hero.stats.forever")}</span>
           </div>
         </motion.div>
       </motion.div>

@@ -2,6 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./AuthPage.module.scss";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
@@ -13,6 +15,8 @@ interface AuthPageProps {
 }
 
 export function AuthPage({ initialMode = "login" }: AuthPageProps) {
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -33,8 +37,8 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
         className={`${styles.authContainer} ${mode === "login" ? styles.modeLogin : styles.modeRegister}`}
       >
         <div className={styles.mobileIntro}>
-          <h1>The Club Entrance</h1>
-          <p>Choose your side. One door, two paths.</p>
+          <h1>{t("auth.clubEntrance")}</h1>
+          <p>{t("auth.chooseYourSide")}</p>
         </div>
 
         <div className={styles.panelStage}>
@@ -83,10 +87,9 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
               >
                 {mode === "login" ? (
                   <>
-                    <h2>Welcome to the Club</h2>
+                    <h2>{t("auth.welcomeToClub")}</h2>
                     <p>
-                      New to the family? Create your account to open your
-                      private registry.
+                      {t("auth.newToFamily")}
                     </p>
                     <button
                       type="button"
@@ -94,15 +97,14 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
                       onClick={() => handleModeSwitch("register")}
                       disabled={isAnimating}
                     >
-                      Sign up
+                      {t("auth.signUp")}
                     </button>
                   </>
                 ) : (
                   <>
-                    <h2>Welcome Back</h2>
+                    <h2>{t("auth.welcomeBack")}</h2>
                     <p>
-                      Already a member? Return to your collection and resume
-                      your reading.
+                      {t("auth.alreadyMember")}
                     </p>
                     <button
                       type="button"
@@ -110,7 +112,7 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
                       onClick={() => handleModeSwitch("login")}
                       disabled={isAnimating}
                     >
-                      Sign in
+                      {t("auth.signIn")}
                     </button>
                   </>
                 )}

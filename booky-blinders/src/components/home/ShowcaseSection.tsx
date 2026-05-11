@@ -2,21 +2,26 @@
 
 import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import TiltedCard from "@/components/ui/TiltedCard";
 import styles from "./ShowcaseSection.module.scss";
 
 export function ShowcaseSection() {
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
+
   const books = [
     {
-      title: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      quote: "A masterpiece of the jazz age. The green light beckons us all.",
+      title: t("showcase.books.0.title"),
+      author: t("showcase.books.0.author"),
+      quote: t("showcase.books.0.note"),
       rating: 5,
     },
     {
-      title: "Crime and Punishment",
-      author: "Fyodor Dostoevsky",
-      quote: "The depths of human conscience, laid bare on every page.",
+      title: t("showcase.books.1.title"),
+      author: t("showcase.books.1.author"),
+      quote: t("showcase.books.1.note"),
       rating: 5,
     },
   ];
@@ -39,19 +44,18 @@ export function ShowcaseSection() {
           <div className={styles.quoteOverlay}>
             <Quote size={20} className={styles.quoteIcon} />
             <blockquote>
-              "A man who reads lives a thousand lives before he dies."
+              "{t("showcase.quote")}"
             </blockquote>
-            <cite>Thomas Shelfy</cite>
+            <cite>{t("showcase.quoteCite")}</cite>
           </div>
         </TiltedCard>
       </div>
 
       <div className={styles.textColumn}>
-        <span className={styles.label}>Thomas Shelfy's Collection</span>
-        <h2>A gentleman's library</h2>
+        <span className={styles.label}>{t("showcase.collectionTitle")}</span>
+        <h2>{t("showcase.title")}</h2>
         <p>
-          Every great mind curates their shelf with care. Here's a glimpse into
-          one reader's world.
+          {t("showcase.description")}
         </p>
 
         <div className={styles.showcaseList}>

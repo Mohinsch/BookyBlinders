@@ -3,19 +3,23 @@
 import { ChangePasswordForm } from "@/components/account/ChangePasswordForm";
 import { DeleteAccountSection } from "@/components/account/DeleteAccountSection";
 import { useSession } from "@/lib/auth-client";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./AccountSettings.module.scss";
 
 export function AccountSettings() {
   const { data: session, isPending } = useSession();
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
 
   if (isPending) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <div className={styles.loading}>{t("common.loading")}</div>;
   }
 
   if (!session?.user) {
     return (
       <div className={styles.loading}>
-        Please log in to access account settings
+        {t("accountSettings.pleaseLogIn")}
       </div>
     );
   }
@@ -23,26 +27,26 @@ export function AccountSettings() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Account Settings</h1>
-        <p>Manage your account information and security preferences</p>
+        <h1>{t("accountSettings.title")}</h1>
+        <p>{t("accountSettings.profileDescription")}</p>
       </div>
 
       <div className={styles.content}>
         <section className={styles.section}>
-          <h2>Account Information</h2>
+          <h2>{t("accountSettings.accountInfo")}</h2>
           <div className={styles.infoBox}>
             <div className={styles.infoRow}>
-              <span className={styles.label}>Email:</span>
+              <span className={styles.label}>{t("accountSettings.email")}:</span>
               <span className={styles.value}>{session.user.email}</span>
             </div>
             <div className={styles.infoRow}>
-              <span className={styles.label}>Name:</span>
+              <span className={styles.label}>{t("accountSettings.name")}:</span>
               <span className={styles.value}>{session.user.name}</span>
             </div>
             <div className={styles.infoRow}>
-              <span className={styles.label}>Email Verified:</span>
+              <span className={styles.label}>{t("accountSettings.emailVerified")}:</span>
               <span className={styles.value}>
-                {session.user.emailVerified ? "Yes" : "No"}
+                {session.user.emailVerified ? t("accountSettings.yes") : t("accountSettings.no")}
               </span>
             </div>
           </div>

@@ -3,7 +3,6 @@ name: CI-dev
 on:
   push:
     branches:
-      - feat/user-section
       - dev
   pull_request:
     branches:

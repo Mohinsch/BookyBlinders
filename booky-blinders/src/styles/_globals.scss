@@ -9,16 +9,17 @@
 
 html, body {
   height: 100%;
-  background-color: $color-bg-base;
+  background-color: var(--color-bg-base);
 }
 
 body {
-  color: $color-text-main;
+  color: var(--color-text-main);
   font-family: $font-main;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1 { @include heading-hero; margin-bottom: $spacing-base; }
