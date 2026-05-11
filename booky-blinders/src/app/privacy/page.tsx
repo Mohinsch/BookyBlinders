@@ -1,18 +1,20 @@
-import styles from "@/app/legal.module.scss";
+"use client";
 
-export const metadata = {
-  title: "Privacy Policy | Booky Blinders",
-  description: "Privacy policy for Booky Blinders personal library application",
-};
+import styles from "@/app/legal.module.scss";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 
 export default function PrivacyPage() {
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Privacy Policy</h1>
-      <p className={styles.lastUpdated}>Last updated: May 2026</p>
+      <h1 className={styles.title}>{t("privacy.title")}</h1>
+      <p className={styles.lastUpdated}>{t("privacy.lastUpdated")}: May 2026</p>
 
       <section className={styles.section}>
-        <h2>1. Introduction</h2>
+        <h2>1. {t("privacy.introduction")}</h2>
         <p>
           Booky Blinders ("we," "us," "our," or "Company") is committed to
           protecting your privacy. This Privacy Policy explains how we collect,
@@ -22,9 +24,9 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>2. Information We Collect</h2>
+        <h2>2. {t("privacy.dataCollection")}</h2>
 
-        <h3>2.1 Information You Provide Directly</h3>
+        <h3>2.1 {t("privacy.directInfo")}</h3>
         <p>When you create an account and use our service, we collect:</p>
         <ul>
           <li>
@@ -41,7 +43,7 @@ export default function PrivacyPage() {
           </li>
         </ul>
 
-        <h3>2.2 Information Collected Automatically</h3>
+        <h3>2.2 {t("privacy.automaticInfo")}</h3>
         <p>
           We automatically collect certain information about your device and
           usage:
@@ -61,7 +63,7 @@ export default function PrivacyPage() {
           </li>
         </ul>
 
-        <h3>2.3 Third-Party Services</h3>
+        <h3>2.3 {t("privacy.thirdParty")}</h3>
         <p>
           To provide book information and search functionality, we integrate
           with:
@@ -85,7 +87,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>3. How We Use Your Information</h2>
+        <h2>3. {t("privacy.dataUsage")}</h2>
         <p>We use collected information to:</p>
         <ul>
           <li>Create and maintain your personal library</li>
@@ -99,7 +101,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>4. Data Storage and Security</h2>
+        <h2>4. {t("privacy.dataStorage")}</h2>
 
         <h3>4.1 Where We Store Data</h3>
         <p>
@@ -143,7 +145,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>5. Data Retention and Deletion</h2>
+        <h2>5. {t("privacy.dataRetention")}</h2>
         <p>
           We retain your data as long as your account is active. When you
           request account deletion:
@@ -167,7 +169,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>6. Third-Party Data Sharing</h2>
+        <h2>6. {t("privacy.thirdPartySharing")}</h2>
         <p>
           <strong>We do not sell your personal data.</strong> We only share
           information with:
@@ -189,7 +191,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>7. Cookies and Tracking</h2>
+        <h2>7. {t("privacy.cookies")}</h2>
         <p>We use cookies and similar technologies to:</p>
         <ul>
           <li>Maintain your authentication session</li>
@@ -204,7 +206,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>8. Your Privacy Rights</h2>
+        <h2>8. {t("privacy.yourRights")}</h2>
         <p>Depending on your location, you may have the right to:</p>
         <ul>
           <li>Access your personal data</li>
@@ -220,7 +222,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>9. Children's Privacy</h2>
+        <h2>9. {t("privacy.childrenPrivacy")}</h2>
         <p>
           Booky Blinders is not intended for users under 13 years of age. We do
           not knowingly collect data from children. If we discover we have
@@ -229,7 +231,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>10. Changes to This Privacy Policy</h2>
+        <h2>10. {t("privacy.changes")}</h2>
         <p>
           We may update this Privacy Policy periodically. We will notify you of
           significant changes by posting the updated policy on our website and
@@ -238,7 +240,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>11. Contact Us</h2>
+        <h2>11. {t("privacy.contact")}</h2>
         <div className={styles.contact}>
           <strong>
             For questions about this Privacy Policy, please contact:

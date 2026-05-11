@@ -1,20 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import { Button } from "@/components/ui/Button";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./about.module.scss";
 
 export default function AboutUsPage() {
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
+
   return (
     <main className={styles.aboutContainer}>
       <section className={styles.hero}>
         <BBMonogram className={styles.logo} />
-        <h1>The Archives of Small Heath</h1>
+        <h1>{t("about.title")}</h1>
         <p className={styles.subtitle}>By order of the Booky Blinders</p>
       </section>
 
       <section className={styles.contentSection}>
         <div className={styles.card}>
-          <h2>Our Mission</h2>
+          <h2>{t("about.mission")}</h2>
           <p>
             In an age of digital chaos, we provide order. Booky Blinders is not
             merely a tool; it is a sanctuary for the discerning reader. We

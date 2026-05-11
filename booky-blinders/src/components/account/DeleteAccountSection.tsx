@@ -3,10 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { deleteAccount } from "@/actions/account";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./DeleteAccountSection.module.scss";
 
 export function DeleteAccountSection() {
   const router = useRouter();
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [password, setPassword] = useState("");
@@ -21,7 +25,7 @@ export function DeleteAccountSection() {
     setMessage(null);
 
     if (!password.trim()) {
-      setMessage({ type: "error", text: "Password is required" });
+      setMessage({ type: "error", text: t("errors.passwordRequired") });
       setIsDeleting(false);
       return;
     }
@@ -31,7 +35,7 @@ export function DeleteAccountSection() {
     if (result.success) {
       setMessage({
         type: "success",
-        text: result.message || "Account deleted",
+        text: result.message || t("accountSettings.savedSuccess"),
       });
       setPassword("");
       // Redirect after a short delay
@@ -41,7 +45,7 @@ export function DeleteAccountSection() {
     } else {
       setMessage({
         type: "error",
-        text: result.message || "Failed to delete account",
+        text: result.message || t("accountSettings.errorOccurred"),
       });
       setIsDeleting(false);
     }
@@ -51,10 +55,9 @@ export function DeleteAccountSection() {
     return (
       <div className={styles.container}>
         <div className={styles.dangerZone}>
-          <h3>Delete Account</h3>
+          <h3>{t("accountSettings.deleteAccount")}</h3>
           <p className={styles.warning}>
-            ⚠️ This action is permanent and cannot be undone. All your data
-            including libraries, books, and reviews will be permanently deleted.
+            ⚠️ {t("accountSettings.deleteWarning")}
           </p>
 
           {message && (
@@ -66,7 +69,7 @@ export function DeleteAccountSection() {
           <form onSubmit={handleDelete} className={styles.form}>
             <div className={styles.formGroup}>
               <label htmlFor="deletePassword">
-                Enter your password to confirm
+                {t("accountSettings.deleteConfirm")}
               </label>
               <input
                 id="deletePassword"
@@ -76,7 +79,7 @@ export function DeleteAccountSection() {
                   setPassword(e.target.value);
                   setMessage(null);
                 }}
-                placeholder="Enter your password"
+                placeholder={t("accountSettings.password")}
                 disabled={isDeleting}
                 required
               />
@@ -93,14 +96,14 @@ export function DeleteAccountSection() {
                 disabled={isDeleting}
                 className={styles.cancelButton}
               >
-                Cancel
+                {t("accountSettings.cancel")}
               </button>
               <button
                 type="submit"
                 disabled={isDeleting}
                 className={styles.deleteButton}
               >
-                {isDeleting ? "Deleting..." : "Delete My Account"}
+                {isDeleting ? t("accountSettings.deletingAccount") : t("accountSettings.deleteConfirmButton")}
               </button>
             </div>
           </form>
@@ -112,9 +115,9 @@ export function DeleteAccountSection() {
   return (
     <div className={styles.container}>
       <div className={styles.dangerZone}>
-        <h3>Danger Zone</h3>
+        <h3>{t("accountSettings.dangerZone")}</h3>
         <p className={styles.description}>
-          Permanently delete your account and all associated data
+          {t("accountSettings.deleteAccountDescription")}
         </p>
 
         <button
@@ -122,7 +125,7 @@ export function DeleteAccountSection() {
           onClick={() => setShowConfirmation(true)}
           className={styles.triggerButton}
         >
-          Delete My Account
+          {t("accountSettings.deleteAccount")}
         </button>
       </div>
     </div>

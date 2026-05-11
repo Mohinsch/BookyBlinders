@@ -12,32 +12,36 @@ export const en = {
   // Hero Section
   hero: {
     title: "Your Books.",
+    yourRules: "Your Rules.",
     subtitle: "A personal library for those who read with purpose. Search, collect, annotate, and curate your literary empire with the elegance it deserves.",
+    ctaButton: "Start your collection",
+    exploreBooks: "Explore Books",
     stats: {
-      readers: "Discerning Readers",
-      books: "Books Curated",
-      hours: "Hours Reading",
+      books: "Books",
+      rating: "Rating",
+      forever: "Forever",
     },
   },
 
   // Features Section
   features: {
     title: "Curate Your Shelf",
+    sectionTitle: "Everything a reader needs",
     items: [
+      {
+        title: "Discover & Search",
+        description:
+          "Explore millions of books. Our search engine uncovers every title, from forgotten classics to the latest releases.",
+      },
       {
         title: "Curate Your Shelf",
         description:
-          "Organize your personal library with precision and elegance. Tag, categorize, and manage every volume.",
+          "Build your personal library with precision. Organize by genre, author, mood, or your own custom categories.",
       },
       {
-        title: "Discover Hidden Gems",
+        title: "Organise & Track",
         description:
-          "Explore recommendations tailored to your reading preferences and literary tastes.",
-      },
-      {
-        title: "Track Your Journey",
-        description:
-          "Mark your reading progress, rate books, and keep notes on your literary adventures.",
+          "Track your reading progress, set goals, and maintain lists. From 'Currently Reading' to 'All-Time Favourites'.",
       },
     ],
   },
@@ -45,13 +49,21 @@ export const en = {
   // Showcase Section
   showcase: {
     label: "See It In Action",
-    title: "Your Literary World",
+    collectionTitle: "Thomas Shelfy's Collection",
+    title: "A gentleman's library",
     description: "Every great mind curates their shelf with care. Here's a glimpse into one reader's world.",
+    quote: "A man who reads lives a thousand lives before he dies.",
+    quoteCite: "Thomas Shelfy",
     books: [
       {
         title: "The Great Gatsby",
         author: "F. Scott Fitzgerald",
-        note: "A masterpiece of American literature that explores the Jazz Age's glamour and excess.",
+        note: "A masterpiece of the jazz age. The green light beckons us all.",
+      },
+      {
+        title: "Crime and Punishment",
+        author: "Fyodor Dostoevsky",
+        note: "The depths of human conscience, laid bare on every page.",
       },
     ],
   },
@@ -82,6 +94,7 @@ export const en = {
     login: "Login",
     register: "Register",
     email: "Email",
+    emailAddress: "Email Address",
     password: "Password",
     confirmPassword: "Confirm Password",
     rememberMe: "Remember me",
@@ -94,6 +107,28 @@ export const en = {
     continueWithGoogle: "Continue with Google",
     termsAccept: "I agree to the",
     and: "and",
+    // Auth Page
+    clubEntrance: "The Club Entrance",
+    chooseYourSide: "Choose your side. One door, two paths.",
+    welcomeToClub: "Welcome to the Club",
+    newToFamily: "New to the family? Create your account to open your private registry.",
+    welcomeBack: "Welcome Back",
+    alreadyMember: "Already a member? Return to your collection and resume your reading.",
+    // Login Form
+    loginWelcome: "Welcome",
+    returnPrivateCollection: "Return to your private collection.",
+    invalidCredentials: "Invalid credentials. Please try again.",
+    verifying: "Verifying...",
+    dontHaveAccountYet: "Don't have an account yet?",
+    signUpHere: "Sign up here",
+    // Register Form
+    joinClub: "Join the Club",
+    organizeBookCollection: "Organize your book collection.",
+    name: "Name",
+    registering: "Registering...",
+    errorDuringRegistration: "Error during registration. Please try again.",
+    alreadyHaveAccount: "Already have an account?",
+    signInHere: "Sign in here",
   },
 
   // Library
@@ -166,5 +201,143 @@ export const en = {
     share: "Share",
     download: "Download",
     noResults: "No results found",
+  },
+
+  // About Page
+  about: {
+    title: "About Us",
+    introduction: "About Booky Blinders",
+    mission: "Our Mission",
+    missionDesc: "To create a personal library platform that celebrates the art of reading and helps readers curate their literary collections with elegance and purpose.",
+    vision: "Our Vision",
+    visionDesc: "A world where every reader has a sophisticated, beautiful space to organize, track, and celebrate their reading journey.",
+    values: "Our Values",
+    community: "Community",
+    communityDesc: "We believe in fostering a community of discerning readers.",
+    excellence: "Excellence",
+    excellenceDesc: "We strive for quality in every aspect of our platform.",
+    innovation: "Innovation",
+    innovationDesc: "We continuously improve to better serve our users.",
+  },
+
+  // Privacy Page
+  privacy: {
+    title: "Privacy Policy",
+    lastUpdated: "Last updated",
+    introduction: "Introduction",
+    dataCollection: "Information We Collect",
+    directInfo: "Information You Provide Directly",
+    automaticInfo: "Information Collected Automatically",
+    thirdParty: "Third-Party Services",
+    dataUsage: "How We Use Your Information",
+    dataStorage: "Data Storage and Security",
+    dataRetention: "Data Retention and Deletion",
+    thirdPartySharing: "Third-Party Data Sharing",
+    cookies: "Cookies and Tracking",
+    yourRights: "Your Privacy Rights",
+    childrenPrivacy: "Children's Privacy",
+    changes: "Changes to This Privacy Policy",
+    contact: "Contact Us",
+  },
+
+  // Terms Page
+  terms: {
+    title: "Terms of Service",
+    lastUpdated: "Last updated",
+    acceptance: "Acceptance of Terms",
+    license: "Use License",
+    disclaimer: "Disclaimer",
+    limitations: "Limitations of Liability",
+    accuracy: "Accuracy of Materials",
+    materials: "Materials on Website",
+    links: "Links",
+    modifications: "Modifications",
+    governing: "Governing Law",
+    contact: "Contact Us",
+  },
+
+  // Error Messages
+  errors: {
+    emailRequired: "Email is required",
+    passwordRequired: "Password is required",
+    nameRequired: "Name is required",
+    invalidEmail: "Invalid email address",
+    passwordTooShort: "Password must be at least 8 characters",
+    passwordsDontMatch: "Passwords don't match",
+    emailAlreadyExists: "This email is already registered",
+    invalidCredentials: "Invalid email or password",
+    networkError: "Network error. Please try again",
+    serverError: "Server error. Please try again later",
+    userNotFound: "User not found",
+    accountAlreadyExists: "Account already exists",
+    pleaseCheckEmail: "Please check your email address",
+    loginRequired: "You must be logged in to access this page",
+    currentPasswordRequired: "Current password is required",
+    newPasswordRequired: "New password is required",
+    confirmPasswordRequired: "Confirm password is required",
+    sessionExpired: "Your session has expired. Please log in again",
+    unauthorized: "You don't have permission to access this resource",
+    notFound: "Page or resource not found",
+  },
+
+  // Library Messages
+  libraryMessages: {
+    removeSuccess: "Book removed successfully",
+    markAsReadingSuccess: "Marked as reading",
+    markAsCompleteSuccess: "Marked as complete",
+    addSuccess: "Book added to library",
+    error: "An error occurred while updating your library",
+    addingBook: "Adding book...",
+    removingBook: "Removing book...",
+    updating: "Updating...",
+  },
+
+  // Account Settings Extended
+  accountSettings: {
+    title: "Account Settings",
+    profile: "Profile",
+    profileDescription: "Manage your profile information",
+    email: "Email Address",
+    emailDescription: "Your account email address",
+    name: "Name",
+    nameDescription: "Your full name",
+    password: "Password",
+    passwordDescription: "Manage your password and security",
+    changePassword: "Change Password",
+    currentPassword: "Current Password",
+    newPassword: "New Password",
+    confirmPassword: "Confirm Password",
+    deleteAccount: "Delete Account",
+    deleteAccountDescription: "Permanently delete your account and all associated data",
+    dangerZone: "Danger Zone",
+    deleteWarning: "This action cannot be undone. All your data will be permanently deleted.",
+    deleteConfirm: "Type your email to confirm deletion",
+    deleteConfirmButton: "Delete my account",
+    logout: "Logout",
+    logoutSuccess: "You have been logged out successfully",
+    save: "Save Changes",
+    cancel: "Cancel",
+    savedSuccess: "Changes saved successfully",
+    errorOccurred: "An error occurred",
+    accountInfo: "Account Information",
+    emailVerified: "Email Verified",
+    yes: "Yes",
+    no: "No",
+    pleaseLogIn: "Please log in to access account settings",
+    verifying: "Verifying your credentials...",
+    changingPassword: "Changing password...",
+    deletingAccount: "Deleting account...",
+  },
+
+  // Book Details Extended
+  bookDetailsMessages: {
+    addingToLibrary: "Adding to library...",
+    removingFromLibrary: "Removing from library...",
+    markedAsReading: "Marked as currently reading",
+    markedAsCompleted: "Marked as completed",
+    addedToWishlist: "Added to wishlist",
+    removedFromWishlist: "Removed from wishlist",
+    alreadyInLibrary: "This book is already in your library",
+    bookNotFound: "Book not found",
   },
 };

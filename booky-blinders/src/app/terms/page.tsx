@@ -1,19 +1,20 @@
-import styles from "@/app/legal.module.scss";
+"use client";
 
-export const metadata = {
-  title: "Terms of Service | Booky Blinders",
-  description:
-    "Terms of Service for Booky Blinders personal library application",
-};
+import styles from "@/app/legal.module.scss";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 
 export default function TermsPage() {
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Terms of Service</h1>
-      <p className={styles.lastUpdated}>Last updated: May 2026</p>
+      <h1 className={styles.title}>{t("terms.title")}</h1>
+      <p className={styles.lastUpdated}>{t("terms.lastUpdated")}: May 2026</p>
 
       <section className={styles.section}>
-        <h2>1. Acceptance of Terms</h2>
+        <h2>1. {t("terms.acceptance")}</h2>
         <p>
           By accessing and using Booky Blinders ("Service"), you accept and
           agree to be bound by the terms and provision of this agreement. If you
@@ -22,7 +23,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>2. Use License</h2>
+        <h2>2. {t("terms.license")}</h2>
         <p>
           Permission is granted to temporarily download one copy of the
           materials (information or software) on Booky Blinders for personal,
@@ -53,7 +54,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>3. Disclaimer</h2>
+        <h2>3. {t("terms.disclaimer")}</h2>
         <p>
           The materials on Booky Blinders are provided "as is". Booky Blinders
           makes no warranties, expressed or implied, and hereby disclaims and
@@ -65,7 +66,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>4. Limitations</h2>
+        <h2>4. {t("terms.limitations")}</h2>
         <p>
           In no event shall Booky Blinders or its suppliers be liable for any
           damages (including, without limitation, damages for loss of data or
@@ -77,7 +78,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>5. Accuracy of Materials</h2>
+        <h2>5. {t("terms.accuracy")}</h2>
         <p>
           The materials appearing on Booky Blinders could include technical,
           typographical, or photographic errors. Booky Blinders does not warrant
@@ -88,7 +89,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>6. Materials Copyright Notice</h2>
+        <h2>6. {t("terms.materials")}</h2>
         <p>
           All materials on Booky Blinders (including book covers and metadata)
           are subject to copyright and other intellectual property laws. User
@@ -142,7 +143,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>10. Links</h2>
+        <h2>10. {t("terms.links")}</h2>
         <p>
           Booky Blinders has not reviewed all of the sites linked to its website
           and is not responsible for the contents of any such linked site. The
@@ -221,7 +222,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>15. Modifications to Terms</h2>
+        <h2>15. {t("terms.modifications")}</h2>
         <p>
           Booky Blinders may revise these terms of service at any time without
           notice. By using this website, you are agreeing to be bound by the
@@ -230,7 +231,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>16. Governing Law</h2>
+        <h2>16. {t("terms.governing")}</h2>
         <p>
           These terms and conditions are governed by and construed in accordance
           with applicable law, and you irrevocably submit to the exclusive
@@ -248,7 +249,7 @@ export default function TermsPage() {
       </section>
 
       <section className={styles.section}>
-        <h2>18. Contact Information</h2>
+        <h2>18. {t("terms.contact")}</h2>
         <div className={styles.contact}>
           <strong>
             If you have questions about these Terms of Service, please contact:

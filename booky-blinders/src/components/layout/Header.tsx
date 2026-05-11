@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { UserDropdown } from "@/components/header/UserDropdown";
 import { BBMonogram } from "@/components/ui/BBMonogram";
-import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
@@ -126,8 +125,6 @@ export function Header() {
               {t("header.openTheLedger")}
             </Link>
           )}
-
-          <LanguageSwitcher />
         </div>
 
         <button

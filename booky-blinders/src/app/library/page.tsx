@@ -29,7 +29,7 @@ export default async function LibraryPage() {
           marginBottom: "2rem",
         }}
       >
-        The Ledger
+        Your Library
       </h1>
       <LibraryDashboard initialBooks={initialBooks} libraries={libraries} />
     </main>

@@ -7,6 +7,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useMemo } from "react";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import type { ReadingStatus, UserLibraryBook } from "@/types/library";
 import styles from "./LibraryTable.module.scss";
 
@@ -29,6 +31,9 @@ export function LibraryTable({
   onStatusChange,
   onRemove,
 }: LibraryTableProps) {
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
+
   const columns = useMemo(
     () => [
       columnHelper.accessor("cover", {
@@ -44,20 +49,20 @@ export function LibraryTable({
         ),
       }),
       columnHelper.accessor("title", {
-        header: "Title",
+        header: t("bookDetails.title"),
         cell: (info) => (
           <span className={styles.bookTitle}>{info.getValue()}</span>
         ),
       }),
       columnHelper.accessor("author", {
-        header: "Author",
+        header: t("bookDetails.author"),
         cell: (info) => (
           <span className={styles.author}>{info.getValue()}</span>
         ),
       }),
       columnHelper.accessor((row) => getStatus(row), {
         id: "status",
-        header: "Status",
+        header: t("bookDetails.title"),
         cell: (info) => {
           const status = info.getValue();
           const currentBook = info.row.original;
@@ -69,15 +74,15 @@ export function LibraryTable({
                 onStatusChange(currentBook.id, e.target.value as ReadingStatus)
               }
             >
-              <option value="TO_READ">TO READ</option>
-              <option value="IN_PROGRESS">IN PROGRESS</option>
-              <option value="READ">READ</option>
+              <option value="TO_READ">{t("library.toRead")}</option>
+              <option value="IN_PROGRESS">{t("library.reading")}</option>
+              <option value="READ">{t("library.completed")}</option>
             </select>
           );
         },
       }),
       columnHelper.accessor("addedAt", {
-        header: "Added Date",
+        header: t("bookDetails.published"),
         cell: (info) => (
           <span className={styles.date}>
             {new Date(info.getValue()).toLocaleDateString()}
@@ -93,12 +98,12 @@ export function LibraryTable({
             className={styles.removeBtn}
             onClick={() => onRemove(info.row.original.id)}
           >
-            Remove
+            {t("common.delete")}
           </button>
         ),
       }),
     ],
-    [onRemove, onStatusChange],
+    [t],
   );
 
   const table = useReactTable({

@@ -23,6 +23,8 @@ import {
 } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
 import { useSearchStore } from "@/store/useSearchStore";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import type {
   ReadingStatus,
   UserLibraryBook,
@@ -51,6 +53,10 @@ export function LibraryDashboard({
 }: LibraryDashboardProps) {
   const router = useRouter();
   const { openSearch } = useSearchStore();
+  
+  // Add i18n support
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
 
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [statusFilter, setStatusFilter] = useState<ReadingStatus | "ALL">(
@@ -208,7 +214,7 @@ export function LibraryDashboard({
             type="button"
             className={styles.iconActionBtn}
             onClick={handleOpenCreateModal}
-            title="Create library"
+            title={t("library.addBook")}
           >
             <Plus size={16} />
           </button>
@@ -218,7 +224,7 @@ export function LibraryDashboard({
               type="button"
               className={styles.iconActionBtn}
               onClick={() => setIsSettingsOpen((prev) => !prev)}
-              title="Library settings"
+              title={t("library.filter")}
             >
               <Settings size={15} />
             </button>
@@ -233,13 +239,13 @@ export function LibraryDashboard({
                   transition={{ duration: 0.16 }}
                 >
                   <button type="button" onClick={handleOpenRenameModal}>
-                    Rename
+                    {t("common.edit")}
                   </button>
                   <button
                     type="button"
                     onClick={() => void handleDeleteLibrary()}
                   >
-                    Delete
+                    {t("common.delete")}
                   </button>
                 </motion.div>
               )}
@@ -252,7 +258,7 @@ export function LibraryDashboard({
             <Search size={14} />
             <input
               type="text"
-              placeholder="Search in library..."
+              placeholder={t("library.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -264,7 +270,7 @@ export function LibraryDashboard({
             onClick={openSearch}
           >
             <BookPlus size={14} />
-            Add Book
+            {t("library.addBook")}
           </button>
 
           <div className={styles.selectWrapper}>
@@ -274,10 +280,10 @@ export function LibraryDashboard({
                 setStatusFilter(e.target.value as ReadingStatus | "ALL")
               }
             >
-              <option value="ALL">All Status</option>
-              <option value="TO_READ">To Read</option>
-              <option value="IN_PROGRESS">Reading</option>
-              <option value="READ">Finished</option>
+              <option value="ALL">{t("common.noResults")}</option>
+              <option value="TO_READ">{t("library.toRead")}</option>
+              <option value="IN_PROGRESS">{t("library.reading")}</option>
+              <option value="READ">{t("library.completed")}</option>
             </select>
             <ChevronDown size={14} className={styles.icon} />
           </div>
@@ -287,7 +293,7 @@ export function LibraryDashboard({
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortCriterion)}
             >
-              <option value="addedAt">Recent</option>
+              <option value="addedAt">{t("library.sort")}</option>
               <option value="title">A-Z</option>
               <option value="author">Author</option>
             </select>
@@ -316,7 +322,7 @@ export function LibraryDashboard({
       <div className={styles.content}>
         {filteredAndSortedBooks.length === 0 ? (
           <p className={styles.emptyState}>
-            No books found for this selection.
+            {t("library.empty")}
           </p>
         ) : viewMode === "grid" ? (
           <div className={styles.grid}>
@@ -362,27 +368,27 @@ export function LibraryDashboard({
             >
               <h3>
                 {libraryAction === "create"
-                  ? "Create library"
-                  : "Rename library"}
+                  ? t("library.addBook")
+                  : t("common.edit")}
               </h3>
               <input
                 type="text"
                 value={libraryName}
                 onChange={(e) => setLibraryName(e.target.value)}
-                placeholder="Library name"
+                placeholder={t("library.title")}
               />
               <div className={styles.modalActions}>
                 <button
                   type="button"
                   onClick={() => setIsLibraryModalOpen(false)}
                 >
-                  Cancel
+                  {t("accountSettings.cancel")}
                 </button>
                 <button
                   type="button"
                   onClick={() => void handleSubmitLibrary()}
                 >
-                  Save
+                  {t("accountSettings.save")}
                 </button>
               </div>
             </motion.div>

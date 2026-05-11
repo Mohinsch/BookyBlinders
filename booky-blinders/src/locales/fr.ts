@@ -12,32 +12,36 @@ export const fr = {
   // Hero Section
   hero: {
     title: "Vos Livres.",
+    yourRules: "Vos Règles.",
     subtitle: "Une bibliothèque personnelle pour ceux qui lisent avec intention. Cherchez, collectionnez, annotez et organisez votre empire littéraire avec l'élégance qu'il mérite.",
+    ctaButton: "Démarrez votre collection",
+    exploreBooks: "Explorer des Livres",
     stats: {
-      readers: "Lecteurs Avertis",
-      books: "Livres Curés",
-      hours: "Heures de Lecture",
+      books: "Livres",
+      rating: "Évaluation",
+      forever: "Gratuit",
     },
   },
 
   // Features Section
   features: {
     title: "Organisez Votre Étagère",
+    sectionTitle: "Tout ce qu'un lecteur a besoin",
     items: [
+      {
+        title: "Découvrir & Rechercher",
+        description:
+          "Explorez des millions de livres. Notre moteur de recherche découvre chaque titre, des classiques oubliés aux dernières sorties.",
+      },
       {
         title: "Organisez Votre Étagère",
         description:
-          "Organisez votre bibliothèque personnelle avec précision et élégance. Étiquetez, catégorisez et gérez chaque tome.",
+          "Construisez votre bibliothèque personnelle avec précision. Organisez par genre, auteur, ambiance, ou vos propres catégories personnalisées.",
       },
       {
-        title: "Découvrez des Pépites",
+        title: "Organisez & Suivez",
         description:
-          "Explorez des recommandations adaptées à vos préférences de lecture et à vos goûts littéraires.",
-      },
-      {
-        title: "Suivez Votre Parcours",
-        description:
-          "Marquez votre progression de lecture, notez les livres et conservez vos observations sur vos aventures littéraires.",
+          "Suivez votre progression de lecture, fixez des objectifs et maintenez des listes. De 'En cours de lecture' à 'Tous les favoris'.",
       },
     ],
   },
@@ -45,13 +49,21 @@ export const fr = {
   // Showcase Section
   showcase: {
     label: "Voyez-le en Action",
-    title: "Votre Monde Littéraire",
+    collectionTitle: "La Collection de Thomas Shelfy",
+    title: "La bibliothèque d'un gentleman",
     description: "Tout grand esprit organise son étagère avec soin. Voici un aperçu du monde d'un lecteur.",
+    quote: "Un homme qui lit vit mille vies avant de mourir.",
+    quoteCite: "Thomas Shelfy",
     books: [
       {
         title: "Le Grand Gatsby",
         author: "F. Scott Fitzgerald",
-        note: "Un chef-d'œuvre de la littérature américaine qui explore le glamour et l'excès de l'Âge de Jazz.",
+        note: "Un chef-d'œuvre de l'Âge de Jazz. La lumière verte nous appelle tous.",
+      },
+      {
+        title: "Crime et Châtiment",
+        author: "Fyodor Dostoevsky",
+        note: "Les profondeurs de la conscience humaine, exposées à chaque page.",
       },
     ],
   },
@@ -60,7 +72,7 @@ export const fr = {
   cta: {
     title: "Commencez votre voyage littéraire",
     description:
-      "Rejoignez les lecteurs avertis qui ont choisi Booky Blinders comme leur compagnon de bibliothèque personnelle.",
+      "Rejoignez les lecteurs passionnés qui ont choisi Booky Blinders comme leur compagnon de bibliothèque personnelle.",
     ctaButton: "Démarrez votre collection",
   },
 
@@ -82,6 +94,7 @@ export const fr = {
     login: "Connexion",
     register: "Inscription",
     email: "Email",
+    emailAddress: "Adresse Email",
     password: "Mot de passe",
     confirmPassword: "Confirmer le mot de passe",
     rememberMe: "Se souvenir de moi",
@@ -94,6 +107,28 @@ export const fr = {
     continueWithGoogle: "Continuer avec Google",
     termsAccept: "J'accepte les",
     and: "et",
+    // Auth Page
+    clubEntrance: "L'Entrée du Club",
+    chooseYourSide: "Choisissez votre côté. Une porte, deux chemins.",
+    welcomeToClub: "Bienvenue au Club",
+    newToFamily: "Nouveau dans la famille? Créez votre compte pour ouvrir votre registre privé.",
+    welcomeBack: "Bienvenue!",
+    alreadyMember: "Déjà membre? Retournez à votre collection et reprenez votre lecture.",
+    // Login Form
+    loginWelcome: "Bienvenue",
+    returnPrivateCollection: "Retournez à votre collection privée.",
+    invalidCredentials: "Identifiants invalides. Veuillez réessayer.",
+    verifying: "Vérification en cours...",
+    dontHaveAccountYet: "Vous n'avez pas encore de compte?",
+    signUpHere: "Inscrivez-vous ici",
+    // Register Form
+    joinClub: "Rejoignez le Club",
+    organizeBookCollection: "Organisez votre collection de livres.",
+    name: "Nom",
+    registering: "Inscription en cours...",
+    errorDuringRegistration: "Erreur lors de l'inscription. Veuillez réessayer.",
+    alreadyHaveAccount: "Vous avez déjà un compte?",
+    signInHere: "Connectez-vous ici",
   },
 
   // Library
@@ -166,5 +201,143 @@ export const fr = {
     share: "Partager",
     download: "Télécharger",
     noResults: "Aucun résultat trouvé",
+  },
+
+  // About Page
+  about: {
+    title: "À Propos",
+    introduction: "À Propos de Booky Blinders",
+    mission: "Notre Mission",
+    missionDesc: "Créer une plateforme de bibliothèque personnelle qui célèbre l'art de la lecture et aide les lecteurs à organiser leurs collections littéraires avec élégance et intention.",
+    vision: "Notre Vision",
+    visionDesc: "Un monde où chaque lecteur dispose d'un espace sophistiqué et magnifique pour organiser, suivre et célébrer son voyage de lecteur.",
+    values: "Nos Valeurs",
+    community: "Communauté",
+    communityDesc: "Nous croyons en la création d'une communauté de lecteurs avertis.",
+    excellence: "Excellence",
+    excellenceDesc: "Nous nous efforçons d'assurer la qualité dans tous les aspects de notre plateforme.",
+    innovation: "Innovation",
+    innovationDesc: "Nous améliorons continuellement nos services pour mieux servir nos utilisateurs.",
+  },
+
+  // Privacy Page
+  privacy: {
+    title: "Politique de Confidentialité",
+    lastUpdated: "Dernière mise à jour",
+    introduction: "Introduction",
+    dataCollection: "Informations que nous collectons",
+    directInfo: "Informations que vous fournissez directement",
+    automaticInfo: "Informations collectées automatiquement",
+    thirdParty: "Services tiers",
+    dataUsage: "Comment nous utilisons vos informations",
+    dataStorage: "Stockage et sécurité des données",
+    dataRetention: "Conservation et suppression des données",
+    thirdPartySharing: "Partage des données avec des tiers",
+    cookies: "Cookies et suivi",
+    yourRights: "Vos droits en matière de confidentialité",
+    childrenPrivacy: "Confidentialité des enfants",
+    changes: "Modifications de cette politique de confidentialité",
+    contact: "Nous Contacter",
+  },
+
+  // Terms Page
+  terms: {
+    title: "Conditions d'Utilisation",
+    lastUpdated: "Dernière mise à jour",
+    acceptance: "Acceptation des conditions",
+    license: "Licence d'utilisation",
+    disclaimer: "Clause de non-responsabilité",
+    limitations: "Limitations de responsabilité",
+    accuracy: "Exactitude des matériaux",
+    materials: "Matériaux sur le site Web",
+    links: "Liens",
+    modifications: "Modifications",
+    governing: "Loi applicable",
+    contact: "Nous Contacter",
+  },
+
+  // Error Messages
+  errors: {
+    emailRequired: "L'email est requis",
+    passwordRequired: "Le mot de passe est requis",
+    nameRequired: "Le nom est requis",
+    invalidEmail: "Adresse email invalide",
+    passwordTooShort: "Le mot de passe doit contenir au moins 8 caractères",
+    passwordsDontMatch: "Les mots de passe ne correspondent pas",
+    emailAlreadyExists: "Cet email est déjà enregistré",
+    invalidCredentials: "Email ou mot de passe invalide",
+    networkError: "Erreur réseau. Veuillez réessayer",
+    serverError: "Erreur serveur. Veuillez réessayer plus tard",
+    userNotFound: "Utilisateur non trouvé",
+    accountAlreadyExists: "Le compte existe déjà",
+    pleaseCheckEmail: "Veuillez vérifier votre adresse email",
+    loginRequired: "Vous devez être connecté pour accéder à cette page",
+    currentPasswordRequired: "Le mot de passe actuel est requis",
+    newPasswordRequired: "Le nouveau mot de passe est requis",
+    confirmPasswordRequired: "La confirmation du mot de passe est requise",
+    sessionExpired: "Votre session a expiré. Veuillez vous reconnecter",
+    unauthorized: "Vous n'avez pas la permission d'accéder à cette ressource",
+    notFound: "Page ou ressource non trouvée",
+  },
+
+  // Library Messages
+  libraryMessages: {
+    removeSuccess: "Livre supprimé avec succès",
+    markAsReadingSuccess: "Marqué comme en cours de lecture",
+    markAsCompleteSuccess: "Marqué comme terminé",
+    addSuccess: "Livre ajouté à la bibliothèque",
+    error: "Une erreur s'est produite lors de la mise à jour de votre bibliothèque",
+    addingBook: "Ajout du livre...",
+    removingBook: "Suppression du livre...",
+    updating: "Mise à jour...",
+  },
+
+  // Account Settings Extended
+  accountSettings: {
+    title: "Paramètres du Compte",
+    profile: "Profil",
+    profileDescription: "Gérez les informations de votre profil",
+    email: "Adresse Email",
+    emailDescription: "L'adresse email de votre compte",
+    name: "Nom",
+    nameDescription: "Votre nom complet",
+    password: "Mot de Passe",
+    passwordDescription: "Gérez votre mot de passe et votre sécurité",
+    changePassword: "Changer le Mot de Passe",
+    currentPassword: "Mot de Passe Actuel",
+    newPassword: "Nouveau Mot de Passe",
+    confirmPassword: "Confirmer le Mot de Passe",
+    deleteAccount: "Supprimer le Compte",
+    deleteAccountDescription: "Supprimez définitivement votre compte et toutes les données associées",
+    dangerZone: "Zone Dangereuse",
+    deleteWarning: "Cette action ne peut pas être annulée. Toutes vos données seront supprimées définitivement.",
+    deleteConfirm: "Tapez votre email pour confirmer la suppression",
+    deleteConfirmButton: "Supprimer mon compte",
+    logout: "Déconnexion",
+    logoutSuccess: "Vous avez été déconnecté avec succès",
+    save: "Enregistrer les Modifications",
+    cancel: "Annuler",
+    savedSuccess: "Modifications enregistrées avec succès",
+    errorOccurred: "Une erreur s'est produite",
+    accountInfo: "Informations du Compte",
+    emailVerified: "Email Vérifié",
+    yes: "Oui",
+    no: "Non",
+    pleaseLogIn: "Veuillez vous connecter pour accéder aux paramètres du compte",
+    verifying: "Vérification de vos identifiants...",
+    changingPassword: "Changement du mot de passe...",
+    deletingAccount: "Suppression du compte...",
+  },
+
+  // Book Details Extended
+  bookDetailsMessages: {
+    addingToLibrary: "Ajout à la bibliothèque...",
+    removingFromLibrary: "Suppression de la bibliothèque...",
+    markedAsReading: "Marqué comme en cours de lecture",
+    markedAsCompleted: "Marqué comme terminé",
+    addedToWishlist: "Ajouté à la liste de souhaits",
+    removedFromWishlist: "Supprimé de la liste de souhaits",
+    alreadyInLibrary: "Ce livre est déjà dans votre bibliothèque",
+    bookNotFound: "Livre non trouvé",
   },
 };

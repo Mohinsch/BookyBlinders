@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/lib/auth-client";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./AuthPage.module.scss";
 
 // 1. Zod Schema
@@ -23,6 +25,8 @@ interface RegisterFormProps {
 
 export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
   const router = useRouter();
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
   // 2. Init TanStack Form
@@ -43,7 +47,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
 
       if (error) {
         const errorMsg =
-          error.message || "Error during registration. Please try again.";
+          error.message || t("auth.errorDuringRegistration");
         setGlobalError(errorMsg);
         if (onError) onError(errorMsg);
         return;
@@ -63,8 +67,8 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       className={styles.authForm}
     >
       <div className={styles.formHeader}>
-        <h2>Join the Club</h2>
-        <p>Organize your book collection.</p>
+        <h2>{t("auth.joinClub")}</h2>
+        <p>{t("auth.organizeBookCollection")}</p>
       </div>
 
       <AnimatePresence>
@@ -92,7 +96,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       >
         {(field) => (
           <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>Name</label>
+            <label htmlFor={field.name}>{t("auth.name")}</label>
             <input
               id={field.name}
               name={field.name}
@@ -133,7 +137,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       >
         {(field) => (
           <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>Email Address</label>
+            <label htmlFor={field.name}>{t("auth.emailAddress")}</label>
             <input
               id={field.name}
               name={field.name}
@@ -174,7 +178,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       >
         {(field) => (
           <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>Password</label>
+            <label htmlFor={field.name}>{t("auth.password")}</label>
             <input
               id={field.name}
               name={field.name}
@@ -215,7 +219,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
             whileHover={{ scale: canSubmit ? 1.02 : 1 }}
             whileTap={{ scale: canSubmit ? 0.98 : 1 }}
           >
-            {isSubmitting ? "Registering..." : "Sign Up"}
+            {isSubmitting ? t("auth.registering") : t("auth.signUp")}
           </motion.button>
         )}
       </form.Subscribe>
@@ -224,13 +228,13 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       {onSwitchToLogin && (
         <div className={styles.authFooter}>
           <p>
-            Already have an account?{" "}
+            {t("auth.alreadyHaveAccount")}{" "}
             <button
               type="button"
               onClick={onSwitchToLogin}
               className={styles.switchLink}
             >
-              Sign in here
+              {t("auth.signInHere")}
             </button>
           </p>
         </div>
