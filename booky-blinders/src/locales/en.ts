@@ -206,9 +206,12 @@ export const en = {
   // About Page
   about: {
     title: "About Us",
+    subtitle: "By order of the Booky Blinders",
     introduction: "About Booky Blinders",
     mission: "Our Mission",
     missionDesc: "To create a personal library platform that celebrates the art of reading and helps readers curate their literary collections with elegance and purpose.",
+    missionLong: "In an age of digital chaos, we provide order. Booky Blinders is not merely a tool; it is a sanctuary for the discerning reader. We believe that a personal library should be managed with the same precision and elegance as a family empire.",
+    missionContinued: "No more lost titles. No more forgotten stories. Your books, your rules, under our protection.",
     vision: "Our Vision",
     visionDesc: "A world where every reader has a sophisticated, beautiful space to organize, track, and celebrate their reading journey.",
     values: "Our Values",
@@ -218,6 +221,18 @@ export const en = {
     excellenceDesc: "We strive for quality in every aspect of our platform.",
     innovation: "Innovation",
     innovationDesc: "We continuously improve to better serve our users.",
+    team: {
+      architect: "The Architect",
+      mohini: "Mohini",
+      leadDeveloper: "Lead Fullstack Developer",
+      architectDesc: "The visionary behind the code. Responsible for the architecture, the security of the ledger, and the seamless experience of our members.",
+      advisors: "The Advisors",
+      mentors: "The Mentors",
+      strategicSupport: "Strategic Support",
+      advisorsDesc: "Providing the technical wisdom and tactical guidance required to keep our infrastructure ahead of the rivals.",
+    },
+    cta: "Ready to join the family?",
+    enlist: "Enlist Now",
   },
 
   // Privacy Page
@@ -339,5 +354,14 @@ export const en = {
     removedFromWishlist: "Removed from wishlist",
     alreadyInLibrary: "This book is already in your library",
     bookNotFound: "Book not found",
+  },
+
+  // Search Modal
+  search: {
+    placeholder: "Search by title, author, or ISBN...",
+    noResults: "No results found in the archives.",
+    enterSearch: "Enter a title to begin the search.",
+    searching: "Searching...",
+    close: "Close search",
   },
 };

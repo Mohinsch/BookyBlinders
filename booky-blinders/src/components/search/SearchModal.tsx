@@ -11,6 +11,8 @@ import {
 } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
 import { authClient } from "@/lib/auth-client";
+import { useI18n } from "@/lib/i18n";
+import { useLocaleContext } from "@/lib/locale-context";
 import { useSearchStore } from "@/store/useSearchStore";
 import type { GoogleBookItem } from "@/types/google-books";
 import type { UserLibrarySummary } from "@/types/library";
@@ -19,6 +21,8 @@ import styles from "./SearchModal.module.scss";
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchStore();
   const { data: session } = authClient.useSession();
+  const { locale } = useLocaleContext();
+  const { t } = useI18n(locale);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GoogleBookItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,11 +88,11 @@ export function SearchModal() {
             <form className={styles.searchBar} onSubmit={handleSearch}>
               <input
                 type="text"
-                placeholder="Search by title, author, or ISBN..."
+                placeholder={t("search.placeholder")}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
-              <button type="submit" disabled={isLoading}>
+              <button type="submit" disabled={isLoading} aria-label={t("search.close")}>
                 {isLoading ? (
                   <Loader2 className={styles.spinner} />
                 ) : (
@@ -129,8 +133,8 @@ export function SearchModal() {
               ) : (
                 <p className={styles.placeholder}>
                   {query
-                    ? "No results found in the archives."
-                    : "Enter a title to begin the search."}
+                    ? t("search.noResults")
+                    : t("search.enterSearch")}
                 </p>
               )}
             </div>

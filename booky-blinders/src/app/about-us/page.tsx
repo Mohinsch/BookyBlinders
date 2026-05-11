@@ -16,56 +16,41 @@ export default function AboutUsPage() {
       <section className={styles.hero}>
         <BBMonogram className={styles.logo} />
         <h1>{t("about.title")}</h1>
-        <p className={styles.subtitle}>By order of the Booky Blinders</p>
+        <p className={styles.subtitle}>{t("about.subtitle")}</p>
       </section>
 
       <section className={styles.contentSection}>
         <div className={styles.card}>
           <h2>{t("about.mission")}</h2>
-          <p>
-            In an age of digital chaos, we provide order. Booky Blinders is not
-            merely a tool; it is a sanctuary for the discerning reader. We
-            believe that a personal library should be managed with the same
-            precision and elegance as a family empire.
-          </p>
-          <p>
-            No more lost titles. No more forgotten stories. Your books, your
-            rules, under our protection.
-          </p>
+          <p>{t("about.missionLong")}</p>
+          <p>{t("about.missionContinued")}</p>
         </div>
 
         <div className={styles.teamGrid}>
           <div className={styles.card}>
-            <h2>The Architect</h2>
+            <h2>{t("about.team.architect")}</h2>
             <div className={styles.memberInfo}>
-              <h3>Mohini</h3>
-              <span>Lead Fullstack Developer</span>
+              <h3>{t("about.team.mohini")}</h3>
+              <span>{t("about.team.leadDeveloper")}</span>
             </div>
-            <p>
-              The visionary behind the code. Responsible for the architecture,
-              the security of the ledger, and the seamless experience of our
-              members.
-            </p>
+            <p>{t("about.team.architectDesc")}</p>
           </div>
 
           <div className={styles.card}>
-            <h2>The Advisors</h2>
+            <h2>{t("about.team.advisors")}</h2>
             <div className={styles.memberInfo}>
-              <h3>The Mentors</h3>
-              <span>Strategic Support</span>
+              <h3>{t("about.team.mentors")}</h3>
+              <span>{t("about.team.strategicSupport")}</span>
             </div>
-            <p>
-              Providing the technical wisdom and tactical guidance required to
-              keep our infrastructure ahead of the rivals.
-            </p>
+            <p>{t("about.team.advisorsDesc")}</p>
           </div>
         </div>
       </section>
 
       <section className={styles.cta}>
-        <h2>Ready to join the family?</h2>
+        <h2>{t("about.cta")}</h2>
         <Link href="/login?mode=register">
-          <Button variant="primary">Enlist Now</Button>
+          <Button variant="primary">{t("about.enlist")}</Button>
         </Link>
       </section>
     </main>

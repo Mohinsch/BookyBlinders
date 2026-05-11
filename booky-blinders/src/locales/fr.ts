@@ -19,14 +19,14 @@ export const fr = {
     stats: {
       books: "Livres",
       rating: "Évaluation",
-      forever: "Gratuit",
+      forever: "À vie",
     },
   },
 
   // Features Section
   features: {
-    title: "Organisez Votre Étagère",
-    sectionTitle: "Tout ce qu'un lecteur a besoin",
+    title: "Sublimez Votre Collection",
+    sectionTitle: "Tout ce dont un lecteur a besoin",
     items: [
       {
         title: "Découvrir & Rechercher",
@@ -34,14 +34,14 @@ export const fr = {
           "Explorez des millions de livres. Notre moteur de recherche découvre chaque titre, des classiques oubliés aux dernières sorties.",
       },
       {
-        title: "Organisez Votre Étagère",
+        title: "Composez Votre Bibliothèque",
         description:
-          "Construisez votre bibliothèque personnelle avec précision. Organisez par genre, auteur, ambiance, ou vos propres catégories personnalisées.",
+          "Construisez votre bibliothèque personnelle avec précision. Organisez par genre, auteur, ambiance, ou créez vos propres catégories personnalisées.",
       },
       {
         title: "Organisez & Suivez",
         description:
-          "Suivez votre progression de lecture, fixez des objectifs et maintenez des listes. De 'En cours de lecture' à 'Tous les favoris'.",
+          "Suivez votre progression de lecture, fixez des objectifs et maintenez des listes. De 'En cours de lecture' à 'Favoris de tous les temps'.",
       },
     ],
   },
@@ -51,19 +51,19 @@ export const fr = {
     label: "Voyez-le en Action",
     collectionTitle: "La Collection de Thomas Shelfy",
     title: "La bibliothèque d'un gentleman",
-    description: "Tout grand esprit organise son étagère avec soin. Voici un aperçu du monde d'un lecteur.",
+    description: "Tout grand esprit façonne sa bibliothèque avec soin. Voici un aperçu du monde d'un lecteur.",
     quote: "Un homme qui lit vit mille vies avant de mourir.",
     quoteCite: "Thomas Shelfy",
     books: [
       {
         title: "Le Grand Gatsby",
         author: "F. Scott Fitzgerald",
-        note: "Un chef-d'œuvre de l'Âge de Jazz. La lumière verte nous appelle tous.",
+        note: "Un chef-d'œuvre de l'ère du jazz. La lumière verte nous appelle tous.",
       },
       {
         title: "Crime et Châtiment",
-        author: "Fyodor Dostoevsky",
-        note: "Les profondeurs de la conscience humaine, exposées à chaque page.",
+        author: "Fiodor Dostoïevski",
+        note: "Les profondeurs de la conscience humaine, mises à nu à chaque page.",
       },
     ],
   },
@@ -72,7 +72,7 @@ export const fr = {
   cta: {
     title: "Commencez votre voyage littéraire",
     description:
-      "Rejoignez les lecteurs passionnés qui ont choisi Booky Blinders comme leur compagnon de bibliothèque personnelle.",
+      "Rejoignez les lecteurs exigeants qui ont choisi Booky Blinders comme leur compagnon de bibliothèque personnelle.",
     ctaButton: "Démarrez votre collection",
   },
 
@@ -86,7 +86,7 @@ export const fr = {
     privacy: "Confidentialité",
     terms: "Conditions",
     contact: "Contact",
-    allRightsReserved: "Tous les droits réservés.",
+    allRightsReserved: "Tous droits réservés.",
   },
 
   // Authentication
@@ -98,9 +98,9 @@ export const fr = {
     password: "Mot de passe",
     confirmPassword: "Confirmer le mot de passe",
     rememberMe: "Se souvenir de moi",
-    forgotPassword: "Mot de passe oublié?",
-    noAccount: "Vous n'avez pas de compte?",
-    haveAccount: "Vous avez déjà un compte?",
+    forgotPassword: "Mot de passe oublié ?",
+    noAccount: "Vous n'avez pas de compte ?",
+    haveAccount: "Vous avez déjà un compte ?",
     signIn: "Se Connecter",
     signUp: "S'inscrire",
     or: "OU",
@@ -109,17 +109,17 @@ export const fr = {
     and: "et",
     // Auth Page
     clubEntrance: "L'Entrée du Club",
-    chooseYourSide: "Choisissez votre côté. Une porte, deux chemins.",
+    chooseYourSide: "Choisissez votre camp. Une porte, deux chemins.",
     welcomeToClub: "Bienvenue au Club",
-    newToFamily: "Nouveau dans la famille? Créez votre compte pour ouvrir votre registre privé.",
-    welcomeBack: "Bienvenue!",
-    alreadyMember: "Déjà membre? Retournez à votre collection et reprenez votre lecture.",
+    newToFamily: "Nouveau dans la famille ? Créez votre compte pour ouvrir votre registre privé.",
+    welcomeBack: "Bon retour",
+    alreadyMember: "Déjà membre ? Retournez à votre collection et reprenez votre lecture.",
     // Login Form
     loginWelcome: "Bienvenue",
     returnPrivateCollection: "Retournez à votre collection privée.",
     invalidCredentials: "Identifiants invalides. Veuillez réessayer.",
     verifying: "Vérification en cours...",
-    dontHaveAccountYet: "Vous n'avez pas encore de compte?",
+    dontHaveAccountYet: "Vous n'avez pas encore de compte ?",
     signUpHere: "Inscrivez-vous ici",
     // Register Form
     joinClub: "Rejoignez le Club",
@@ -127,14 +127,14 @@ export const fr = {
     name: "Nom",
     registering: "Inscription en cours...",
     errorDuringRegistration: "Erreur lors de l'inscription. Veuillez réessayer.",
-    alreadyHaveAccount: "Vous avez déjà un compte?",
+    alreadyHaveAccount: "Vous avez déjà un compte ?",
     signInHere: "Connectez-vous ici",
   },
 
   // Library
   library: {
     title: "Votre Bibliothèque",
-    empty: "Votre bibliothèque est vide. Commencez à ajouter des livres!",
+    empty: "Votre bibliothèque est vide. Commencez à ajouter des livres !",
     addBook: "Ajouter un Livre",
     search: "Chercher des livres...",
     filter: "Filtrer",
@@ -149,13 +149,13 @@ export const fr = {
     title: "Détails du Livre",
     author: "Auteur",
     publisher: "Éditeur",
-    published: "Publié",
+    published: "Publié le",
     description: "Description",
     addToLibrary: "Ajouter à la Bibliothèque",
     removeFromLibrary: "Retirer de la Bibliothèque",
     markAsReading: "Marquer comme En Lecture",
     markAsCompleted: "Marquer comme Terminé",
-    addToWishlist: "Ajouter à la Liste de Souhaits",
+    addToWishlist: "Ajouter aux Livres convoités",
   },
 
   // Account Settings
@@ -206,18 +206,33 @@ export const fr = {
   // About Page
   about: {
     title: "À Propos",
+    subtitle: "Par ordre des Booky Blinders",
     introduction: "À Propos de Booky Blinders",
     mission: "Notre Mission",
     missionDesc: "Créer une plateforme de bibliothèque personnelle qui célèbre l'art de la lecture et aide les lecteurs à organiser leurs collections littéraires avec élégance et intention.",
+    missionLong: "À l'ère du chaos numérique, nous apportons l'ordre. Booky Blinders n'est pas simplement un outil; c'est un sanctuaire pour le lecteur exigeant. Nous croyons qu'une bibliothèque personnelle devrait être gérée avec la même précision et l'élégance qu'un empire familial.",
+    missionContinued: "Plus de titres perdus. Plus d'histoires oubliées. Vos livres, vos règles, sous notre protection.",
     vision: "Notre Vision",
-    visionDesc: "Un monde où chaque lecteur dispose d'un espace sophistiqué et magnifique pour organiser, suivre et célébrer son voyage de lecteur.",
+    visionDesc: "Un monde où chaque lecteur dispose d'un espace sophistiqué et magnifique pour organiser, suivre et célébrer son voyage littéraire.",
     values: "Nos Valeurs",
     community: "Communauté",
-    communityDesc: "Nous croyons en la création d'une communauté de lecteurs avertis.",
+    communityDesc: "Nous croyons en la création d'une communauté de lecteurs exigeants.",
     excellence: "Excellence",
     excellenceDesc: "Nous nous efforçons d'assurer la qualité dans tous les aspects de notre plateforme.",
     innovation: "Innovation",
     innovationDesc: "Nous améliorons continuellement nos services pour mieux servir nos utilisateurs.",
+    team: {
+      architect: "L'Architecte",
+      mohini: "Mohini",
+      leadDeveloper: "Développeur Fullstack Principal",
+      architectDesc: "La visionnaire derrière le code. Responsable de l'architecture, de la sécurité du registre, et de l'expérience transparente de nos membres.",
+      advisors: "Les Conseillers",
+      mentors: "Les Mentors",
+      strategicSupport: "Support Stratégique",
+      advisorsDesc: "Fournissant la sagesse technique et l'orientation tactique nécessaires pour garder notre infrastructure en avance sur les rivaux.",
+    },
+    cta: "Prêt à rejoindre la famille?",
+    enlist: "S'enrôler Maintenant",
   },
 
   // Privacy Page
@@ -248,8 +263,8 @@ export const fr = {
     license: "Licence d'utilisation",
     disclaimer: "Clause de non-responsabilité",
     limitations: "Limitations de responsabilité",
-    accuracy: "Exactitude des matériaux",
-    materials: "Matériaux sur le site Web",
+    accuracy: "Exactitude des contenus",
+    materials: "Contenus sur le site Web",
     links: "Liens",
     modifications: "Modifications",
     governing: "Loi applicable",
@@ -277,7 +292,7 @@ export const fr = {
     confirmPasswordRequired: "La confirmation du mot de passe est requise",
     sessionExpired: "Votre session a expiré. Veuillez vous reconnecter",
     unauthorized: "Vous n'avez pas la permission d'accéder à cette ressource",
-    notFound: "Page ou ressource non trouvée",
+    notFound: "Page ou ressource introuvable",
   },
 
   // Library Messages
@@ -335,9 +350,18 @@ export const fr = {
     removingFromLibrary: "Suppression de la bibliothèque...",
     markedAsReading: "Marqué comme en cours de lecture",
     markedAsCompleted: "Marqué comme terminé",
-    addedToWishlist: "Ajouté à la liste de souhaits",
-    removedFromWishlist: "Supprimé de la liste de souhaits",
+    addedToWishlist: "Ajouté aux Livres convoités",
+    removedFromWishlist: "Supprimé des Livres convoités",
     alreadyInLibrary: "Ce livre est déjà dans votre bibliothèque",
-    bookNotFound: "Livre non trouvé",
+    bookNotFound: "Livre introuvable",
+  },
+
+  // Search Modal
+  search: {
+    placeholder: "Chercher par titre, auteur ou ISBN...",
+    noResults: "Aucun résultat trouvé dans les archives.",
+    enterSearch: "Entrez un titre pour commencer la recherche.",
+    searching: "Recherche en cours...",
+    close: "Fermer la recherche",
   },
 };
