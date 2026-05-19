@@ -58,7 +58,8 @@ export function Footer() {
         {/* --- Copyright + Quote --- */}
         <div className={styles.bottomSection}>
           <p className={styles.copyright}>
-            &copy; {currentYear} {t("footer.brand")}. {t("footer.allRightsReserved")}
+            &copy; {currentYear} {t("footer.brand")}.{" "}
+            {t("footer.allRightsReserved")}
           </p>
           <p className={styles.quote}>"By order of the Booky Blinders"</p>
         </div>

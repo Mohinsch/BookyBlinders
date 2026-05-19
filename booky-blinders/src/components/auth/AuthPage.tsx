@@ -88,9 +88,7 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
                 {mode === "login" ? (
                   <>
                     <h2>{t("auth.welcomeToClub")}</h2>
-                    <p>
-                      {t("auth.newToFamily")}
-                    </p>
+                    <p>{t("auth.newToFamily")}</p>
                     <button
                       type="button"
                       className={styles.overlayButton}
@@ -103,9 +101,7 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
                 ) : (
                   <>
                     <h2>{t("auth.welcomeBack")}</h2>
-                    <p>
-                      {t("auth.alreadyMember")}
-                    </p>
+                    <p>{t("auth.alreadyMember")}</p>
                     <button
                       type="button"
                       className={styles.overlayButton}

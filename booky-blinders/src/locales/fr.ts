@@ -13,7 +13,8 @@ export const fr = {
   hero: {
     title: "Vos Livres.",
     yourRules: "Vos Règles.",
-    subtitle: "Une bibliothèque personnelle pour ceux qui lisent avec intention. Cherchez, collectionnez, annotez et organisez votre empire littéraire avec l'élégance qu'il mérite.",
+    subtitle:
+      "Une bibliothèque personnelle pour ceux qui lisent avec intention. Cherchez, collectionnez, annotez et organisez votre empire littéraire avec l'élégance qu'il mérite.",
     ctaButton: "Démarrez votre collection",
     exploreBooks: "Explorer des Livres",
     stats: {
@@ -51,7 +52,8 @@ export const fr = {
     label: "Voyez-le en Action",
     collectionTitle: "La Collection de Thomas Shelfy",
     title: "La bibliothèque d'un gentleman",
-    description: "Tout grand esprit façonne sa bibliothèque avec soin. Voici un aperçu du monde d'un lecteur.",
+    description:
+      "Tout grand esprit façonne sa bibliothèque avec soin. Voici un aperçu du monde d'un lecteur.",
     quote: "Un homme qui lit vit mille vies avant de mourir.",
     quoteCite: "Thomas Shelfy",
     books: [
@@ -80,7 +82,8 @@ export const fr = {
   footer: {
     brand: "Booky Blinders",
     tagline: "Bibliothèque Personnelle",
-    about: "Une plateforme sophistiquée pour organiser et gérer votre collection personnelle de livres.",
+    about:
+      "Une plateforme sophistiquée pour organiser et gérer votre collection personnelle de livres.",
     quickLinks: "Liens Rapides",
     legal: "Légal",
     privacy: "Confidentialité",
@@ -111,9 +114,11 @@ export const fr = {
     clubEntrance: "L'Entrée du Club",
     chooseYourSide: "Choisissez votre camp. Une porte, deux chemins.",
     welcomeToClub: "Bienvenue au Club",
-    newToFamily: "Nouveau dans la famille ? Créez votre compte pour ouvrir votre registre privé.",
+    newToFamily:
+      "Nouveau dans la famille ? Créez votre compte pour ouvrir votre registre privé.",
     welcomeBack: "Bon retour",
-    alreadyMember: "Déjà membre ? Retournez à votre collection et reprenez votre lecture.",
+    alreadyMember:
+      "Déjà membre ? Retournez à votre collection et reprenez votre lecture.",
     // Login Form
     loginWelcome: "Bienvenue",
     returnPrivateCollection: "Retournez à votre collection privée.",
@@ -126,7 +131,8 @@ export const fr = {
     organizeBookCollection: "Organisez votre collection de livres.",
     name: "Nom",
     registering: "Inscription en cours...",
-    errorDuringRegistration: "Erreur lors de l'inscription. Veuillez réessayer.",
+    errorDuringRegistration:
+      "Erreur lors de l'inscription. Veuillez réessayer.",
     alreadyHaveAccount: "Vous avez déjà un compte ?",
     signInHere: "Connectez-vous ici",
   },
@@ -209,27 +215,36 @@ export const fr = {
     subtitle: "Par ordre des Booky Blinders",
     introduction: "À Propos de Booky Blinders",
     mission: "Notre Mission",
-    missionDesc: "Créer une plateforme de bibliothèque personnelle qui célèbre l'art de la lecture et aide les lecteurs à organiser leurs collections littéraires avec élégance et intention.",
-    missionLong: "À l'ère du chaos numérique, nous apportons l'ordre. Booky Blinders n'est pas simplement un outil; c'est un sanctuaire pour le lecteur exigeant. Nous croyons qu'une bibliothèque personnelle devrait être gérée avec la même précision et l'élégance qu'un empire familial.",
-    missionContinued: "Plus de titres perdus. Plus d'histoires oubliées. Vos livres, vos règles, sous notre protection.",
+    missionDesc:
+      "Créer une plateforme de bibliothèque personnelle qui célèbre l'art de la lecture et aide les lecteurs à organiser leurs collections littéraires avec élégance et intention.",
+    missionLong:
+      "À l'ère du chaos numérique, nous apportons l'ordre. Booky Blinders n'est pas simplement un outil; c'est un sanctuaire pour le lecteur exigeant. Nous croyons qu'une bibliothèque personnelle devrait être gérée avec la même précision et l'élégance qu'un empire familial.",
+    missionContinued:
+      "Plus de titres perdus. Plus d'histoires oubliées. Vos livres, vos règles, sous notre protection.",
     vision: "Notre Vision",
-    visionDesc: "Un monde où chaque lecteur dispose d'un espace sophistiqué et magnifique pour organiser, suivre et célébrer son voyage littéraire.",
+    visionDesc:
+      "Un monde où chaque lecteur dispose d'un espace sophistiqué et magnifique pour organiser, suivre et célébrer son voyage littéraire.",
     values: "Nos Valeurs",
     community: "Communauté",
-    communityDesc: "Nous croyons en la création d'une communauté de lecteurs exigeants.",
+    communityDesc:
+      "Nous croyons en la création d'une communauté de lecteurs exigeants.",
     excellence: "Excellence",
-    excellenceDesc: "Nous nous efforçons d'assurer la qualité dans tous les aspects de notre plateforme.",
+    excellenceDesc:
+      "Nous nous efforçons d'assurer la qualité dans tous les aspects de notre plateforme.",
     innovation: "Innovation",
-    innovationDesc: "Nous améliorons continuellement nos services pour mieux servir nos utilisateurs.",
+    innovationDesc:
+      "Nous améliorons continuellement nos services pour mieux servir nos utilisateurs.",
     team: {
       architect: "L'Architecte",
       mohini: "Mohini",
       leadDeveloper: "Développeur Fullstack Principal",
-      architectDesc: "La visionnaire derrière le code. Responsable de l'architecture, de la sécurité du registre, et de l'expérience transparente de nos membres.",
+      architectDesc:
+        "La visionnaire derrière le code. Responsable de l'architecture, de la sécurité du registre, et de l'expérience transparente de nos membres.",
       advisors: "Les Conseillers",
       mentors: "Les Mentors",
       strategicSupport: "Support Stratégique",
-      advisorsDesc: "Fournissant la sagesse technique et l'orientation tactique nécessaires pour garder notre infrastructure en avance sur les rivaux.",
+      advisorsDesc:
+        "Fournissant la sagesse technique et l'orientation tactique nécessaires pour garder notre infrastructure en avance sur les rivaux.",
     },
     cta: "Prêt à rejoindre la famille?",
     enlist: "S'enrôler Maintenant",
@@ -301,7 +316,8 @@ export const fr = {
     markAsReadingSuccess: "Marqué comme en cours de lecture",
     markAsCompleteSuccess: "Marqué comme terminé",
     addSuccess: "Livre ajouté à la bibliothèque",
-    error: "Une erreur s'est produite lors de la mise à jour de votre bibliothèque",
+    error:
+      "Une erreur s'est produite lors de la mise à jour de votre bibliothèque",
     addingBook: "Ajout du livre...",
     removingBook: "Suppression du livre...",
     updating: "Mise à jour...",
@@ -323,9 +339,11 @@ export const fr = {
     newPassword: "Nouveau Mot de Passe",
     confirmPassword: "Confirmer le Mot de Passe",
     deleteAccount: "Supprimer le Compte",
-    deleteAccountDescription: "Supprimez définitivement votre compte et toutes les données associées",
+    deleteAccountDescription:
+      "Supprimez définitivement votre compte et toutes les données associées",
     dangerZone: "Zone Dangereuse",
-    deleteWarning: "Cette action ne peut pas être annulée. Toutes vos données seront supprimées définitivement.",
+    deleteWarning:
+      "Cette action ne peut pas être annulée. Toutes vos données seront supprimées définitivement.",
     deleteConfirm: "Tapez votre email pour confirmer la suppression",
     deleteConfirmButton: "Supprimer mon compte",
     logout: "Déconnexion",
@@ -338,7 +356,8 @@ export const fr = {
     emailVerified: "Email Vérifié",
     yes: "Oui",
     no: "Non",
-    pleaseLogIn: "Veuillez vous connecter pour accéder aux paramètres du compte",
+    pleaseLogIn:
+      "Veuillez vous connecter pour accéder aux paramètres du compte",
     verifying: "Vérification de vos identifiants...",
     changingPassword: "Changement du mot de passe...",
     deletingAccount: "Suppression du compte...",

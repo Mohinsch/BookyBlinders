@@ -92,7 +92,11 @@ export function SearchModal() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
-              <button type="submit" disabled={isLoading} aria-label={t("search.close")}>
+              <button
+                type="submit"
+                disabled={isLoading}
+                aria-label={t("search.close")}
+              >
                 {isLoading ? (
                   <Loader2 className={styles.spinner} />
                 ) : (
@@ -132,9 +136,7 @@ export function SearchModal() {
                 </div>
               ) : (
                 <p className={styles.placeholder}>
-                  {query
-                    ? t("search.noResults")
-                    : t("search.enterSearch")}
+                  {query ? t("search.noResults") : t("search.enterSearch")}
                 </p>
               )}
             </div>

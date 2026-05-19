@@ -103,7 +103,9 @@ export function DeleteAccountSection() {
                 disabled={isDeleting}
                 className={styles.deleteButton}
               >
-                {isDeleting ? t("accountSettings.deletingAccount") : t("accountSettings.deleteConfirmButton")}
+                {isDeleting
+                  ? t("accountSettings.deletingAccount")
+                  : t("accountSettings.deleteConfirmButton")}
               </button>
             </div>
           </form>

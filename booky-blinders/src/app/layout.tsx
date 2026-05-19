@@ -2,10 +2,10 @@
 
 import type { Metadata } from "next";
 import { DM_Sans, EB_Garamond, Montserrat } from "next/font/google";
+import { Providers } from "@/app/providers";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SearchModal } from "@/components/search/SearchModal";
-import { Providers } from "@/app/providers";
 import "@/styles/main.scss";
 
 const dmSans = DM_Sans({

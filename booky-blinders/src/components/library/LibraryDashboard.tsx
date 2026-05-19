@@ -22,9 +22,9 @@ import {
   updateReadingStatus,
 } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
-import { useSearchStore } from "@/store/useSearchStore";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
+import { useSearchStore } from "@/store/useSearchStore";
 import type {
   ReadingStatus,
   UserLibraryBook,
@@ -53,7 +53,7 @@ export function LibraryDashboard({
 }: LibraryDashboardProps) {
   const router = useRouter();
   const { openSearch } = useSearchStore();
-  
+
   // Add i18n support
   const { locale } = useLocaleContext();
   const { t } = useI18n(locale);
@@ -321,9 +321,7 @@ export function LibraryDashboard({
 
       <div className={styles.content}>
         {filteredAndSortedBooks.length === 0 ? (
-          <p className={styles.emptyState}>
-            {t("library.empty")}
-          </p>
+          <p className={styles.emptyState}>{t("library.empty")}</p>
         ) : viewMode === "grid" ? (
           <div className={styles.grid}>
             {filteredAndSortedBooks.map((book) => (

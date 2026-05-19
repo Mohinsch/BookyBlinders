@@ -9,6 +9,7 @@ export function LanguageSwitcher() {
   return (
     <div className={styles.switcher}>
       <button
+        type="button"
         className={`${styles.button} ${locale === "en" ? styles.active : ""}`}
         onClick={() => setLocale("en")}
         aria-label="Switch to English"
@@ -16,6 +17,7 @@ export function LanguageSwitcher() {
         EN
       </button>
       <button
+        type="button"
         className={`${styles.button} ${locale === "fr" ? styles.active : ""}`}
         onClick={() => setLocale("fr")}
         aria-label="Switch to French"

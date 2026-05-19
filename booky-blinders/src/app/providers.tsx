@@ -1,9 +1,9 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-import { type ReactNode } from "react";
-import { LocaleProvider } from "@/lib/locale-context";
+import type { ReactNode } from "react";
 import { LampToggle } from "@/components/ui/LampToggle";
+import { LocaleProvider } from "@/lib/locale-context";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (

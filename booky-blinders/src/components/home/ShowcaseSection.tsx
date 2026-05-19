@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
+import TiltedCard from "@/components/ui/TiltedCard";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
-import TiltedCard from "@/components/ui/TiltedCard";
 import styles from "./ShowcaseSection.module.scss";
 
 export function ShowcaseSection() {
@@ -43,9 +43,7 @@ export function ShowcaseSection() {
         >
           <div className={styles.quoteOverlay}>
             <Quote size={20} className={styles.quoteIcon} />
-            <blockquote>
-              "{t("showcase.quote")}"
-            </blockquote>
+            <blockquote>"{t("showcase.quote")}"</blockquote>
             <cite>{t("showcase.quoteCite")}</cite>
           </div>
         </TiltedCard>
@@ -54,9 +52,7 @@ export function ShowcaseSection() {
       <div className={styles.textColumn}>
         <span className={styles.label}>{t("showcase.collectionTitle")}</span>
         <h2>{t("showcase.title")}</h2>
-        <p>
-          {t("showcase.description")}
-        </p>
+        <p>{t("showcase.description")}</p>
 
         <div className={styles.showcaseList}>
           {books.map((book) => (
