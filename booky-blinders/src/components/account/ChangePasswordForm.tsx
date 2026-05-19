@@ -102,7 +102,9 @@ export function ChangePasswordForm() {
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="currentPassword">{t("accountSettings.currentPassword")}</label>
+          <label htmlFor="currentPassword">
+            {t("accountSettings.currentPassword")}
+          </label>
           <input
             id="currentPassword"
             type="password"
@@ -116,7 +118,9 @@ export function ChangePasswordForm() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="newPassword">{t("accountSettings.newPassword")}</label>
+          <label htmlFor="newPassword">
+            {t("accountSettings.newPassword")}
+          </label>
           <input
             id="newPassword"
             type="password"
@@ -130,7 +134,9 @@ export function ChangePasswordForm() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="confirmPassword">{t("accountSettings.confirmPassword")}</label>
+          <label htmlFor="confirmPassword">
+            {t("accountSettings.confirmPassword")}
+          </label>
           <input
             id="confirmPassword"
             type="password"
@@ -144,7 +150,9 @@ export function ChangePasswordForm() {
         </div>
 
         <button type="submit" disabled={isLoading} className={styles.button}>
-          {isLoading ? t("accountSettings.changingPassword") : t("accountSettings.changePassword")}
+          {isLoading
+            ? t("accountSettings.changingPassword")
+            : t("accountSettings.changePassword")}
         </button>
       </form>
     </div>

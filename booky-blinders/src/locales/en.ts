@@ -13,7 +13,8 @@ export const en = {
   hero: {
     title: "Your Books.",
     yourRules: "Your Rules.",
-    subtitle: "A personal library for those who read with purpose. Search, collect, annotate, and curate your literary empire with the elegance it deserves.",
+    subtitle:
+      "A personal library for those who read with purpose. Search, collect, annotate, and curate your literary empire with the elegance it deserves.",
     ctaButton: "Start your collection",
     exploreBooks: "Explore Books",
     stats: {
@@ -51,7 +52,8 @@ export const en = {
     label: "See It In Action",
     collectionTitle: "Thomas Shelfy's Collection",
     title: "A gentleman's library",
-    description: "Every great mind curates their shelf with care. Here's a glimpse into one reader's world.",
+    description:
+      "Every great mind curates their shelf with care. Here's a glimpse into one reader's world.",
     quote: "A man who reads lives a thousand lives before he dies.",
     quoteCite: "Thomas Shelfy",
     books: [
@@ -80,7 +82,8 @@ export const en = {
   footer: {
     brand: "Booky Blinders",
     tagline: "Personal Library",
-    about: "A sophisticated platform for curating and managing your personal book collection.",
+    about:
+      "A sophisticated platform for curating and managing your personal book collection.",
     quickLinks: "Quick Links",
     legal: "Legal",
     privacy: "Privacy",
@@ -111,9 +114,11 @@ export const en = {
     clubEntrance: "The Club Entrance",
     chooseYourSide: "Choose your side. One door, two paths.",
     welcomeToClub: "Welcome to the Club",
-    newToFamily: "New to the family? Create your account to open your private registry.",
+    newToFamily:
+      "New to the family? Create your account to open your private registry.",
     welcomeBack: "Welcome Back",
-    alreadyMember: "Already a member? Return to your collection and resume your reading.",
+    alreadyMember:
+      "Already a member? Return to your collection and resume your reading.",
     // Login Form
     loginWelcome: "Welcome",
     returnPrivateCollection: "Return to your private collection.",
@@ -209,11 +214,15 @@ export const en = {
     subtitle: "By order of the Booky Blinders",
     introduction: "About Booky Blinders",
     mission: "Our Mission",
-    missionDesc: "To create a personal library platform that celebrates the art of reading and helps readers curate their literary collections with elegance and purpose.",
-    missionLong: "In an age of digital chaos, we provide order. Booky Blinders is not merely a tool; it is a sanctuary for the discerning reader. We believe that a personal library should be managed with the same precision and elegance as a family empire.",
-    missionContinued: "No more lost titles. No more forgotten stories. Your books, your rules, under our protection.",
+    missionDesc:
+      "To create a personal library platform that celebrates the art of reading and helps readers curate their literary collections with elegance and purpose.",
+    missionLong:
+      "In an age of digital chaos, we provide order. Booky Blinders is not merely a tool; it is a sanctuary for the discerning reader. We believe that a personal library should be managed with the same precision and elegance as a family empire.",
+    missionContinued:
+      "No more lost titles. No more forgotten stories. Your books, your rules, under our protection.",
     vision: "Our Vision",
-    visionDesc: "A world where every reader has a sophisticated, beautiful space to organize, track, and celebrate their reading journey.",
+    visionDesc:
+      "A world where every reader has a sophisticated, beautiful space to organize, track, and celebrate their reading journey.",
     values: "Our Values",
     community: "Community",
     communityDesc: "We believe in fostering a community of discerning readers.",
@@ -225,11 +234,13 @@ export const en = {
       architect: "The Architect",
       mohini: "Mohini",
       leadDeveloper: "Lead Fullstack Developer",
-      architectDesc: "The visionary behind the code. Responsible for the architecture, the security of the ledger, and the seamless experience of our members.",
+      architectDesc:
+        "The visionary behind the code. Responsible for the architecture, the security of the ledger, and the seamless experience of our members.",
       advisors: "The Advisors",
       mentors: "The Mentors",
       strategicSupport: "Strategic Support",
-      advisorsDesc: "Providing the technical wisdom and tactical guidance required to keep our infrastructure ahead of the rivals.",
+      advisorsDesc:
+        "Providing the technical wisdom and tactical guidance required to keep our infrastructure ahead of the rivals.",
     },
     cta: "Ready to join the family?",
     enlist: "Enlist Now",
@@ -323,9 +334,11 @@ export const en = {
     newPassword: "New Password",
     confirmPassword: "Confirm Password",
     deleteAccount: "Delete Account",
-    deleteAccountDescription: "Permanently delete your account and all associated data",
+    deleteAccountDescription:
+      "Permanently delete your account and all associated data",
     dangerZone: "Danger Zone",
-    deleteWarning: "This action cannot be undone. All your data will be permanently deleted.",
+    deleteWarning:
+      "This action cannot be undone. All your data will be permanently deleted.",
     deleteConfirm: "Type your email to confirm deletion",
     deleteConfirmButton: "Delete my account",
     logout: "Logout",

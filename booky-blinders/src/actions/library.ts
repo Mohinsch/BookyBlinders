@@ -150,7 +150,11 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
       return { success: false, errors: validationResult.errors };
     }
 
-    const validData = validationResult.data!;
+    if (!validationResult.data) {
+      return { success: false, message: "Validation data missing" };
+    }
+
+    const validData = validationResult.data;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
@@ -203,7 +207,11 @@ export async function renameLibrary(
       return { success: false, errors: validationResult.errors };
     }
 
-    const validData = validationResult.data!;
+    if (!validationResult.data) {
+      return { success: false, message: "Validation data missing" };
+    }
+
+    const validData = validationResult.data;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
@@ -271,7 +279,11 @@ export async function deleteLibrary(
       return { success: false, errors: validationResult.errors };
     }
 
-    const validData = validationResult.data!;
+    if (!validationResult.data) {
+      return { success: false, message: "Validation data missing" };
+    }
+
+    const validData = validationResult.data;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
@@ -352,7 +364,11 @@ export async function addBookToLibrary(
       return { success: false, errors: validationResult.errors };
     }
 
-    const validData = validationResult.data!;
+    if (!validationResult.data) {
+      return { success: false, message: "Validation data missing" };
+    }
+
+    const validData = validationResult.data;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
@@ -449,7 +465,11 @@ export async function getUserLibrary(
       return [];
     }
 
-    const validData = validationResult.data!;
+    if (!validationResult.data) {
+      return [];
+    }
+
+    const validData = validationResult.data;
     const user = await requireAuth();
     const userLibrary = await ensureUserLibrary(user.id, validData.libraryId);
 
@@ -501,7 +521,11 @@ export async function updateReadingStatus(
       return { success: false, errors: validationResult.errors };
     }
 
-    const validData = validationResult.data!;
+    if (!validationResult.data) {
+      return { success: false, message: "Validation data missing" };
+    }
+
+    const validData = validationResult.data;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user
@@ -585,7 +609,11 @@ export async function removeBookFromLibrary(
       return { success: false, errors: validationResult.errors };
     }
 
-    const validData = validationResult.data!;
+    if (!validationResult.data) {
+      return { success: false, message: "Validation data missing" };
+    }
+
+    const validData = validationResult.data;
     const user = await requireAuth();
 
     // ✅ Rate limiting: 100 operations per minute per user

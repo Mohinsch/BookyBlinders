@@ -103,7 +103,7 @@ export function LibraryTable({
         ),
       }),
     ],
-    [t],
+    [t, onStatusChange, onRemove],
   );
 
   const table = useReactTable({

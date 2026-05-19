@@ -43,8 +43,7 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
       });
 
       if (error) {
-        const errorMsg =
-          error.message || t("auth.invalidCredentials");
+        const errorMsg = error.message || t("auth.invalidCredentials");
         setGlobalError(errorMsg);
         if (onError) onError(errorMsg);
         return;

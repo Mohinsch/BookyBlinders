@@ -72,9 +72,7 @@ export function HeroSection() {
           />
         </motion.div>
 
-        <motion.p variants={itemVariants}>
-          {t("hero.subtitle")}
-        </motion.p>
+        <motion.p variants={itemVariants}>{t("hero.subtitle")}</motion.p>
 
         <motion.div className={styles.ctaContainer} variants={itemVariants}>
           <AuthCTA variant="primary">{t("hero.ctaButton")}</AuthCTA>

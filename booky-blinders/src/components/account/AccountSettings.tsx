@@ -18,9 +18,7 @@ export function AccountSettings() {
 
   if (!session?.user) {
     return (
-      <div className={styles.loading}>
-        {t("accountSettings.pleaseLogIn")}
-      </div>
+      <div className={styles.loading}>{t("accountSettings.pleaseLogIn")}</div>
     );
   }
 
@@ -36,7 +34,9 @@ export function AccountSettings() {
           <h2>{t("accountSettings.accountInfo")}</h2>
           <div className={styles.infoBox}>
             <div className={styles.infoRow}>
-              <span className={styles.label}>{t("accountSettings.email")}:</span>
+              <span className={styles.label}>
+                {t("accountSettings.email")}:
+              </span>
               <span className={styles.value}>{session.user.email}</span>
             </div>
             <div className={styles.infoRow}>
@@ -44,9 +44,13 @@ export function AccountSettings() {
               <span className={styles.value}>{session.user.name}</span>
             </div>
             <div className={styles.infoRow}>
-              <span className={styles.label}>{t("accountSettings.emailVerified")}:</span>
+              <span className={styles.label}>
+                {t("accountSettings.emailVerified")}:
+              </span>
               <span className={styles.value}>
-                {session.user.emailVerified ? t("accountSettings.yes") : t("accountSettings.no")}
+                {session.user.emailVerified
+                  ? t("accountSettings.yes")
+                  : t("accountSettings.no")}
               </span>
             </div>
           </div>

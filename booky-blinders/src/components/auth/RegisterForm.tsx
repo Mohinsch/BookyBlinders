@@ -46,8 +46,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       });
 
       if (error) {
-        const errorMsg =
-          error.message || t("auth.errorDuringRegistration");
+        const errorMsg = error.message || t("auth.errorDuringRegistration");
         setGlobalError(errorMsg);
         if (onError) onError(errorMsg);
         return;
