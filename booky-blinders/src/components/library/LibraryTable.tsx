@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   createColumnHelper,
   flexRender,
@@ -41,7 +42,15 @@ export function LibraryTable({
         cell: (info) => (
           <div className={styles.coverCell}>
             {info.getValue() ? (
-              <img src={info.getValue() || ""} alt="Cover" />
+              <Image
+                src={info.getValue() || ""}
+                alt="Book cover"
+                width={60}
+                height={90}
+                className={styles.coverImage}
+                sizes="60px"
+                quality={75}
+              />
             ) : (
               <div className={styles.placeholder} />
             )}

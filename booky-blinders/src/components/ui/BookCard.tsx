@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { ReadingStatus } from "@/types/library";
@@ -72,7 +73,16 @@ export function BookCard({
     >
       <div className={styles.coverWrapper}>
         {thumbnail ? (
-          <img src={thumbnail} alt={`Cover of ${title}`} loading="lazy" />
+          <Image
+            src={thumbnail}
+            alt={`Cover of ${title}`}
+            loading="lazy"
+            width={150}
+            height={225}
+            className={styles.coverImage}
+            sizes="(max-width: 768px) 100vw, 150px"
+            quality={75}
+          />
         ) : (
           <div className={styles.placeholder}>
             <span>Missing Cover</span>

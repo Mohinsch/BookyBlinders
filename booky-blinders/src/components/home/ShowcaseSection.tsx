@@ -31,7 +31,7 @@ export function ShowcaseSection() {
       <div className={styles.imageColumn}>
         <TiltedCard
           imageSrc="/thomas-shelfy.jpg"
-          altText="Thomas Shelfy"
+          altText="Thomas Shelfy - Book collection showcase"
           containerHeight="600px"
           containerWidth="100%"
           imageHeight="600px"
@@ -40,6 +40,7 @@ export function ShowcaseSection() {
           scaleOnHover={1.03}
           showTooltip={false}
           displayOverlayContent={true}
+          priority={true} // 🔥 LCP optimization - Hero image
         >
           <div className={styles.quoteOverlay}>
             <Quote size={20} className={styles.quoteIcon} />

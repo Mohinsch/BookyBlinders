@@ -1,10 +1,11 @@
+import Image from "next/image";
 import type { SpringOptions } from "motion/react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useRef, useState } from "react";
 import "./TiltedCard.css";
 
 interface TiltedCardProps {
-  imageSrc: React.ComponentProps<"img">["src"];
+  imageSrc: string;
   altText?: string;
   captionText?: string;
   containerHeight?: React.CSSProperties["height"];
@@ -17,6 +18,7 @@ interface TiltedCardProps {
   showTooltip?: boolean;
   overlayContent?: React.ReactNode;
   displayOverlayContent?: boolean;
+  priority?: boolean; // 🔥 Add priority for LCP optimization
   children?: React.ReactNode; // Added for overlay flexibility
 }
 
@@ -40,6 +42,7 @@ export default function TiltedCard({
   showTooltip = true,
   overlayContent = null,
   displayOverlayContent = false,
+  priority = false, // 🔥 LCP optimization
   children, // Destructured here
 }: TiltedCardProps) {
   const ref = useRef<HTMLElement>(null);
@@ -125,14 +128,15 @@ export default function TiltedCard({
           transformStyle: "preserve-3d",
         }}
       >
-        <motion.img
+        <Image
           src={imageSrc}
           alt={altText}
           className="tilted-card-img"
-          style={{
-            width: imageWidth,
-            height: imageHeight,
-          }}
+          width={parseInt(imageWidth as string) || 300}
+          height={parseInt(imageHeight as string) || 300}
+          priority={priority} // 🔥 LCP optimization for hero images
+          quality={75}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
         />
 
         {displayOverlayContent && overlayContent && (

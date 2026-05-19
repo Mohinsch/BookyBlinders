@@ -1,16 +1,25 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { UserDropdown } from "@/components/header/UserDropdown";
 import { BBMonogram } from "@/components/ui/BBMonogram";
 import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./Header.module.scss";
+
+// 🚀 Dynamic import for UserDropdown - only loaded when user is authenticated (header is always rendered)
+const UserDropdown = dynamic(
+  () =>
+    import("@/components/header/UserDropdown").then((mod) => ({
+      default: mod.UserDropdown,
+    })),
+  { ssr: false }, // CSR only - contains auth state and dropdown interactions
+);
 
 export function Header() {
   const pathname = usePathname();
