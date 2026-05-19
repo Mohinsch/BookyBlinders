@@ -1,45 +1,134 @@
-## 🧪 Test Plan
+# 📚 Booky Blinders - Personal Library Management
 
-The project follows a testing strategy to ensure data integrity and API reliability.
+[![CI](https://github.com/Mohinsch/BookyBlinders/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohinsch/BookyBlinders/actions/workflows/ci.yml)
 
+A mobile-first web application for managing your personal book collection with an industrial 1920s aesthetic. 
+Track your reading progress, organize your library, and discover new books effortlessly.
 
-### 🔹 Authentication & Security
+![Booky Blinders Screenshot](/docs/BookyBlinders_PersonalLibrary.pdf)
 
-| Test Case | Expected Result | Status |
-| :--- | :--- | :--- |
-| **Action call with valid session** | 200: Returns user object and proceeds | 🟢 |
-| **Action call without session** | 401: Throws "Unauthorized" (Caught: success: false) | 🔴 |
-| **Route protection (Proxy)** | 302: Redirects `/library` to `/login` | 🔴 |
+---
 
-### 📚 Library Server Actions (`src/actions/library.ts`)
+## 🎯 Project Overview
 
-| Test Case | Expected Result | Status |
-| :--- | :--- | :--- |
-| **Add book (Success)** | Inserts book into DB and revalidates UI | 🟢 |
-| **Get library (Success)** | Returns formatted list of user's saved books | 🟢 |
-| **Update status (Success)** | Updates reading status and revalidates UI | 🟢 |
-| **Remove book (Success)** | Removes book and revalidates UI | 🟢 |
-| **Add book (Not Found)** | Throws "Book not found" -> Returns `success: false` | 🔴 |
-| **Get library (DB Error)** | Exception caught safely -> Returns empty array `[]` | 🔴 |
-| **Update status (Library not found)** | Throws "Library not found" -> Returns `success: false` | 🔴 |
-| **Remove book (Library not found)** | Throws "Library not found" -> Returns `success: false` | 🔴 |
+**Booky Blinders** is a modern, full-stack application that combines a sleek vintage interface with contemporary web technologies. It empowers readers to:
+- 📖 Create and manage personal book libraries
+- 🔍 Search and discover books via Google Books API
+- ⏳ Track reading progress and status
+- 🎨 Enjoy a responsive, dark-themed UI inspired by the 1920s era
 
-### 🌐 Google Books API Service (`src/services/google-books.ts`)
+**Technology Stack:**
+- **Frontend:** Next.js 16 (React 19) with TypeScript
+- **Backend:** Next.js Server Actions for seamless API integration
+- **Database:** PostgreSQL with Drizzle ORM for type-safe queries
+- **Authentication:** Better-Auth for session management
+- **Code Quality:** Biome for linting and formatting
+- **Testing:** Vitest for unit and integration tests
 
-| Test Case | Expected Result | Status |
-| :--- | :--- | :--- |
-| **Search books (Valid query)** | URL constructed properly, returns array of books | 🟢 |
-| **Get book by ID (Valid ID)** | Returns detailed book object | 🟢 |
-| **Search books (Empty query)** | Returns empty array `[]` without calling API | 🔴 |
-| **Get book by ID (Empty ID)** | Returns `null` without calling API | 🔴 |
-| **Fetch (HTTP Error)** | Detects 404/500, logs error, returns `null` | 🔴 |
-| **Fetch (Network Failure)** | Exception caught, logs error, returns `null` | 🔴 |
+---
 
-### 🔍 Books Server Actions (`src/actions/books.ts`)
+## 🚀 Quick Setup (5 minutes)
 
-| Test Case | Expected Result | Status |
-| :--- | :--- | :--- |
-| **Search Books (Success)** | Fetches and returns search results to the client | 🟢 |
-| **Get Book Details (Success)** | Fetches and returns specific book data | 🟢 |
-| **Search Books (API Down)** | Catches error, returns empty array to prevent UI crash | 🔴 |
-| **Get Book Details (API Down)** | Catches error, returns `null` to prevent UI crash | 🔴 |
+### Prerequisites
+- **Node.js:** `^20.x` & **npm:** `^10.x`
+- **Docker & Docker Compose** (Optional, but recommended for DB)
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Mohinsch/BookyBlinders.git
+cd booky-blinders
+
+# 2. Install dependencies
+npm install
+
+# 3. Setup environment
+cp .env.example .env
+# Edit .env with your actual values
+
+# 4. Start infrastructure with Docker (PostgreSQL + Adminer)
+docker-compose up --build -d
+
+# 5. Initialize the database
+npm run db:push
+
+# 6. Start the development server
+npm run dev
+
+**Access URLs:**
+- App: http://localhost:3000
+- Database GUI (Adminer): http://localhost:8080
+
+---
+
+## 🛠️ Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server with hot reload |
+| `npm run build` | Build for production |
+| `npm start` | Start production server |
+| `npm run lint` | Check code style and issues with Biome |
+| `npm run format`| Format code automatically with Biome |
+| `npm test` | Run all tests |
+| `npm run db:push` | Apply migrations to the database |
+| `npm run db:studio`| Launch Drizzle Studio for visual DB management |
+
+---
+
+## 🔧 Developer Environment Setup
+
+### VS Code Extensions
+For the best developer experience, install these extensions:
+- `biomejs.biome` (Biome - *Set as default formatter*)
+- `drizzle-team.drizzle-orm` (Drizzle)
+- `dsznajder.es7-react-js-snippets` (React Snippets)
+
+### Troubleshooting
+- **Port 3000/5432 taken:** Use `lsof -ti:3000` (or 5432) to find the PID, then `kill <PID>`
+- **Dependencies fail:** Run `npm cache clean --force && npm install`
+- **Docker/Database error:** Run `docker-compose down -v && docker-compose up --build`
+
+---
+
+## 🔐 Environment Variables
+
+See `.env.example` for a complete template. Key variables:
+
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@localhost/db` |
+| `BETTER_AUTH_SECRET` | Authentication session secret | Generated random string |
+| `NEXT_PUBLIC_API_URL` | Public API URL | `http://localhost:3000` |
+| `GOOGLE_BOOKS_API_KEY` | Google Books API key | Get from Google Cloud Console |
+
+---
+
+## 🏗️ Architecture & Technical Choices
+
+### 1. **Next.js 16 + React 19**
+- **Why:** Next.js provides built-in Server Actions, automatic API routes, and excellent TypeScript support.
+- **Benefit:** Enables SSR/SSG for SEO and performance; seamless client-server communication.
+
+### 2. **Drizzle ORM**
+- **Why:** Type-safe database queries with PostgreSQL, lighter than heavy ORMs.
+- **Benefit:** Migrations tracked in Git, auto-generated TypeScript types prevent runtime errors.
+
+### 3. **Better-Auth**
+- **Why:** Modern, lightweight authentication without external services.
+- **Benefit:** Session management, role-based access, integrated with Next.js Server Actions.
+
+### 4. **Biome for Code Quality**
+- **Why:** Single fast tool for linting AND formatting (replaces ESLint + Prettier).
+- **Benefit:** 1.5–5x faster than traditional tools; opinionated rules prevent code style debates.
+
+---
+
+## 📝 License & Contributing
+
+- **License:** MIT License - See `LICENSE` file for details.
+- **Contributing:** See `CONTRIBUTING.md` for guidelines on code style and pull requests.
+- **Testing:** See `TEST_PLAN.md` for our testing strategy and expected behaviors.
+
+**Built with ❤️ by the Booky Blinders team**
