@@ -29,7 +29,8 @@
       height: 280px;
     }
 
-    img {
+    img,
+    .coverImage {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -38,7 +39,8 @@
     }
   }
 
-  &:hover .coverWrapper img {
+  &:hover .coverWrapper img,
+  &:hover .coverWrapper .coverImage {
     filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.9)) brightness(1.05);
   }
 
@@ -210,7 +212,8 @@
     background-color: rgba(255, 255, 255, 0.02);
     border-color: rgba($color-primary, 0.12);
 
-    img {
+    img,
+    .coverImage {
       opacity: 0.86;
       filter: saturate(0.84) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45));
     }

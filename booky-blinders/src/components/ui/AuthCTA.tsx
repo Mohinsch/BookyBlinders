@@ -5,6 +5,7 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants";
 import { authClient } from "@/lib/auth-client";
@@ -27,20 +28,28 @@ export function AuthCTA({
 }: AuthCTAProps) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleClick = () => {
     const href = session?.user ? authenticatedHref : unauthenticatedHref;
     router.push(href);
   };
 
+  // Don't render interactive state until mounted to prevent hydration mismatch
+  const isLoading = isMounted ? isPending : false;
+
   return (
     <Button
       variant={variant}
       onClick={handleClick}
-      disabled={isPending}
+      disabled={isLoading}
       className={className}
     >
-      {isPending ? "Loading..." : children}
+      {isLoading ? "Loading..." : children}
     </Button>
   );
 }

@@ -1,11 +1,27 @@
 "use client";
 
-import { ChangePasswordForm } from "@/components/account/ChangePasswordForm";
-import { DeleteAccountSection } from "@/components/account/DeleteAccountSection";
+import dynamic from "next/dynamic";
 import { useSession } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./AccountSettings.module.scss";
+
+// 🚀 Dynamic imports for account settings sections - only loaded on /account page
+const ChangePasswordForm = dynamic(
+  () =>
+    import("@/components/account/ChangePasswordForm").then((mod) => ({
+      default: mod.ChangePasswordForm,
+    })),
+  { ssr: false }, // CSR only - contains password form state and validation
+);
+
+const DeleteAccountSection = dynamic(
+  () =>
+    import("@/components/account/DeleteAccountSection").then((mod) => ({
+      default: mod.DeleteAccountSection,
+    })),
+  { ssr: false }, // CSR only - contains account deletion logic
+);
 
 export function AccountSettings() {
   const { data: session, isPending } = useSession();

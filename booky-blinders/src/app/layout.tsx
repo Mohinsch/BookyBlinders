@@ -5,7 +5,7 @@ import { DM_Sans, EB_Garamond, Montserrat } from "next/font/google";
 import { Providers } from "@/app/providers";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { SearchModal } from "@/components/search/SearchModal";
+import { SearchModalWrapper } from "@/components/layout/SearchModalWrapper";
 import "@/styles/main.scss";
 
 const dmSans = DM_Sans({
@@ -48,7 +48,7 @@ export default function RootLayout({
           <Header />
           <div style={{ flex: 1 }}>{children}</div>
           <Footer />
-          <SearchModal />
+          <SearchModalWrapper />
           {modal}
         </Providers>
       </body>
