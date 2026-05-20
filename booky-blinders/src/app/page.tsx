@@ -5,13 +5,19 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { ShowcaseSection } from "@/components/home/ShowcaseSection";
 import { SEARCH_CONFIG } from "@/constants";
 import { searchBooks } from "@/services/google-books";
+import type { GoogleBookItem } from "@/types/google-books";
 import styles from "./page.module.scss";
 
 export default async function HomePage() {
-  const books = await searchBooks(
-    SEARCH_CONFIG.INITIAL_QUERY,
-    SEARCH_CONFIG.INITIAL_MAX_RESULTS,
-  );
+  let books: GoogleBookItem[] = [];
+  try {
+    books = await searchBooks(
+      SEARCH_CONFIG.INITIAL_QUERY,
+      SEARCH_CONFIG.INITIAL_MAX_RESULTS,
+    );
+  } catch (error) {
+    console.error("Error loading initial books:", error);
+  }
 
   return (
     <main className={styles.home}>
