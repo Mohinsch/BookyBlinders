@@ -40,7 +40,7 @@ export function ShowcaseSection() {
           scaleOnHover={1.03}
           showTooltip={false}
           displayOverlayContent={true}
-          priority={true} // 🔥 LCP optimization - Hero image
+          priority={true} //LCP optimization - Hero image
         >
           <div className={styles.quoteOverlay}>
             <Quote size={20} className={styles.quoteIcon} />

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import type { SpringOptions } from "motion/react";
 import { motion, useMotionValue, useSpring } from "motion/react";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import "./TiltedCard.css";
 
@@ -132,9 +132,9 @@ export default function TiltedCard({
           src={imageSrc}
           alt={altText}
           className="tilted-card-img"
-          width={parseInt(imageWidth as string) || 300}
-          height={parseInt(imageHeight as string) || 300}
-          priority={priority} // 🔥 LCP optimization for hero images
+          width={parseInt(imageWidth as string, 10) || 300}
+          height={parseInt(imageHeight as string, 10) || 300}
+          priority={priority} //LCP optimization for hero images
           quality={75}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
         />

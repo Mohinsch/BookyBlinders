@@ -5,8 +5,8 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ROUTES } from "@/constants";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./Button";
