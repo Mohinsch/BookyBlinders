@@ -18,7 +18,7 @@ interface TiltedCardProps {
   showTooltip?: boolean;
   overlayContent?: React.ReactNode;
   displayOverlayContent?: boolean;
-  priority?: boolean; // 🔥 Add priority for LCP optimization
+  priority?: boolean; // Add priority for LCP optimization
   children?: React.ReactNode; // Added for overlay flexibility
 }
 
@@ -42,7 +42,7 @@ export default function TiltedCard({
   showTooltip = true,
   overlayContent = null,
   displayOverlayContent = false,
-  priority = false, // 🔥 LCP optimization
+  priority = false, // LCP optimization
   children, // Destructured here
 }: TiltedCardProps) {
   const ref = useRef<HTMLElement>(null);

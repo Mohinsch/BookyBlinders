@@ -41,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${dmSans.variable} ${garamond.variable} ${montserrat.variable}`}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
