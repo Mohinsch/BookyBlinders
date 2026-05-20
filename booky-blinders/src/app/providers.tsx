@@ -16,11 +16,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <LocaleProvider>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem={false}
-      >
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
         {children}
         {mounted && <LampToggle />}
       </ThemeProvider>

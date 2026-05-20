@@ -1,0 +1,6 @@
+#!/bin/sh
+cd booky-blinders 2>/dev/null || cd bookyblinders
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+node_modules/.bin/lint-staged
