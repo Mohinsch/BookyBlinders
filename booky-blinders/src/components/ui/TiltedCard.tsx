@@ -134,7 +134,7 @@ export default function TiltedCard({
           className="tilted-card-img"
           width={parseInt(imageWidth as string, 10) || 300}
           height={parseInt(imageHeight as string, 10) || 300}
-          priority={priority} // 🔥 LCP optimization for hero images
+          priority={priority} //LCP optimization for hero images
           quality={75}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
         />
