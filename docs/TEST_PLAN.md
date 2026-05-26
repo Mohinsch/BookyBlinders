@@ -2,6 +2,9 @@
 
 The project follows a testing strategy to ensure data integrity and API reliability.
 
+🟢 Success Path: The action is successfully executed (e.g., 200 OK, data created).
+
+🔴 Error Path / Edge Case: The action is safely rejected or handled (e.g., 401 Unauthorized, validation errors, API down).
 
 ### 🔹 Authentication & Security
 
