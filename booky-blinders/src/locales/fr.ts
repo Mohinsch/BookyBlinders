@@ -380,6 +380,7 @@ export const fr = {
     placeholder: "Chercher par titre, auteur ou ISBN...",
     noResults: "Aucun résultat trouvé dans les archives.",
     enterSearch: "Entrez un titre pour commencer la recherche.",
+    validationEmpty: "Veuillez saisir un titre avant de lancer la recherche.",
     searching: "Recherche en cours...",
     close: "Fermer la recherche",
   },

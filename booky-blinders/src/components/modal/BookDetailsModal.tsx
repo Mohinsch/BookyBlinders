@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   addBookToLibrary,
   getOwnedGoogleBookIds,
@@ -12,6 +12,7 @@ import {
 } from "@/actions/library";
 import { BookCardActionButton } from "@/components/ui/BookCardActionButton";
 import { ANIMATIONS, UI_TEXT } from "@/constants";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { authClient } from "@/lib/auth-client";
 import type { BookDetailsViewModel } from "@/lib/book-details";
 import type { UserLibrarySummary } from "@/types/library";
@@ -28,6 +29,9 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
     UserLibrarySummary[]
   >([]);
   const [ownedGoogleIds, setOwnedGoogleIds] = useState<string[]>([]);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useFocusTrap(true, modalRef);
 
   useEffect(() => {
     const loadLibraries = async () => {
@@ -75,6 +79,11 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
           exit={ANIMATIONS.MODAL.CONTAINER_EXIT}
           transition={ANIMATIONS.MODAL.CONTAINER_TRANSITION}
           onClick={(e) => e.stopPropagation()}
+          ref={modalRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="book-details-title"
+          tabIndex={-1}
         >
           <button
             type="button"
@@ -106,7 +115,9 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
             <div className={styles.detailsSection}>
               <div className={styles.header}>
                 <div className={styles.titleRow}>
-                  <h1 className={styles.title}>{bookDetails.title}</h1>
+                  <h1 id="book-details-title" className={styles.title}>
+                    {bookDetails.title}
+                  </h1>
                   <div className={styles.titleActionButton}>
                     <BookCardActionButton
                       showActions

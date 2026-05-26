@@ -16,6 +16,8 @@
 - [ ] E2E Testing Strategy Evolution @priority(medium)
   - [ ] Evaluate the transition from Cypress to Playwright for end-to-end testing. @id(test01)
   - [ ] Goal: Improve execution speed with Turbopack and ensure better support for multi-tab authentication flows.
+- [ ] Setup vercel deploy in ci/cd prod @priority(high)
+- [ ] Setup modify recovery password @priority(low)
 <!-- Format de la Todo List :
 - [ ] Tâche @id(abc123)
   - [ ] Sous-tâche @id(def456)

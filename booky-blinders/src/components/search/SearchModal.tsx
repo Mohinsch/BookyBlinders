@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Search, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { searchBooksAction } from "@/actions/books";
 import {
   addBookToLibrary,
@@ -10,6 +11,7 @@ import {
   getUserLibraries,
 } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
@@ -21,15 +23,22 @@ import styles from "./SearchModal.module.scss";
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchStore();
   const { data: session } = authClient.useSession();
+  const router = useRouter();
   const { locale } = useLocaleContext();
   const { t } = useI18n(locale);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GoogleBookItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [validationMessage, setValidationMessage] = useState<string | null>(
+    null,
+  );
   const [availableLibraries, setAvailableLibraries] = useState<
     UserLibrarySummary[]
   >([]);
   const [ownedGoogleIds, setOwnedGoogleIds] = useState<string[]>([]);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useFocusTrap(isOpen, modalRef);
 
   // Close on ESC key
   useEffect(() => {
@@ -52,12 +61,26 @@ export function SearchModal() {
     void loadLibraries();
   }, [isOpen, session?.user]);
 
+  useEffect(() => {
+    if (isOpen) return;
+    setQuery("");
+    setResults([]);
+    setIsLoading(false);
+    setValidationMessage(null);
+  }, [isOpen]);
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      setValidationMessage(t("search.validationEmpty"));
+      setResults([]);
+      return;
+    }
 
+    setValidationMessage(null);
     setIsLoading(true);
-    const data = await searchBooksAction(query);
+    const data = await searchBooksAction(trimmedQuery);
     setResults(data);
     setIsLoading(false);
   };
@@ -76,6 +99,11 @@ export function SearchModal() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("search.placeholder")}
+            tabIndex={-1}
           >
             <button
               type="button"
@@ -90,7 +118,14 @@ export function SearchModal() {
                 type="text"
                 placeholder={t("search.placeholder")}
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  if (validationMessage) setValidationMessage(null);
+                }}
+                aria-invalid={Boolean(validationMessage)}
+                aria-describedby={
+                  validationMessage ? "search-validation-message" : undefined
+                }
               />
               <button
                 type="submit"
@@ -104,6 +139,16 @@ export function SearchModal() {
                 )}
               </button>
             </form>
+
+            {validationMessage && (
+              <p
+                id="search-validation-message"
+                className={styles.validationMessage}
+                role="alert"
+              >
+                {validationMessage}
+              </p>
+            )}
 
             <div className={styles.resultsArea}>
               {results.length > 0 ? (
@@ -128,8 +173,8 @@ export function SearchModal() {
                         );
                       }}
                       onClick={() => {
-                        // Future: Redirect to book details or add to library
-                        console.log("Selected book:", book.id);
+                        closeSearch();
+                        router.push(`/books/${book.id}`);
                       }}
                     />
                   ))}

@@ -374,6 +374,7 @@ export const en = {
     placeholder: "Search by title, author, or ISBN...",
     noResults: "No results found in the archives.",
     enterSearch: "Enter a title to begin the search.",
+    validationEmpty: "Please enter a title before searching.",
     searching: "Searching...",
     close: "Close search",
   },
