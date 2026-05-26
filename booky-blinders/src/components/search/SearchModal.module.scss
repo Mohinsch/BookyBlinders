@@ -71,7 +71,7 @@
     border: none;
     font-family: $font-accent;
     font-size: 1.2rem;
-    color: $color-text-paper;
+    color: var(--color-text-main);
     outline: none;
 
     @include respond-to('md') {
@@ -93,6 +93,12 @@
       opacity: 0.5; 
     }
   }
+}
+
+.validationMessage {
+  @include text-ui;
+  color: #d55f5f;
+  margin: -0.5rem 0 0.75rem;
 }
 
 .resultsArea {

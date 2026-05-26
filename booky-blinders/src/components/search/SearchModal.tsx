@@ -26,6 +26,9 @@ export function SearchModal() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GoogleBookItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [validationMessage, setValidationMessage] = useState<string | null>(
+    null,
+  );
   const [availableLibraries, setAvailableLibraries] = useState<
     UserLibrarySummary[]
   >([]);
@@ -52,12 +55,26 @@ export function SearchModal() {
     void loadLibraries();
   }, [isOpen, session?.user]);
 
+  useEffect(() => {
+    if (isOpen) return;
+    setQuery("");
+    setResults([]);
+    setIsLoading(false);
+    setValidationMessage(null);
+  }, [isOpen]);
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      setValidationMessage(t("search.validationEmpty"));
+      setResults([]);
+      return;
+    }
 
+    setValidationMessage(null);
     setIsLoading(true);
-    const data = await searchBooksAction(query);
+    const data = await searchBooksAction(trimmedQuery);
     setResults(data);
     setIsLoading(false);
   };
@@ -90,7 +107,14 @@ export function SearchModal() {
                 type="text"
                 placeholder={t("search.placeholder")}
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  if (validationMessage) setValidationMessage(null);
+                }}
+                aria-invalid={Boolean(validationMessage)}
+                aria-describedby={
+                  validationMessage ? "search-validation-message" : undefined
+                }
               />
               <button
                 type="submit"
@@ -104,6 +128,16 @@ export function SearchModal() {
                 )}
               </button>
             </form>
+
+            {validationMessage && (
+              <p
+                id="search-validation-message"
+                className={styles.validationMessage}
+                role="alert"
+              >
+                {validationMessage}
+              </p>
+            )}
 
             <div className={styles.resultsArea}>
               {results.length > 0 ? (
