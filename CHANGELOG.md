@@ -4,6 +4,14 @@ All notable changes to this project are documented below, based on the git histo
 
 ## 2026-05-26
 - feat: update CI configuration and add Vercel deployment steps to todo list (6389567)
+- feat: add changelog workflow to automate CHANGELOG.md generation (1870f20)
+- refactor: replace SCSS variables with CSS custom properties for consistency (4322ac4)
+- feat: add comprehensive UI test cases for improved coverage (445cf7a)
+- fix: add validation message for empty search query and update localization (1d79b60)
+- chore: add task to modify recovery password in todo list (5b63e18)
+- fix: implement book redirection on selection in SearchModal (c04d096)
+- fix: implement focus trap hook and integrate it into modals for accessibility (95d9883)
+- Merge pull request #23 from Mohinsch/feat/refacto-and-lighthouse (7ad881b)
 
 ## 2026-05-25
 - fix: change tree structure conception (e45004d)
@@ -12,11 +20,15 @@ All notable changes to this project are documented below, based on the git histo
 
 ## 2026-05-20
 - feat: refactor AuthCTA component to handle hydration mismatch and improve loading state (f970bd4)
+- Merge pull request #19 from Mohinsch/feat/refacto-and-lighthouse (d88a56e)
 - feat: reorder imports for consistency and optimize image width/height parsing (0bbab2d)
 - feat: remove space before comments for consistency in LCP optimization annotations (c512084)
+- Merge pull request #20 from Mohinsch/feat/refacto-and-lighthouse (a964f9b)
 - feat: remove emoji from priority comments for consistency in LCP optimization (173b92e)
 - feat: optimize hydration handling and lazy load components for improved performance (34a9159)
+- Merge pull request #21 from Mohinsch/feat/refacto-and-lighthouse (4acad70)
 - feat: add husky and lint-staged for pre-commit hooks and improve code quality (db10c1a)
+- Merge pull request #22 from Mohinsch/feat/refacto-and-lighthouse (bd6085f)
 
 ## 2026-05-19
 - feat: add language for any page and linter reset (68045d8)
@@ -144,14 +156,14 @@ All notable changes to this project are documented below, based on the git histo
 - feat: add proxy middleware tests (0e26cf4)
 - feat: add books tests (1ef2229)
 - feat: add library tests (7e17ef6)
-- feat: add api google tests (31816a)
+- feat: add api google tests (31816a8)
 - Merge pull request #7 from Mohinsch/feat/dev-CRUD-for-mvp (6eba5b9)
 - feat: install scss (6614910)
 - feat: add mixins, variables, globals and homepage start ui (0a7b8b8)
 
 ## 2026-04-20
 - feat: add new migration to change type of published_at (99664f0)
-- feat: add crud for book and library (e5a7afb)
+- feat: add crud for book and library (e5a7afa)
 - feat: add testpage to test the CRUD (d3cbe33)
 - feat: add test for crud with vitest config (22534db)
 - todo: add task to check next steps (21ca7f4)
