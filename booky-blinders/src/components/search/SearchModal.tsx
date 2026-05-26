@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Search, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { searchBooksAction } from "@/actions/books";
 import {
@@ -21,6 +22,7 @@ import styles from "./SearchModal.module.scss";
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchStore();
   const { data: session } = authClient.useSession();
+  const router = useRouter();
   const { locale } = useLocaleContext();
   const { t } = useI18n(locale);
   const [query, setQuery] = useState("");
@@ -162,8 +164,8 @@ export function SearchModal() {
                         );
                       }}
                       onClick={() => {
-                        // Future: Redirect to book details or add to library
-                        console.log("Selected book:", book.id);
+                        closeSearch();
+                        router.push(`/books/${book.id}`);
                       }}
                     />
                   ))}
