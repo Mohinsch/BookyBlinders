@@ -3,8 +3,7 @@
 import { useCallback } from "react";
 import { en } from "@/locales/en";
 import { fr } from "@/locales/fr";
-
-type Locale = "en" | "fr";
+import type { Locale } from "@/types/i18n";
 
 const translations = { en, fr };
 

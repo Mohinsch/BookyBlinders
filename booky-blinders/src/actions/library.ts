@@ -30,8 +30,8 @@ import {
 } from "@/lib/schemas";
 import { validateWithZod } from "@/lib/validation";
 import { getBookById } from "@/services/google-books";
+import type { ActionResponse } from "@/types/actions";
 import type {
-  ActionResponse,
   ReadingStatus,
   UserLibraryBook,
   UserLibrarySummary,

@@ -14,7 +14,7 @@ import { BookCardActionButton } from "@/components/ui/BookCardActionButton";
 import { ANIMATIONS, UI_TEXT } from "@/constants";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { authClient } from "@/lib/auth-client";
-import type { BookDetailsViewModel } from "@/lib/book-details";
+import type { BookDetailsViewModel } from "@/types/book-details";
 import type { UserLibrarySummary } from "@/types/library";
 import styles from "./BookDetailsModal.module.scss";
 

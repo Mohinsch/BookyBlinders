@@ -1,5 +1,3 @@
-// src/types/google-books.ts
-
 export interface GoogleBookVolumeInfo {
   title: string;
   authors?: string[];

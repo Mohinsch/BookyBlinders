@@ -5,11 +5,7 @@ import { headers } from "next/headers";
 import { db } from "@/db";
 import { user } from "@/db/schema";
 import { auth } from "@/lib/auth";
-
-export interface ActionResponse {
-  success: boolean;
-  message?: string;
-}
+import type { ActionResponse } from "@/types/actions";
 
 async function requireAuth() {
   const headersList = await headers();
