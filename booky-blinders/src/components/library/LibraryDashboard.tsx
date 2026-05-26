@@ -11,7 +11,7 @@ import {
   Settings,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   createLibrary,
   deleteLibrary,
@@ -22,6 +22,7 @@ import {
   updateReadingStatus,
 } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import { useSearchStore } from "@/store/useSearchStore";
@@ -72,6 +73,9 @@ export function LibraryDashboard({
   const [books, setBooks] = useState<UserLibraryBook[]>(initialBooks);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLibraryModalOpen, setIsLibraryModalOpen] = useState(false);
+  const libraryModalRef = useRef<HTMLDivElement | null>(null);
+
+  useFocusTrap(isLibraryModalOpen, libraryModalRef);
   const [libraryName, setLibraryName] = useState("");
   const [libraryAction, setLibraryAction] = useState<"create" | "rename">(
     "create",
@@ -363,8 +367,13 @@ export function LibraryDashboard({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
+              ref={libraryModalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="library-modal-title"
+              tabIndex={-1}
             >
-              <h3>
+              <h3 id="library-modal-title">
                 {libraryAction === "create"
                   ? t("library.addBook")
                   : t("common.edit")}

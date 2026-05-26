@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { searchBooksAction } from "@/actions/books";
 import {
   addBookToLibrary,
@@ -11,6 +11,7 @@ import {
   getUserLibraries,
 } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
@@ -35,6 +36,9 @@ export function SearchModal() {
     UserLibrarySummary[]
   >([]);
   const [ownedGoogleIds, setOwnedGoogleIds] = useState<string[]>([]);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useFocusTrap(isOpen, modalRef);
 
   // Close on ESC key
   useEffect(() => {
@@ -95,6 +99,11 @@ export function SearchModal() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("search.placeholder")}
+            tabIndex={-1}
           >
             <button
               type="button"
