@@ -27,7 +27,7 @@ h2 { @include heading-sub; margin-bottom: $spacing-base; }
 
 blockquote, .text-quote {
   @include text-classic;
-  color: $color-text-paper;
+  color: var(--color-text-paper);
 }
 
 a {
@@ -61,6 +61,6 @@ a {
 }
 
 .text-muted {
-  color: $color-text-dimmed;
+  color: var(--color-text-dimmed);
   font-size: 0.875rem;
 }

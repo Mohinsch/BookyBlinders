@@ -60,7 +60,7 @@
 
   .emptyMessage {
     text-align: center;
-    color: $color-text-dimmed;
+    color: var(--color-text-dimmed);
     font-family: $font-accent;
     font-style: italic;
     font-size: 1.2rem;
