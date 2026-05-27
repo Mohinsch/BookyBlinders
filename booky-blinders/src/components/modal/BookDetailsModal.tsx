@@ -4,18 +4,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  addBookToLibrary,
-  getOwnedGoogleBookIds,
-  getUserLibraries,
-} from "@/actions/library";
+import { useCallback, useEffect, useRef } from "react";
+import { addBookToLibrary } from "@/actions/library";
 import { BookCardActionButton } from "@/components/ui/BookCardActionButton";
-import { ANIMATIONS, UI_TEXT } from "@/constants";
+import { ANIMATIONS, SIZES, UI_TEXT } from "@/constants";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
-import { authClient } from "@/lib/auth-client";
+import { useLibraryOwnership } from "@/hooks/useLibraryOwnership";
 import type { BookDetailsViewModel } from "@/types/book-details";
-import type { UserLibrarySummary } from "@/types/library";
 import styles from "./BookDetailsModal.module.scss";
 
 interface BookDetailsModalProps {
@@ -24,26 +19,23 @@ interface BookDetailsModalProps {
 
 export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
   const router = useRouter();
-  const { data: session } = authClient.useSession();
-  const [availableLibraries, setAvailableLibraries] = useState<
-    UserLibrarySummary[]
-  >([]);
-  const [ownedGoogleIds, setOwnedGoogleIds] = useState<string[]>([]);
+  const { availableLibraries, ownedGoogleIds, markOwned } =
+    useLibraryOwnership(true);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useFocusTrap(true, modalRef);
 
   useEffect(() => {
-    const loadLibraries = async () => {
-      if (!session?.user) return;
-      const libraries = await getUserLibraries();
-      const ownedIds = await getOwnedGoogleBookIds();
-      setAvailableLibraries(libraries);
-      setOwnedGoogleIds(ownedIds);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        router.back();
+      }
     };
-
-    void loadLibraries();
-  }, [session?.user?.id, session?.user]);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [router]);
 
   const isOwned = bookDetails.googleId
     ? ownedGoogleIds.includes(bookDetails.googleId)
@@ -55,11 +47,9 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
       const googleId = bookDetails.googleId;
       const result = await addBookToLibrary(googleId, libraryId);
       if (!result.success) return;
-      setOwnedGoogleIds((prev) =>
-        prev.includes(googleId) ? prev : [...prev, googleId],
-      );
+      markOwned(googleId);
     },
-    [bookDetails.googleId],
+    [bookDetails.googleId, markOwned],
   );
 
   return (
@@ -91,7 +81,7 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
             onClick={() => router.back()}
             aria-label={UI_TEXT.MODAL.CLOSE_TITLE}
           >
-            <X size={24} />
+            <X size={SIZES.ICONS.LARGE} />
           </button>
 
           <div className={styles.content}>
@@ -101,9 +91,10 @@ export function BookDetailsModal({ bookDetails }: BookDetailsModalProps) {
                   src={bookDetails.cover}
                   alt={`Cover of ${bookDetails.title}`}
                   className={styles.coverImage}
-                  width={300}
-                  height={400}
+                  width={SIZES.IMAGES.BOOK_MODAL.WIDTH}
+                  height={SIZES.IMAGES.BOOK_MODAL.HEIGHT}
                   priority
+                  quality={SIZES.IMAGES.BOOK_MODAL.QUALITY}
                 />
               ) : (
                 <div className={styles.coverPlaceholder}>

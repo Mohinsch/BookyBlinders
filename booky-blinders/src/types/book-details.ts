@@ -1,5 +1,7 @@
+import type { BOOK_SOURCES } from "@/constants";
+
 export interface BookDetailsViewModel {
-  source: "internal" | "external";
+  source: (typeof BOOK_SOURCES)[keyof typeof BOOK_SOURCES];
   routeId: string;
   internalId: number | null;
   googleId: string | null;

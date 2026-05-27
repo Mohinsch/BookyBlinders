@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { TIMERS } from "@/constants";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./AuthPage.module.scss";
@@ -28,7 +29,7 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
 
     setTimeout(() => {
       setIsAnimating(false);
-    }, 650);
+    }, TIMERS.AUTH_MODE_SWITCH_MS);
   };
 
   return (
@@ -46,7 +47,6 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
             className={`${styles.formPanel} ${styles.panelLogin}`}
             aria-hidden={mode !== "login"}
           >
-            {/* Suppression de la prop onError ici */}
             <LoginForm
               onSwitchToRegister={() => handleModeSwitch("register")}
             />
@@ -56,7 +56,6 @@ export function AuthPage({ initialMode = "login" }: AuthPageProps) {
             className={`${styles.formPanel} ${styles.panelRegister}`}
             aria-hidden={mode !== "register"}
           >
-            {/* Suppression de la prop onError ici */}
             <RegisterForm onSwitchToLogin={() => handleModeSwitch("login")} />
           </section>
 

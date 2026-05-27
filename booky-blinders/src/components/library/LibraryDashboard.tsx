@@ -24,6 +24,7 @@ import {
 import { BookCard } from "@/components/ui/BookCard";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useI18n } from "@/lib/i18n";
+import { getReadingStatus } from "@/lib/library-status";
 import { useLocaleContext } from "@/lib/locale-context";
 import { useSearchStore } from "@/store/useSearchStore";
 import type {
@@ -42,12 +43,6 @@ interface LibraryDashboardProps {
   libraries: UserLibrarySummary[];
 }
 
-const getStatus = (book: UserLibraryBook): ReadingStatus => {
-  if (book.readEnd) return "READ";
-  if (book.readStart) return "IN_PROGRESS";
-  return "TO_READ";
-};
-
 export function LibraryDashboard({
   initialBooks,
   libraries,
@@ -55,7 +50,6 @@ export function LibraryDashboard({
   const router = useRouter();
   const { openSearch } = useSearchStore();
 
-  // Add i18n support
   const { locale } = useLocaleContext();
   const { t } = useI18n(locale);
 
@@ -160,7 +154,7 @@ export function LibraryDashboard({
     let result = [...books];
 
     if (statusFilter !== "ALL") {
-      result = result.filter((b) => getStatus(b) === statusFilter);
+      result = result.filter((b) => getReadingStatus(b) === statusFilter);
     }
 
     const normalizedSearch = searchQuery.trim().toLowerCase();
@@ -337,7 +331,7 @@ export function LibraryDashboard({
                 thumbnail={book.cover || undefined}
                 showActions={false}
                 showReadingControls
-                readingStatus={getStatus(book)}
+                readingStatus={getReadingStatus(book)}
                 onReadingStatusChange={(status) =>
                   void handleStatusChange(book.id, status)
                 }

@@ -147,6 +147,7 @@ export const en = {
     reading: "Currently Reading",
     completed: "Completed",
     toRead: "Want to Read",
+    status: "Status",
   },
 
   // Book Details
@@ -377,5 +378,6 @@ export const en = {
     validationEmpty: "Please enter a title before searching.",
     searching: "Searching...",
     close: "Close search",
+    submit: "Search",
   },
 };

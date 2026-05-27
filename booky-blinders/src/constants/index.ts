@@ -34,7 +34,10 @@ export const ROUTES = {
   LIBRARY: "/library",
   LOGIN: "/login",
   REGISTER: "/register",
+  ACCOUNT: "/account",
   ABOUT: "/about-us",
+  PRIVACY: "/privacy",
+  TERMS: "/terms",
   API: {
     AUTH_GET_SESSION: "/api/auth/get-session",
     AUTH: (path: string) => `/api/auth/${path}`,
@@ -192,6 +195,20 @@ export const ANIMATIONS = {
     CONTAINER_EXIT: { opacity: 0, scale: 0.95 },
     CONTAINER_TRANSITION: { type: "spring", stiffness: 260, damping: 20 },
   },
+  HEADER: {
+    MOBILE_MENU: {
+      CLOSED: {
+        opacity: 0,
+        y: "-100%",
+        transition: { type: "spring", stiffness: 300, damping: 30 },
+      },
+      OPEN: {
+        opacity: 1,
+        y: 0,
+        transition: { type: "spring", stiffness: 300, damping: 30 },
+      },
+    },
+  },
 } as const;
 
 // ============================================================================
@@ -205,6 +222,19 @@ export const SIZES = {
     CARD_HEIGHT_MOBILE: 220,
     CARD_HEIGHT_DESKTOP: 280,
   },
+  IMAGES: {
+    BOOK_CARD: {
+      WIDTH: 150,
+      HEIGHT: 225,
+      SIZES: "(max-width: 768px) 100vw, 150px",
+      QUALITY: 75,
+    },
+    BOOK_MODAL: {
+      WIDTH: 300,
+      HEIGHT: 400,
+      QUALITY: 75,
+    },
+  },
   BREAKPOINTS: {
     MOBILE: 375,
     TABLET: 768,
@@ -215,6 +245,15 @@ export const SIZES = {
     MEDIUM: 20,
     LARGE: 24,
   },
+} as const;
+
+// ============================================================================
+// Timers
+// ============================================================================
+
+export const TIMERS = {
+  ACCOUNT_DELETE_REDIRECT_MS: 2000,
+  AUTH_MODE_SWITCH_MS: 650,
 } as const;
 
 // ============================================================================

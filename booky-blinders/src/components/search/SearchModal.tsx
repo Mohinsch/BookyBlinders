@@ -5,24 +5,19 @@ import { Loader2, Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { searchBooksAction } from "@/actions/books";
-import {
-  addBookToLibrary,
-  getOwnedGoogleBookIds,
-  getUserLibraries,
-} from "@/actions/library";
+import { addBookToLibrary } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
+import { ROUTES, SIZES } from "@/constants";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
-import { authClient } from "@/lib/auth-client";
+import { useLibraryOwnership } from "@/hooks/useLibraryOwnership";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import { useSearchStore } from "@/store/useSearchStore";
 import type { GoogleBookItem } from "@/types/google-books";
-import type { UserLibrarySummary } from "@/types/library";
 import styles from "./SearchModal.module.scss";
 
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchStore();
-  const { data: session } = authClient.useSession();
   const router = useRouter();
   const { locale } = useLocaleContext();
   const { t } = useI18n(locale);
@@ -32,11 +27,10 @@ export function SearchModal() {
   const [validationMessage, setValidationMessage] = useState<string | null>(
     null,
   );
-  const [availableLibraries, setAvailableLibraries] = useState<
-    UserLibrarySummary[]
-  >([]);
-  const [ownedGoogleIds, setOwnedGoogleIds] = useState<string[]>([]);
+  const { availableLibraries, ownedGoogleIds, markOwned } =
+    useLibraryOwnership(isOpen);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useFocusTrap(isOpen, modalRef);
 
@@ -50,23 +44,18 @@ export function SearchModal() {
   }, [closeSearch]);
 
   useEffect(() => {
-    const loadLibraries = async () => {
-      if (!isOpen || !session?.user) return;
-      const libraries = await getUserLibraries();
-      const ownedIds = await getOwnedGoogleBookIds();
-      setAvailableLibraries(libraries);
-      setOwnedGoogleIds(ownedIds);
-    };
-
-    void loadLibraries();
-  }, [isOpen, session?.user]);
-
-  useEffect(() => {
     if (isOpen) return;
     setQuery("");
     setResults([]);
     setIsLoading(false);
     setValidationMessage(null);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
   }, [isOpen]);
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -109,12 +98,14 @@ export function SearchModal() {
               type="button"
               className={styles.closeBtn}
               onClick={closeSearch}
+              aria-label={t("search.close")}
             >
-              <X size={24} />
+              <X size={SIZES.ICONS.LARGE} />
             </button>
 
             <form className={styles.searchBar} onSubmit={handleSearch}>
               <input
+                ref={inputRef}
                 type="text"
                 placeholder={t("search.placeholder")}
                 value={query}
@@ -130,12 +121,12 @@ export function SearchModal() {
               <button
                 type="submit"
                 disabled={isLoading}
-                aria-label={t("search.close")}
+                aria-label={t("search.submit")}
               >
                 {isLoading ? (
                   <Loader2 className={styles.spinner} />
                 ) : (
-                  <Search size={20} />
+                  <Search size={SIZES.ICONS.MEDIUM} />
                 )}
               </button>
             </form>
@@ -168,13 +159,11 @@ export function SearchModal() {
                           libraryId,
                         );
                         if (!result.success) return;
-                        setOwnedGoogleIds((prev) =>
-                          prev.includes(book.id) ? prev : [...prev, book.id],
-                        );
+                        markOwned(book.id);
                       }}
                       onClick={() => {
                         closeSearch();
-                        router.push(`/books/${book.id}`);
+                        router.push(ROUTES.BOOKS.DETAIL(book.id));
                       }}
                     />
                   ))}

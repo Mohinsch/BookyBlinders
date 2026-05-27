@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { db } from "@/db";
 import { user } from "@/db/schema";
 import { auth } from "@/lib/auth";
+import { changePasswordSchema, deleteAccountSchema } from "@/lib/schemas";
 import type { ActionResponse } from "@/types/actions";
 
 async function requireAuth() {
@@ -26,22 +27,20 @@ export async function changePassword(
   newPassword: string,
 ): Promise<ActionResponse> {
   try {
-    const currentUser = await requireAuth();
-
-    // Validate passwords
-    if (!currentPassword?.trim()) {
-      return { success: false, message: "Current password is required" };
-    }
-    if (!newPassword?.trim()) {
-      return { success: false, message: "New password is required" };
-    }
-    if (newPassword.length < 8) {
+    const parsed = changePasswordSchema.safeParse({
+      currentPassword,
+      newPassword,
+    });
+    if (!parsed.success) {
       return {
         success: false,
-        message: "Password must be at least 8 characters",
+        message: parsed.error.issues[0]?.message || "Invalid input provided",
       };
     }
-    if (currentPassword === newPassword) {
+
+    const currentUser = await requireAuth();
+
+    if (parsed.data.currentPassword === parsed.data.newPassword) {
       return { success: false, message: "New password must be different" };
     }
 
@@ -57,8 +56,8 @@ export async function changePassword(
         origin: baseURL,
       },
       body: JSON.stringify({
-        currentPassword,
-        newPassword,
+        currentPassword: parsed.data.currentPassword,
+        newPassword: parsed.data.newPassword,
       }),
     });
 
@@ -85,14 +84,15 @@ export async function changePassword(
  */
 export async function deleteAccount(password: string): Promise<ActionResponse> {
   try {
-    const currentUser = await requireAuth();
-
-    if (!password?.trim()) {
+    const parsed = deleteAccountSchema.safeParse({ password });
+    if (!parsed.success) {
       return {
         success: false,
-        message: "Password is required to delete account",
+        message: parsed.error.issues[0]?.message || "Invalid input provided",
       };
     }
+
+    const currentUser = await requireAuth();
 
     // For security, verify password by calling Better Auth
     const baseURL = process.env.BETTER_AUTH_URL || "http://localhost:3000";
@@ -106,7 +106,7 @@ export async function deleteAccount(password: string): Promise<ActionResponse> {
         origin: baseURL,
       },
       body: JSON.stringify({
-        password,
+        password: parsed.data.password,
       }),
     });
 

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { deleteAccount } from "@/actions/account";
+import { ROUTES, TIMERS } from "@/constants";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./DeleteAccountSection.module.scss";
@@ -38,10 +39,9 @@ export function DeleteAccountSection() {
         text: result.message || t("accountSettings.savedSuccess"),
       });
       setPassword("");
-      // Redirect after a short delay
       setTimeout(() => {
-        router.push("/");
-      }, 2000);
+        router.push(ROUTES.HOME);
+      }, TIMERS.ACCOUNT_DELETE_REDIRECT_MS);
     } else {
       setMessage({
         type: "error",
@@ -57,7 +57,10 @@ export function DeleteAccountSection() {
         <div className={styles.dangerZone}>
           <h3>{t("accountSettings.deleteAccount")}</h3>
           <p className={styles.warning}>
-            ⚠️ {t("accountSettings.deleteWarning")}
+            <span role="img" aria-label="warning">
+              ⚠️
+            </span>{" "}
+            {t("accountSettings.deleteWarning")}
           </p>
 
           {message && (
