@@ -99,6 +99,33 @@ describe("Account Server Actions", () => {
     });
   });
 
+  it("handles JSON parsing error from password change endpoint", async () => {
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: false,
+      json: async () => {
+        throw new Error("JSON parse failed");
+      },
+    } as Response);
+
+    const result = await changePassword("old-pass", "new-password");
+
+    expect(result).toEqual({
+      success: false,
+      message: "Failed to change password",
+    });
+  });
+
+  it("handles fetch error during password change", async () => {
+    vi.mocked(global.fetch).mockRejectedValue(new Error("Network error"));
+
+    const result = await changePassword("old-pass", "new-password");
+
+    expect(result).toEqual({
+      success: false,
+      message: "Network error",
+    });
+  });
+
   it("rejects deleteAccount when password is missing", async () => {
     const result = await deleteAccount("");
 
@@ -149,5 +176,16 @@ describe("Account Server Actions", () => {
     const result = await deleteAccount("correct-pass");
 
     expect(result).toEqual({ success: false, message: "Network down" });
+  });
+
+  it("handles non-Error objects thrown in deleteAccount", async () => {
+    vi.mocked(global.fetch).mockRejectedValue("Unknown error");
+
+    const result = await deleteAccount("correct-pass");
+
+    expect(result).toEqual({
+      success: false,
+      message: "Failed to delete account",
+    });
   });
 });
