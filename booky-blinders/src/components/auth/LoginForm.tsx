@@ -91,7 +91,7 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
             type="email"
             value={field.state.value}
             placeholder="thomas@shelbycompany.com"
-            errorMessages={field.state.meta.errors}
+            errorMessages={(field.state.meta.errors as string[]) || []}
             onBlur={field.handleBlur}
             onChange={field.handleChange}
           />
@@ -114,7 +114,7 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
             type="password"
             value={field.state.value}
             placeholder="••••••••"
-            errorMessages={field.state.meta.errors}
+            errorMessages={(field.state.meta.errors as string[]) || []}
             onBlur={field.handleBlur}
             onChange={field.handleChange}
           />

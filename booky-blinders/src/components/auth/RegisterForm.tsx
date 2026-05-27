@@ -93,7 +93,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
             type="text"
             value={field.state.value}
             placeholder="Thomas Shelby"
-            errorMessages={field.state.meta.errors}
+            errorMessages={(field.state.meta.errors as string[]) || []}
             onBlur={field.handleBlur}
             onChange={field.handleChange}
           />
@@ -116,7 +116,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
             type="email"
             value={field.state.value}
             placeholder="thomas@shelbycompany.com"
-            errorMessages={field.state.meta.errors}
+            errorMessages={(field.state.meta.errors as string[]) || []}
             onBlur={field.handleBlur}
             onChange={field.handleChange}
           />
@@ -139,7 +139,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
             type="password"
             value={field.state.value}
             placeholder="••••••••"
-            errorMessages={field.state.meta.errors}
+            errorMessages={(field.state.meta.errors as string[]) || []}
             onBlur={field.handleBlur}
             onChange={field.handleChange}
           />
