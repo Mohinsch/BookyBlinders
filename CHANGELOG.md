@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented below, based on the git history.
 
+## 2026-05-27
+- refactor: improve architecture, server actions security, and accessibility (7fdd339)
+- refacto: organize files and clean code (8b0f045)
+- test: add error handling for password change and account deletion (5e74d31)
+- fix: ensure error messages are always an array in LoginForm and RegisterForm (f1fa842)
+- Merge pull request #24 from Mohinsch/feat/refacto-and-lighthouse (75cc259)
+
 ## 2026-05-26
 - feat: update CI configuration and add Vercel deployment steps to todo list (6389567)
 - feat: add changelog workflow to automate CHANGELOG.md generation (1870f20)
@@ -12,6 +19,11 @@ All notable changes to this project are documented below, based on the git histo
 - fix: implement book redirection on selection in SearchModal (c04d096)
 - fix: implement focus trap hook and integrate it into modals for accessibility (95d9883)
 - Merge pull request #23 from Mohinsch/feat/refacto-and-lighthouse (7ad881b)
+- chore: update changelog (feefb2d)
+- feat: add database seeding and dumping scripts to enhance data management (627009e)
+- feat(tests): add comprehensive tests for account actions, book actions, and UI components (4a42782)
+- docs: enhance test plan with success and error path descriptions (e5c3bf3)
+- refactor: reorganize type definitions and imports for better structure (0a35e0b)
 
 ## 2026-05-25
 - fix: change tree structure conception (e45004d)
