@@ -5,14 +5,15 @@ import { LogOut } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { type MouseEvent, useState } from "react";
 import { BBMonogram } from "@/components/ui/BBMonogram";
+import { ANIMATIONS, ROUTES, SIZES } from "@/constants";
 import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./Header.module.scss";
 
-// 🚀 Dynamic import for UserDropdown - only loaded when user is authenticated (header is always rendered)
+// Dynamic import for UserDropdown - only loaded when user is authenticated (header is always rendered)
 const UserDropdown = dynamic(
   () =>
     import("@/components/header/UserDropdown").then((mod) => ({
@@ -20,6 +21,49 @@ const UserDropdown = dynamic(
     })),
   { ssr: false }, // CSR only - contains auth state and dropdown interactions
 );
+
+const NAV_LINKS = [
+  { id: "home", key: "header.home", href: "/" },
+  { id: "discover", key: "header.discover", href: "/#discover" },
+  { id: "about-us", key: "header.aboutUs", href: "/about-us" },
+] as const;
+
+const isNavLinkActive = (pathname: string, href: string) =>
+  pathname === href || (href !== "/" && pathname.startsWith(href));
+
+interface NavLinksProps {
+  pathname: string;
+  linkClassName: string;
+  activeClassName: string;
+  onLinkClick: (event: MouseEvent<HTMLAnchorElement>, id: string) => void;
+  translate: (key: string) => string;
+}
+
+function NavLinks({
+  pathname,
+  linkClassName,
+  activeClassName,
+  onLinkClick,
+  translate,
+}: NavLinksProps) {
+  return (
+    <>
+      {NAV_LINKS.map(({ id, key, href }) => {
+        const isActive = isNavLinkActive(pathname, href);
+        return (
+          <Link
+            key={id}
+            href={href}
+            className={`${linkClassName} ${isActive ? activeClassName : ""}`}
+            onClick={(event) => onLinkClick(event, id)}
+          >
+            {translate(key)}
+          </Link>
+        );
+      })}
+    </>
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -31,28 +75,22 @@ export function Header() {
   const { data: session, isPending } = authClient.useSession();
   const isAuthenticated = !!session?.user;
 
-  const navLinks = [
-    { label: "Home", key: "header.home" },
-    { label: "Discover", key: "header.discover" },
-    { label: "About Us", key: "header.aboutUs" },
-  ];
-
   const handleLogout = async () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
           setIsMobileMenuOpen(false);
-          router.push("/login");
+          router.push(ROUTES.LOGIN);
         },
       },
     });
   };
 
   const handleLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    link: string,
+    e: MouseEvent<HTMLAnchorElement>,
+    linkId: string,
   ) => {
-    if (link === "Discover") {
+    if (linkId === "discover") {
       if (pathname === "/") {
         e.preventDefault();
         const element = document.getElementById("discover");
@@ -66,56 +104,34 @@ export function Header() {
   };
 
   const menuVariants: Variants = {
-    closed: {
-      opacity: 0,
-      y: "-100%",
-      transition: { type: "spring", stiffness: 300, damping: 30 },
-    },
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: { type: "spring", stiffness: 300, damping: 30 },
-    },
+    closed: ANIMATIONS.HEADER.MOBILE_MENU.CLOSED,
+    open: ANIMATIONS.HEADER.MOBILE_MENU.OPEN,
   };
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <Link
-          href="/"
+          href={ROUTES.HOME}
           className={styles.brand}
-          onClick={(e) => handleLinkClick(e, "Home")}
+          onClick={(e) => handleLinkClick(e, "home")}
         >
           <BBMonogram className={styles.logo} />
           <div className={styles.brandText}>
-            <span className={styles.title}>Booky Blinders</span>
-            <span className={styles.subtitle}>Personal Library</span>
+            <span className={styles.title}>{t("footer.brand")}</span>
+            <span className={styles.subtitle}>{t("footer.tagline")}</span>
           </div>
         </Link>
 
         <div className={styles.desktopActions}>
           <nav className={styles.nav} aria-label="Main navigation">
-            {navLinks.map(({ label, key }) => {
-              let href = "/";
-              if (label === "Discover") href = "/#discover";
-              else if (label !== "Home")
-                href = `/${label.toLowerCase().replace(/\s+/g, "-")}`;
-
-              const isActive =
-                pathname === href ||
-                (href !== "/" && pathname.startsWith(href));
-
-              return (
-                <Link
-                  key={label}
-                  href={href}
-                  className={`${styles.navLink} ${isActive ? styles.active : ""}`}
-                  onClick={(e) => handleLinkClick(e, label)}
-                >
-                  {t(key)}
-                </Link>
-              );
-            })}
+            <NavLinks
+              pathname={pathname}
+              linkClassName={styles.navLink}
+              activeClassName={styles.active}
+              onLinkClick={handleLinkClick}
+              translate={t}
+            />
           </nav>
 
           {isPending ? (
@@ -124,13 +140,13 @@ export function Header() {
             </span>
           ) : isAuthenticated ? (
             <div className={styles.authActions}>
-              <Link href="/library" className={styles.enterBtn}>
+              <Link href={ROUTES.LIBRARY} className={styles.enterBtn}>
                 {t("header.myLibrary")}
               </Link>
               <UserDropdown />
             </div>
           ) : (
-            <Link href="/login" className={styles.enterBtn}>
+            <Link href={ROUTES.LOGIN} className={styles.enterBtn}>
               {t("header.openTheLedger")}
             </Link>
           )}
@@ -157,39 +173,25 @@ export function Header() {
             exit="closed"
             variants={menuVariants}
           >
-            {navLinks.map(({ label, key }) => {
-              let href = "/";
-              if (label === "Discover") href = "/#discover";
-              else if (label !== "Home")
-                href = `/${label.toLowerCase().replace(/\s+/g, "-")}`;
-
-              const isActive =
-                pathname === href ||
-                (href !== "/" && pathname.startsWith(href));
-
-              return (
-                <Link
-                  key={label}
-                  href={href}
-                  className={`${styles.mobileNavLink} ${isActive ? styles.active : ""}`}
-                  onClick={(e) => handleLinkClick(e, label)}
-                >
-                  {t(key)}
-                </Link>
-              );
-            })}
+            <NavLinks
+              pathname={pathname}
+              linkClassName={styles.mobileNavLink}
+              activeClassName={styles.active}
+              onLinkClick={handleLinkClick}
+              translate={t}
+            />
             {isAuthenticated && (
               <>
-                <Link href="/account" className={styles.mobileNavLink}>
-                  Account Settings
+                <Link href={ROUTES.ACCOUNT} className={styles.mobileNavLink}>
+                  {t("accountSettings.title")}
                 </Link>
                 <button
                   type="button"
                   className={styles.mobileLogoutBtn}
                   onClick={handleLogout}
                 >
-                  <LogOut size={18} />
-                  Logout
+                  <LogOut size={SIZES.ICONS.SMALL} />
+                  {t("accountSettings.logout")}
                 </button>
               </>
             )}

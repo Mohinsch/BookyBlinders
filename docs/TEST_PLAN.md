@@ -2,18 +2,21 @@
 
 The project follows a testing strategy to ensure data integrity and API reliability.
 
+🟢 Success Path: The action is successfully executed (e.g., 200 OK, data created).
+
+🔴 Error Path / Edge Case: The action is safely rejected or handled (e.g., 401 Unauthorized, validation errors, API down).
 
 ### 🔹 Authentication & Security
 
-| Test Case | Expected Result | Status |
+| Test Case | Expected Result | Response Type |
 | :--- | :--- | :--- |
 | **Action call with valid session** | 200: Returns user object and proceeds | 🟢 |
 | **Action call without session** | 401: Throws "Unauthorized" (Caught: success: false) | 🔴 |
-| **Route protection (Proxy)** | 302: Redirects `/library` to `/login` | 🔴 |
+| **Route protection (Proxy)** | 302: Redirects `/library` to `/login` | 🟢 |
 
 ### 📚 Library Server Actions (`src/actions/library.ts`)
 
-| Test Case | Expected Result | Status |
+| Test Case | Expected Result | Response Type |
 | :--- | :--- | :--- |
 | **Add book (Success)** | Inserts book into DB and revalidates UI | 🟢 |
 | **Get library (Success)** | Returns formatted list of user's saved books | 🟢 |
@@ -26,7 +29,7 @@ The project follows a testing strategy to ensure data integrity and API reliabil
 
 ### 🌐 Google Books API Service (`src/services/google-books.ts`)
 
-| Test Case | Expected Result | Status |
+| Test Case | Expected Result | Response Type |
 | :--- | :--- | :--- |
 | **Search books (Valid query)** | URL constructed properly, returns array of books | 🟢 |
 | **Get book by ID (Valid ID)** | Returns detailed book object | 🟢 |
@@ -37,11 +40,24 @@ The project follows a testing strategy to ensure data integrity and API reliabil
 
 ### 🔍 Books Server Actions (`src/actions/books.ts`)
 
-| Test Case | Expected Result | Status |
+| Test Case | Expected Result | Response Type |
 | :--- | :--- | :--- |
 | **Search Books (Success)** | Fetches and returns search results to the client | 🟢 |
 | **Get Book Details (Success)** | Fetches and returns specific book data | 🟢 |
 | **Search Books (API Down)** | Catches error, returns empty array to prevent UI crash | 🔴 |
 | **Get Book Details (API Down)** | Catches error, returns `null` to prevent UI crash | 🔴 |
+
+### 🔐 Account Server Actions (`src/actions/account.ts`)
+
+| Test Case | Expected Result | Response Type |
+| :--- | :--- | :--- |
+| **Change password (Unauthorized)** | Returns `success: false` with "Unauthorized" | 🔴 |
+| **Change password (Validation errors)** | Returns validation messages for invalid inputs | 🔴 |
+| **Change password (Success)** | Returns `success: true` | 🟢 |
+| **Delete account (Missing password)** | Returns `success: false` with message | 🔴 |
+| **Delete account (Wrong password)** | Returns `success: false` with message | 🔴 |
+| **Delete account (User not found)** | Returns `success: false` | 🔴 |
+| **Delete account (Success)** | Returns `success: true` | 🟢 |
+| **Delete account (Network error)** | Returns `success: false` with error message | 🔴 |
 
 ---

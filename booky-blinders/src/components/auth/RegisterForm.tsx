@@ -5,18 +5,13 @@ import { useForm } from "@tanstack/react-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { z } from "zod";
+import { ROUTES } from "@/constants";
 import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
+import { registerSchema } from "@/lib/schemas";
+import { AuthField } from "./AuthField";
 import styles from "./AuthPage.module.scss";
-
-// 1. Zod Schema
-const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
 
 interface RegisterFormProps {
   onError?: (message: string) => void;
@@ -29,7 +24,6 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
   const { t } = useI18n(locale);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
-  // 2. Init TanStack Form
   const form = useForm({
     defaultValues: {
       name: "",
@@ -52,7 +46,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
         return;
       }
 
-      router.push("/library");
+      router.push(ROUTES.LIBRARY);
     },
   });
 
@@ -83,7 +77,6 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
         )}
       </AnimatePresence>
 
-      {/* NAME FIELD */}
       <form.Field
         name="name"
         validators={{
@@ -94,37 +87,19 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
         }}
       >
         {(field) => (
-          <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>{t("auth.name")}</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="text"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Thomas Shelby"
-              className={
-                field.state.meta.errors.length > 0 ? styles.inputError : ""
-              }
-            />
-            <AnimatePresence mode="wait">
-              {field.state.meta.errors.length > 0 ? (
-                <motion.p
-                  className={styles.fieldError}
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                >
-                  {field.state.meta.errors.join(", ")}
-                </motion.p>
-              ) : null}
-            </AnimatePresence>
-          </div>
+          <AuthField
+            id={field.name}
+            label={t("auth.name")}
+            type="text"
+            value={field.state.value}
+            placeholder="Thomas Shelby"
+            errorMessages={(field.state.meta.errors as string[]) || []}
+            onBlur={field.handleBlur}
+            onChange={field.handleChange}
+          />
         )}
       </form.Field>
 
-      {/* EMAIL FIELD */}
       <form.Field
         name="email"
         validators={{
@@ -135,37 +110,19 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
         }}
       >
         {(field) => (
-          <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>{t("auth.emailAddress")}</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="email"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="thomas@shelbycompany.com"
-              className={
-                field.state.meta.errors.length > 0 ? styles.inputError : ""
-              }
-            />
-            <AnimatePresence mode="wait">
-              {field.state.meta.errors.length > 0 ? (
-                <motion.p
-                  className={styles.fieldError}
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                >
-                  {field.state.meta.errors.join(", ")}
-                </motion.p>
-              ) : null}
-            </AnimatePresence>
-          </div>
+          <AuthField
+            id={field.name}
+            label={t("auth.emailAddress")}
+            type="email"
+            value={field.state.value}
+            placeholder="thomas@shelbycompany.com"
+            errorMessages={(field.state.meta.errors as string[]) || []}
+            onBlur={field.handleBlur}
+            onChange={field.handleChange}
+          />
         )}
       </form.Field>
 
-      {/* PASSWORD FIELD */}
       <form.Field
         name="password"
         validators={{
@@ -176,33 +133,16 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
         }}
       >
         {(field) => (
-          <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>{t("auth.password")}</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="password"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="••••••••"
-              className={
-                field.state.meta.errors.length > 0 ? styles.inputError : ""
-              }
-            />
-            <AnimatePresence mode="wait">
-              {field.state.meta.errors.length > 0 ? (
-                <motion.p
-                  className={styles.fieldError}
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                >
-                  {field.state.meta.errors.join(", ")}
-                </motion.p>
-              ) : null}
-            </AnimatePresence>
-          </div>
+          <AuthField
+            id={field.name}
+            label={t("auth.password")}
+            type="password"
+            value={field.state.value}
+            placeholder="••••••••"
+            errorMessages={(field.state.meta.errors as string[]) || []}
+            onBlur={field.handleBlur}
+            onChange={field.handleChange}
+          />
         )}
       </form.Field>
 

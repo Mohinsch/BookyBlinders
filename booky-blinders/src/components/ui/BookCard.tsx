@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SIZES, UI_TEXT } from "@/constants";
 import type { ReadingStatus } from "@/types/library";
 import styles from "./BookCard.module.scss";
 import {
@@ -77,15 +78,15 @@ export function BookCard({
             src={thumbnail}
             alt={`Cover of ${title}`}
             loading="lazy"
-            width={150}
-            height={225}
+            width={SIZES.IMAGES.BOOK_CARD.WIDTH}
+            height={SIZES.IMAGES.BOOK_CARD.HEIGHT}
             className={styles.coverImage}
-            sizes="(max-width: 768px) 100vw, 150px"
-            quality={75}
+            sizes={SIZES.IMAGES.BOOK_CARD.SIZES}
+            quality={SIZES.IMAGES.BOOK_CARD.QUALITY}
           />
         ) : (
           <div className={styles.placeholder}>
-            <span>Missing Cover</span>
+            <span>{UI_TEXT.BOOK.NO_COVER}</span>
           </div>
         )}
 
@@ -103,7 +104,7 @@ export function BookCard({
           {title}
         </h3>
         <p className={styles.author} title={authors?.join(", ")}>
-          {authors?.join(", ") || "Unknown Author"}
+          {authors?.join(", ") || UI_TEXT.AUTHOR.UNKNOWN}
         </p>
         {showReadingControls && (
           <div className={styles.readingControls}>

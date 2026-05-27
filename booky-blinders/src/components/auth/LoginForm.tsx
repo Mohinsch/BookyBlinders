@@ -5,17 +5,13 @@ import { useForm } from "@tanstack/react-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { z } from "zod";
+import { ROUTES } from "@/constants";
 import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
+import { loginSchema } from "@/lib/schemas";
+import { AuthField } from "./AuthField";
 import styles from "./AuthPage.module.scss";
-
-// 1. Zod Schema
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required"),
-});
 
 interface LoginFormProps {
   onError?: (message: string) => void;
@@ -28,7 +24,6 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
   const { t } = useI18n(locale);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
-  // 2. Init TanStack Form
   const form = useForm({
     defaultValues: {
       email: "",
@@ -49,7 +44,7 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
         return;
       }
 
-      router.push("/library");
+      router.push(ROUTES.LIBRARY);
     },
   });
 
@@ -80,7 +75,6 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
         )}
       </AnimatePresence>
 
-      {/* EMAIL FIELD - Native Zod Validation */}
       <form.Field
         name="email"
         validators={{
@@ -91,37 +85,19 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
         }}
       >
         {(field) => (
-          <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>{t("auth.emailAddress")}</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="email"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="thomas@shelbycompany.com"
-              className={
-                field.state.meta.errors.length > 0 ? styles.inputError : ""
-              }
-            />
-            <AnimatePresence mode="wait">
-              {field.state.meta.errors.length > 0 ? (
-                <motion.p
-                  className={styles.fieldError}
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                >
-                  {field.state.meta.errors.join(", ")}
-                </motion.p>
-              ) : null}
-            </AnimatePresence>
-          </div>
+          <AuthField
+            id={field.name}
+            label={t("auth.emailAddress")}
+            type="email"
+            value={field.state.value}
+            placeholder="thomas@shelbycompany.com"
+            errorMessages={(field.state.meta.errors as string[]) || []}
+            onBlur={field.handleBlur}
+            onChange={field.handleChange}
+          />
         )}
       </form.Field>
 
-      {/* PASSWORD FIELD - Native Zod Validation */}
       <form.Field
         name="password"
         validators={{
@@ -132,33 +108,16 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
         }}
       >
         {(field) => (
-          <div className={styles.inputGroup}>
-            <label htmlFor={field.name}>{t("auth.password")}</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="password"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="••••••••"
-              className={
-                field.state.meta.errors.length > 0 ? styles.inputError : ""
-              }
-            />
-            <AnimatePresence mode="wait">
-              {field.state.meta.errors.length > 0 ? (
-                <motion.p
-                  className={styles.fieldError}
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                >
-                  {field.state.meta.errors.join(", ")}
-                </motion.p>
-              ) : null}
-            </AnimatePresence>
-          </div>
+          <AuthField
+            id={field.name}
+            label={t("auth.password")}
+            type="password"
+            value={field.state.value}
+            placeholder="••••••••"
+            errorMessages={(field.state.meta.errors as string[]) || []}
+            onBlur={field.handleBlur}
+            onChange={field.handleChange}
+          />
         )}
       </form.Field>
 

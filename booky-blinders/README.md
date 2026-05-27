@@ -74,6 +74,32 @@ npm run dev
 | `npm test` | Run all tests |
 | `npm run db:push` | Apply migrations to the database |
 | `npm run db:studio`| Launch Drizzle Studio for visual DB management |
+| `npm run db:seed` | Seed the database with sample data |
+| `npm run db:dump` | Dump the database to `db-dumps/` |
+| `npm run db:restore` | Restore the database from a dump file |
+
+---
+
+## 🗄️ Database (Seed & Dump)
+
+### Seed (sample data)
+From `booky-blinders/`:
+```bash
+npm run db:seed
+```
+By default the seed resets the data. To keep existing data:
+```bash
+SEED_RESET=false npm run db:seed
+```
+
+### Backup / Restore (Docker)
+```bash
+# Dump
+npm run db:dump
+
+# Restore (replace the file path)
+npm run db:restore
+```
 
 ---
 

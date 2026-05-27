@@ -8,6 +8,10 @@ import {
   googleBooksSearchLimiter,
   trackViolation,
 } from "@/lib/rate-limit";
+import {
+  getBookDetailsActionSchema,
+  searchBooksActionSchema,
+} from "@/lib/schemas";
 import { getBookById, searchBooks } from "@/services/google-books";
 import type { GoogleBookItem } from "@/types/google-books";
 
@@ -26,17 +30,16 @@ async function getCurrentUserIdForRateLimit(): Promise<string> {
 /**
  * Server Action: Search for books based on a user's query.
  * It acts as the bridge between the client-side components and the Google Books API service functions.
- * ✅ Now includes rate limiting to prevent API quota exhaustion
  */
 export async function searchBooksAction(
   query: string,
 ): Promise<GoogleBookItem[]> {
-  // Basic validation to prevent empty calls to the API
-  if (!query || query.trim() === "") {
+  const parsed = searchBooksActionSchema.safeParse({ query });
+  if (!parsed.success) {
     return [];
   }
 
-  // ✅ Rate limiting: 30 searches per minute per user
+  // Rate limiting: 30 searches per minute per user
   const userId = await getCurrentUserIdForRateLimit();
   const rateLimitKey = `search:${userId}`;
   const { allowed, error, result } = checkRateLimit(
@@ -55,7 +58,7 @@ export async function searchBooksAction(
 
   try {
     // Call the service function that interacts with the Google Books API
-    const results = await searchBooks(query);
+    const results = await searchBooks(parsed.data.query);
     console.log(
       `[Server Action] Search completed - ${results.length} results (${result.remaining} requests remaining)`,
     );
@@ -69,16 +72,16 @@ export async function searchBooksAction(
 
 /**
  * Server Action: Fetch details for a single book.
- * ✅ Now includes rate limiting to prevent API quota exhaustion
  */
 export async function getBookDetailsAction(
   googleId: string,
 ): Promise<GoogleBookItem | null> {
-  if (!googleId) {
+  const parsed = getBookDetailsActionSchema.safeParse({ googleId });
+  if (!parsed.success) {
     return null;
   }
 
-  // ✅ Rate limiting: 30 requests per minute per user
+  // Rate limiting: 30 requests per minute per user
   const userId = await getCurrentUserIdForRateLimit();
   const rateLimitKey = `book-details:${userId}`;
   const { allowed, error } = checkRateLimit(
@@ -95,7 +98,7 @@ export async function getBookDetailsAction(
   }
 
   try {
-    const book = await getBookById(googleId);
+    const book = await getBookById(parsed.data.googleId);
     return book;
   } catch (error) {
     console.error("[Server Action] Failed to get book details:", error);

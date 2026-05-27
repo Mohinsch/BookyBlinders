@@ -9,22 +9,7 @@ import {
 import { db } from "@/db";
 import { book } from "@/db/schema";
 import { getBookById } from "@/services/google-books";
-
-export interface BookDetailsViewModel {
-  source: (typeof BOOK_SOURCES)[keyof typeof BOOK_SOURCES];
-  routeId: string;
-  internalId: number | null;
-  googleId: string | null;
-  title: string;
-  authors: string[];
-  cover: string | null;
-  publisher: string | null;
-  publishedDate: string | null;
-  pageCount: number | null;
-  isbn: string | null;
-  categories: string[];
-  description: string;
-}
+import type { BookDetailsViewModel } from "@/types/book-details";
 
 function stripHtml(value: string): string {
   return value.replace(/<[^>]*>/g, "").trim();

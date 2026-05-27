@@ -30,8 +30,8 @@ import {
 } from "@/lib/schemas";
 import { validateWithZod } from "@/lib/validation";
 import { getBookById } from "@/services/google-books";
+import type { ActionResponse } from "@/types/actions";
 import type {
-  ActionResponse,
   ReadingStatus,
   UserLibraryBook,
   UserLibrarySummary,
@@ -157,7 +157,7 @@ export async function createLibrary(name: string): Promise<ActionResponse> {
     const validData = validationResult.data;
     const user = await requireAuth();
 
-    // ✅ Rate limiting: 100 operations per minute per user
+    // Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:create`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
@@ -214,7 +214,7 @@ export async function renameLibrary(
     const validData = validationResult.data;
     const user = await requireAuth();
 
-    // ✅ Rate limiting: 100 operations per minute per user
+    // Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:rename`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
@@ -286,7 +286,7 @@ export async function deleteLibrary(
     const validData = validationResult.data;
     const user = await requireAuth();
 
-    // ✅ Rate limiting: 100 operations per minute per user
+    // Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:delete`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
@@ -371,7 +371,7 @@ export async function addBookToLibrary(
     const validData = validationResult.data;
     const user = await requireAuth();
 
-    // ✅ Rate limiting: 100 operations per minute per user
+    // Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:add-book`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
@@ -528,7 +528,7 @@ export async function updateReadingStatus(
     const validData = validationResult.data;
     const user = await requireAuth();
 
-    // ✅ Rate limiting: 100 operations per minute per user
+    // Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:update-status`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,
@@ -616,7 +616,7 @@ export async function removeBookFromLibrary(
     const validData = validationResult.data;
     const user = await requireAuth();
 
-    // ✅ Rate limiting: 100 operations per minute per user
+    // Rate limiting: 100 operations per minute per user
     const rateLimitKey = `library:${user.id}:remove-book`;
     const { allowed, error } = checkRateLimit(
       libraryOperationLimiter,

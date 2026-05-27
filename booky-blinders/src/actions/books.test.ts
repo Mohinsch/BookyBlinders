@@ -1,4 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { auth } from "@/lib/auth";
+import { checkRateLimit, trackViolation } from "@/lib/rate-limit";
 import { getBookById, searchBooks } from "@/services/google-books";
 import type { GoogleBookItem } from "@/types/google-books";
 import { getBookDetailsAction, searchBooksAction } from "./books";
@@ -13,9 +15,32 @@ vi.mock("@/services/google-books", () => ({
   getBookById: vi.fn(),
 }));
 
+vi.mock("@/lib/auth", () => ({
+  auth: {
+    api: { getSession: vi.fn() },
+  },
+}));
+
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(),
+  googleBooksSearchLimiter: {},
+  trackViolation: vi.fn(),
+}));
+
+vi.mock("next/headers", () => ({
+  headers: vi.fn(() => Promise.resolve(new Headers())),
+}));
+
 describe("Books Server Actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(auth.api.getSession).mockResolvedValue({
+      user: { id: "user-123" },
+    } as never);
+    vi.mocked(checkRateLimit).mockReturnValue({
+      allowed: true,
+      result: { remaining: 29, resetTime: new Date() },
+    });
   });
 
   describe("searchBooksAction", () => {
@@ -57,6 +82,34 @@ describe("Books Server Actions", () => {
 
       expect(result).toEqual([]);
     });
+
+    it("should return empty results when rate limit is exceeded", async () => {
+      vi.mocked(checkRateLimit).mockReturnValue({
+        allowed: false,
+        error: "Rate limit exceeded",
+        result: { remaining: 0, resetTime: new Date() },
+      });
+
+      const result = await searchBooksAction("Dune");
+
+      expect(result).toEqual([]);
+      expect(trackViolation).toHaveBeenCalledWith(
+        "user-123",
+        "search",
+        "server-action",
+      );
+      expect(searchBooks).not.toHaveBeenCalled();
+    });
+
+    it("should fall back to anonymous when session lookup fails", async () => {
+      vi.mocked(auth.api.getSession).mockRejectedValue(new Error("Boom"));
+      await searchBooksAction("Dune");
+
+      expect(checkRateLimit).toHaveBeenCalledWith(
+        expect.anything(),
+        "search:anonymous",
+      );
+    });
   });
 
   describe("getBookDetailsAction", () => {
@@ -86,6 +139,24 @@ describe("Books Server Actions", () => {
       const result = await getBookDetailsAction("123");
 
       expect(result).toBeNull();
+    });
+
+    it("should return null when rate limit is exceeded", async () => {
+      vi.mocked(checkRateLimit).mockReturnValue({
+        allowed: false,
+        error: "Rate limit exceeded",
+        result: { remaining: 0, resetTime: new Date() },
+      });
+
+      const result = await getBookDetailsAction("123");
+
+      expect(result).toBeNull();
+      expect(trackViolation).toHaveBeenCalledWith(
+        "user-123",
+        "book-details",
+        "server-action",
+      );
+      expect(getBookById).not.toHaveBeenCalled();
     });
   });
 });

@@ -9,17 +9,12 @@ import {
 import Image from "next/image";
 import { useMemo } from "react";
 import { useI18n } from "@/lib/i18n";
+import { getReadingStatus } from "@/lib/library-status";
 import { useLocaleContext } from "@/lib/locale-context";
 import type { ReadingStatus, UserLibraryBook } from "@/types/library";
 import styles from "./LibraryTable.module.scss";
 
 const columnHelper = createColumnHelper<UserLibraryBook>();
-
-const getStatus = (book: UserLibraryBook): ReadingStatus => {
-  if (book.readEnd) return "READ";
-  if (book.readStart) return "IN_PROGRESS";
-  return "TO_READ";
-};
 
 interface LibraryTableProps {
   data: UserLibraryBook[];
@@ -69,9 +64,9 @@ export function LibraryTable({
           <span className={styles.author}>{info.getValue()}</span>
         ),
       }),
-      columnHelper.accessor((row) => getStatus(row), {
+      columnHelper.accessor((row) => getReadingStatus(row), {
         id: "status",
-        header: t("bookDetails.title"),
+        header: t("library.status"),
         cell: (info) => {
           const status = info.getValue();
           const currentBook = info.row.original;

@@ -66,6 +66,27 @@ export const getUserLibrarySchema = z.object({
   libraryId: z.number().int().positive("Invalid library ID").optional(),
 });
 
+export const searchBooksActionSchema = z.object({
+  query: z.string().trim().min(1, "Search query is required"),
+});
+
+export const getBookDetailsActionSchema = z.object({
+  googleId: z.string().trim().min(1, "Google Book ID is required"),
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().trim().min(1, "Current password is required"),
+  newPassword: z
+    .string()
+    .trim()
+    .min(1, "New password is required")
+    .min(8, "Password must be at least 8 characters"),
+});
+
+export const deleteAccountSchema = z.object({
+  password: z.string().trim().min(1, "Password is required to delete account"),
+});
+
 /**
  * Export types for TypeScript inference
  */
@@ -82,3 +103,9 @@ export type RemoveBookFromLibraryInput = z.infer<
   typeof removeBookFromLibrarySchema
 >;
 export type GetUserLibraryInput = z.infer<typeof getUserLibrarySchema>;
+export type SearchBooksActionInput = z.infer<typeof searchBooksActionSchema>;
+export type GetBookDetailsActionInput = z.infer<
+  typeof getBookDetailsActionSchema
+>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
+export type DeleteAccountInput = z.infer<typeof deleteAccountSchema>;

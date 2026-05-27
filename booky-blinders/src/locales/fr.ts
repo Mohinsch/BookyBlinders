@@ -148,6 +148,7 @@ export const fr = {
     reading: "En Cours de Lecture",
     completed: "Terminés",
     toRead: "À Lire",
+    status: "Statut",
   },
 
   // Book Details
@@ -383,5 +384,6 @@ export const fr = {
     validationEmpty: "Veuillez saisir un titre avant de lancer la recherche.",
     searching: "Recherche en cours...",
     close: "Fermer la recherche",
+    submit: "Rechercher",
   },
 };
