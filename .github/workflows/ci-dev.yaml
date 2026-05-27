@@ -3,6 +3,7 @@ name: CI-dev
 on:
   push:
     branches:
+      - feat/refacto-and-lighthouse
       - dev
   pull_request:
     branches:
