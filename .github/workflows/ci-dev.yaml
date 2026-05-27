@@ -3,6 +3,7 @@ name: CI-dev
 on:
   push:
     branches:
+      - feat/refacto-and-lighthouse
       - dev
   pull_request:
     branches:
@@ -67,6 +68,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./booky-blinders/coverage/coverage-final.json
           flags: unittests
           fail_ci_if_error: false
