@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-// 🚀 Dynamic import for SearchModal - only loaded when user opens search (not on initial page load)
+// Dynamic import for SearchModal - only loaded when user opens search (not on initial page load)
 // Wrapped in a Client Component because `ssr: false` requires Client Component context
 const SearchModal = dynamic(
   () =>

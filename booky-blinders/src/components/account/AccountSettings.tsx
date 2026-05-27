@@ -6,7 +6,7 @@ import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./AccountSettings.module.scss";
 
-// 🚀 Dynamic imports for account settings sections - only loaded on /account page
+// Dynamic imports for account settings sections - only loaded on /account page
 const ChangePasswordForm = dynamic(
   () =>
     import("@/components/account/ChangePasswordForm").then((mod) => ({

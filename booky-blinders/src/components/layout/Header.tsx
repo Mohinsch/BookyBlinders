@@ -13,12 +13,13 @@ import { useI18n } from "@/lib/i18n";
 import { useLocaleContext } from "@/lib/locale-context";
 import styles from "./Header.module.scss";
 
+// Dynamic import for UserDropdown - only loaded when user is authenticated (header is always rendered)
 const UserDropdown = dynamic(
   () =>
     import("@/components/header/UserDropdown").then((mod) => ({
       default: mod.UserDropdown,
     })),
-  { ssr: false },
+  { ssr: false }, // CSR only - contains auth state and dropdown interactions
 );
 
 const NAV_LINKS = [
