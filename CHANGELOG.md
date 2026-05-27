@@ -8,6 +8,10 @@ All notable changes to this project are documented below, based on the git histo
 - test: add error handling for password change and account deletion (5e74d31)
 - fix: ensure error messages are always an array in LoginForm and RegisterForm (f1fa842)
 - Merge pull request #24 from Mohinsch/feat/refacto-and-lighthouse (75cc259)
+- chore: update changelog (04c4c9b)
+- fix: add token to introduce codecov (b772520)
+- fix: add actual branche to testing coverage (107cb32)
+- Merge pull request #25 from Mohinsch/feat/refacto-and-lighthouse (80ca176)
 
 ## 2026-05-26
 - feat: update CI configuration and add Vercel deployment steps to todo list (6389567)
