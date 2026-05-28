@@ -16,9 +16,31 @@ export const GOOGLE_BOOKS_API = {
 } as const;
 
 export const SEARCH_CONFIG = {
-  INITIAL_QUERY: "random",
   INITIAL_MAX_RESULTS: 12,
   DEFAULT_MAX_RESULTS: 12,
+} as const;
+
+// Seed queries used by getRandomBooks() to vary the homepage selection.
+// One is picked per hour-bucket so the choice is stable for an hour and
+// rotates afterwards. Subject-based queries return broad, well-curated lists.
+export const RANDOM_BOOKS_SEED_QUERIES = [
+  "subject:fiction",
+  "subject:fantasy",
+  "subject:mystery",
+  "subject:history",
+  "subject:biography",
+  "subject:science",
+  "subject:philosophy",
+  "subject:poetry",
+  "subject:literature",
+  "subject:romance",
+  "subject:thriller",
+  "subject:adventure",
+] as const;
+
+export const RANDOM_BOOKS_CONFIG = {
+  REVALIDATE_SECONDS: 3600,
+  MAX_START_INDEX: 40,
 } as const;
 
 // ============================================================================
