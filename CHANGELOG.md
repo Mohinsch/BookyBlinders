@@ -10,6 +10,13 @@ All notable changes to this project are documented below, based on the git histo
 - Merge branch 'dev' into chore/flatten-structure (88298bb)
 - git config core.hooksPath .husky (8f1cc69)
 - Merge pull request #26 from Mohinsch/chore/flatten-structure (9822b61)
+- chore: update changelog (09880be)
+- feat: rotate homepage book selection hourly via seed queries (f0dc537)
+- fix: await searchParams in login page and prefix auth form field ids to avoid duplicates (c4f4a55)
+- feat: add icon (960034e)
+- feat(header): add login entry to mobile burger menu for guests (cc94036)
+- fix(i18n): use addLibrary key for collection creation modal (7aa35bd)
+- Merge pull request #28 from Mohinsch/feat/homepage-random-books (0fcd00a)
 
 ## 2026-05-27
 - refactor: improve architecture, server actions security, and accessibility (7fdd339)
