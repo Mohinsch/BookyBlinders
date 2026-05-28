@@ -2,6 +2,9 @@
 
 All notable changes to this project are documented below, based on the git history.
 
+## 2026-05-28
+- Merge pull request #27 from Mohinsch/feat/refacto-and-lighthouse (73f38ac)
+
 ## 2026-05-27
 - refactor: improve architecture, server actions security, and accessibility (7fdd339)
 - refacto: organize files and clean code (8b0f045)
@@ -12,6 +15,8 @@ All notable changes to this project are documented below, based on the git histo
 - fix: add token to introduce codecov (b772520)
 - fix: add actual branche to testing coverage (107cb32)
 - Merge pull request #25 from Mohinsch/feat/refacto-and-lighthouse (80ca176)
+- chore: update changelog (2d68d5d)
+- refacto: remove unused Docker integration job from CI workflow (82444b3)
 
 ## 2026-05-26
 - feat: update CI configuration and add Vercel deployment steps to todo list (6389567)
