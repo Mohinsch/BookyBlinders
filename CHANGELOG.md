@@ -3,7 +3,13 @@
 All notable changes to this project are documented below, based on the git history.
 
 ## 2026-05-28
+- chore: flatten repo structure (move booky-blinders/ to root) (2b9c6c0)
+- hore: update CI, husky and gitignore for flat structure (b284dd0)
 - Merge pull request #27 from Mohinsch/feat/refacto-and-lighthouse (73f38ac)
+- chore: update changelog (5e423ad)
+- Merge branch 'dev' into chore/flatten-structure (88298bb)
+- git config core.hooksPath .husky (8f1cc69)
+- Merge pull request #26 from Mohinsch/chore/flatten-structure (9822b61)
 
 ## 2026-05-27
 - refactor: improve architecture, server actions security, and accessibility (7fdd339)
