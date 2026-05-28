@@ -1,4 +1,35 @@
+# dependencies
 node_modules
 .npmrc
-npm-debug.log
+
+# build output
+.next
+out
+build
+coverage
+
+# env / secrets
+.env
+.env.*
+!env.example
+
+# git / CI
+.git
+.gitignore
+.github
+.husky
+
+# editor / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+npm-debug.log*
+
+# misc
+.claude
 package-lock.json
+*.tsbuildinfo
