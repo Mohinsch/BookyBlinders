@@ -2,8 +2,15 @@
 // This file contains all the logic to interact with the Google Books API.
 // It abstracts away the API details and provides clean functions for searching and fetching book details.
 
-import { GOOGLE_BOOKS_API, LOG_MESSAGES } from "@/constants";
+import {
+  GOOGLE_BOOKS_API,
+  LOG_MESSAGES,
+  RANDOM_BOOKS_CONFIG,
+  RANDOM_BOOKS_SEED_QUERIES,
+} from "@/constants";
 import type { GoogleBookItem, GoogleBooksResponse } from "@/types/google-books";
+
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
 /**
  * Core wrapper for fetching data from the Google Books API.
@@ -58,6 +65,32 @@ export async function searchBooks(
     next: {
       revalidate: 86400,
       tags: ["google-books", "search", query.toLowerCase()],
+    },
+  });
+
+  return data?.items || [];
+}
+
+/**
+ * Pick a random homepage selection that stays stable for one hour.
+ * The seed query and start index are derived from a deterministic hour bucket,
+ * so every visitor in the same hour hits the same Next.js cache entry; the
+ * selection rotates automatically when the hour rolls over.
+ */
+export async function getRandomBooks(
+  maxResults = GOOGLE_BOOKS_API.DEFAULT_MAX_RESULTS,
+) {
+  const hourBucket = Math.floor(Date.now() / ONE_HOUR_MS);
+  const query =
+    RANDOM_BOOKS_SEED_QUERIES[hourBucket % RANDOM_BOOKS_SEED_QUERIES.length];
+  const startIndex = (hourBucket * 7) % RANDOM_BOOKS_CONFIG.MAX_START_INDEX;
+
+  const endpoint = `?q=${encodeURIComponent(query)}&startIndex=${startIndex}&maxResults=${maxResults}&langRestrict=${GOOGLE_BOOKS_API.LANGUAGE_RESTRICT}&orderBy=relevance`;
+
+  const data = await fetchFromGoogleBooks<GoogleBooksResponse>(endpoint, {
+    next: {
+      revalidate: RANDOM_BOOKS_CONFIG.REVALIDATE_SECONDS,
+      tags: ["google-books", "random-books", `random-books-${hourBucket}`],
     },
   });
 

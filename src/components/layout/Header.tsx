@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { LogOut } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -180,7 +180,7 @@ export function Header() {
               onLinkClick={handleLinkClick}
               translate={t}
             />
-            {isAuthenticated && (
+            {isAuthenticated ? (
               <>
                 <Link href={ROUTES.ACCOUNT} className={styles.mobileNavLink}>
                   {t("accountSettings.title")}
@@ -194,6 +194,15 @@ export function Header() {
                   {t("accountSettings.logout")}
                 </button>
               </>
+            ) : (
+              <Link
+                href={ROUTES.LOGIN}
+                className={styles.mobileLogoutBtn}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <LogIn size={SIZES.ICONS.SMALL} />
+                {t("header.openTheLedger")}
+              </Link>
             )}
           </motion.div>
         )}

@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 
 import { HeroSection } from "@/components/home/HeroSection";
 import { SEARCH_CONFIG } from "@/constants";
-import { searchBooks } from "@/services/google-books";
+import { getRandomBooks } from "@/services/google-books";
 import type { GoogleBookItem } from "@/types/google-books";
 import styles from "./page.module.scss";
 
@@ -36,10 +36,7 @@ const CtaSection = dynamic(
 export default async function HomePage() {
   let books: GoogleBookItem[] = [];
   try {
-    books = await searchBooks(
-      SEARCH_CONFIG.INITIAL_QUERY,
-      SEARCH_CONFIG.INITIAL_MAX_RESULTS,
-    );
+    books = await getRandomBooks(SEARCH_CONFIG.INITIAL_MAX_RESULTS);
   } catch (error) {
     console.error("Error loading initial books:", error);
   }

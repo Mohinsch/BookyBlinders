@@ -141,6 +141,7 @@ export const en = {
     title: "Your Library",
     empty: "Your library is empty. Start adding books!",
     addBook: "Add Book",
+    addLibrary: "Add Library",
     search: "Search books...",
     filter: "Filter",
     sort: "Sort",

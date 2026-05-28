@@ -1,7 +1,6 @@
 "use client";
 
 import { Check, LogIn, Plus, X } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ROUTES, UI_TEXT } from "@/constants";
 import { authClient } from "@/lib/auth-client";
@@ -80,14 +79,14 @@ export function BookCardActionButton({
             </button>
           )
         ) : (
-          <Link
+          <a
             href={ROUTES.LOGIN}
             className={styles.actionBtn}
             title={UI_TEXT.BUTTON.LOGIN_TO_ADD}
             onClick={(e) => e.stopPropagation()}
           >
             <LogIn size={20} />
-          </Link>
+          </a>
         )}
       </div>
 

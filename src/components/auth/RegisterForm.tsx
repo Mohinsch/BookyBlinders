@@ -88,7 +88,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       >
         {(field) => (
           <AuthField
-            id={field.name}
+            id={`register-${field.name}`}
             label={t("auth.name")}
             type="text"
             value={field.state.value}
@@ -111,7 +111,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       >
         {(field) => (
           <AuthField
-            id={field.name}
+            id={`register-${field.name}`}
             label={t("auth.emailAddress")}
             type="email"
             value={field.state.value}
@@ -134,7 +134,7 @@ export function RegisterForm({ onError, onSwitchToLogin }: RegisterFormProps) {
       >
         {(field) => (
           <AuthField
-            id={field.name}
+            id={`register-${field.name}`}
             label={t("auth.password")}
             type="password"
             value={field.state.value}

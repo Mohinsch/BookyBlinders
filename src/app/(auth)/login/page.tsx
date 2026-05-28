@@ -1,13 +1,14 @@
 import { AuthPage } from "@/components/auth/AuthPage";
 
 interface LoginPageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     mode?: string;
-  };
+  }>;
 }
 
-export default function LoginPage({ searchParams }: LoginPageProps) {
-  const initialMode = searchParams?.mode === "register" ? "register" : "login";
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const params = await searchParams;
+  const initialMode = params?.mode === "register" ? "register" : "login";
 
   return (
     <main>

@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { RANDOM_BOOKS_SEED_QUERIES } from "@/constants";
 import type { GoogleBookItem, GoogleBooksResponse } from "@/types/google-books";
-import { getBookById, searchBooks } from "./google-books";
+import { getBookById, getRandomBooks, searchBooks } from "./google-books";
+
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
 interface FetchResponse {
   ok: boolean;
@@ -109,6 +112,96 @@ describe("Google Books Service", () => {
           }),
         }),
       );
+    });
+  });
+
+  describe("getRandomBooks", () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("picks the seed and startIndex deterministically from the current hour", async () => {
+      // Pick a fixed hour bucket so we know exactly which seed should be used.
+      const fixedBucket = 100;
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date(fixedBucket * ONE_HOUR_MS));
+
+      vi.mocked(global.fetch).mockResolvedValue({
+        ok: true,
+        json: async () => ({ items: [] }) as GoogleBooksResponse,
+      } as FetchResponse as never);
+
+      await getRandomBooks(12);
+
+      const expectedQuery =
+        RANDOM_BOOKS_SEED_QUERIES[
+          fixedBucket % RANDOM_BOOKS_SEED_QUERIES.length
+        ];
+      const expectedStartIndex = (fixedBucket * 7) % 40;
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(expectedQuery)}&startIndex=${expectedStartIndex}&maxResults=12&langRestrict=en%2Cfr&orderBy=relevance&key=test-api-key`,
+        expect.objectContaining({
+          next: expect.objectContaining({
+            revalidate: 3600,
+            tags: expect.arrayContaining([
+              "google-books",
+              "random-books",
+              `random-books-${fixedBucket}`,
+            ]),
+          }),
+        }),
+      );
+    });
+
+    it("issues the same request twice within the same hour", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date(50 * ONE_HOUR_MS + 10_000));
+
+      vi.mocked(global.fetch).mockResolvedValue({
+        ok: true,
+        json: async () => ({ items: [] }) as GoogleBooksResponse,
+      } as FetchResponse as never);
+
+      await getRandomBooks(12);
+      const firstUrl = vi.mocked(global.fetch).mock.calls[0][0];
+
+      // Move forward by 30 minutes — still in the same hour bucket.
+      vi.setSystemTime(new Date(50 * ONE_HOUR_MS + 30 * 60 * 1000));
+      await getRandomBooks(12);
+      const secondUrl = vi.mocked(global.fetch).mock.calls[1][0];
+
+      expect(secondUrl).toBe(firstUrl);
+    });
+
+    it("rotates the seed when crossing into the next hour", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date(50 * ONE_HOUR_MS));
+
+      vi.mocked(global.fetch).mockResolvedValue({
+        ok: true,
+        json: async () => ({ items: [] }) as GoogleBooksResponse,
+      } as FetchResponse as never);
+
+      await getRandomBooks(12);
+      const firstUrl = vi.mocked(global.fetch).mock.calls[0][0];
+
+      vi.setSystemTime(new Date(51 * ONE_HOUR_MS));
+      await getRandomBooks(12);
+      const secondUrl = vi.mocked(global.fetch).mock.calls[1][0];
+
+      expect(secondUrl).not.toBe(firstUrl);
+    });
+
+    it("returns an empty array if the API returns no items", async () => {
+      vi.mocked(global.fetch).mockResolvedValue({
+        ok: true,
+        json: async () => ({}),
+      } as FetchResponse as never);
+
+      const result = await getRandomBooks(12);
+
+      expect(result).toEqual([]);
     });
   });
 
