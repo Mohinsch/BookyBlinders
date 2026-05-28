@@ -212,7 +212,7 @@ export function LibraryDashboard({
             type="button"
             className={styles.iconActionBtn}
             onClick={handleOpenCreateModal}
-            title={t("library.addBook")}
+            title={t("library.addLibrary")}
           >
             <Plus size={16} />
           </button>
@@ -369,7 +369,7 @@ export function LibraryDashboard({
             >
               <h3 id="library-modal-title">
                 {libraryAction === "create"
-                  ? t("library.addBook")
+                  ? t("library.addLibrary")
                   : t("common.edit")}
               </h3>
               <input

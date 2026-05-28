@@ -142,6 +142,7 @@ export const fr = {
     title: "Votre Bibliothèque",
     empty: "Votre bibliothèque est vide. Commencez à ajouter des livres !",
     addBook: "Ajouter un Livre",
+    addLibrary: "Ajouter une Collection",
     search: "Chercher des livres...",
     filter: "Filtrer",
     sort: "Trier",
