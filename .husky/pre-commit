@@ -1,4 +1,12 @@
 #!/bin/sh
-export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+if ! docker ps --format '{{.Names}}' | grep -q '^booky_web$'; then
+  echo "pre-commit: booky_web container is not running — start it with 'docker compose up -d'" >&2
+  exit 1
+fi
 
-node_modules/.bin/lint-staged
+files=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$files" ] && exit 0
+
+echo "$files" | xargs docker exec -i booky_web npx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true || exit 1
+
+echo "$files" | xargs git add
