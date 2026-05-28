@@ -86,7 +86,7 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
       >
         {(field) => (
           <AuthField
-            id={field.name}
+            id={`login-${field.name}`}
             label={t("auth.emailAddress")}
             type="email"
             value={field.state.value}
@@ -109,7 +109,7 @@ export function LoginForm({ onError, onSwitchToRegister }: LoginFormProps) {
       >
         {(field) => (
           <AuthField
-            id={field.name}
+            id={`login-${field.name}`}
             label={t("auth.password")}
             type="password"
             value={field.state.value}
