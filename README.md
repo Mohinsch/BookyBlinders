@@ -38,7 +38,7 @@ Track your reading progress, organize your library, and discover new books effor
 ```bash
 # 1. Clone the repository
 git clone https://github.com/Mohinsch/BookyBlinders.git
-cd booky-blinders
+cd BookyBlinders
 
 # 2. Install dependencies
 npm install
@@ -83,7 +83,7 @@ npm run dev
 ## 🗄️ Database (Seed & Dump)
 
 ### Seed (sample data)
-From `booky-blinders/`:
+From the project root:
 ```bash
 npm run db:seed
 ```

@@ -20,16 +20,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: booky-blinders/package-lock.json
 
       - name: Install dependencies
-        working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
           npm install --no-package-lock --no-audit --no-fund
 
       - name: Run linting
-        working-directory: booky-blinders
         run: npm run lint
 
   # Run tests
@@ -49,27 +46,23 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: booky-blinders/package-lock.json
 
       - name: Install dependencies
-        working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
           npm install --no-package-lock --no-audit --no-fund
 
       - name: Run tests
-        working-directory: booky-blinders
         run: npm run test
 
       - name: Generate coverage report
-        working-directory: booky-blinders
         run: npm run coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./booky-blinders/coverage/coverage-final.json
+          files: ./coverage/coverage-final.json
           flags: unittests
           fail_ci_if_error: false
 
@@ -91,23 +84,20 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: booky-blinders/package-lock.json
 
       - name: Install dependencies
-        working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
           npm install --no-package-lock --no-audit --no-fund
 
       - name: Build application
-        working-directory: booky-blinders
         run: npm run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nextjs-build
-          path: booky-blinders/.next
+          path: .next
           retention-days: 1
 
   # Optional: Test with Docker Compose (disabled until deployment infrastructure is ready)
@@ -126,7 +116,6 @@ jobs:
         run: docker --version
 
       - name: Build and start containers
-        working-directory: booky-blinders
         run: |
           docker compose -f docker-compose.yml up -d --build
 

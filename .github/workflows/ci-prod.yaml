@@ -18,16 +18,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: booky-blinders/package-lock.json
 
       - name: Install dependencies
-        working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
           npm install --no-package-lock --no-audit --no-fund
 
       - name: Run linting
-        working-directory: booky-blinders
         run: npm run lint
 
   test:
@@ -46,27 +43,23 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: booky-blinders/package-lock.json
 
       - name: Install dependencies
-        working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
           npm install --no-package-lock --no-audit --no-fund
 
       - name: Run tests
-        working-directory: booky-blinders
         run: npm run test
 
       - name: Generate coverage report
-        working-directory: booky-blinders
         run: npm run coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./booky-blinders/coverage/coverage-final.json
+          files: ./coverage/coverage-final.json
           flags: unittests
           fail_ci_if_error: false
 
@@ -83,16 +76,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: booky-blinders/package-lock.json
 
       - name: Install dependencies
-        working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
           npm install --no-package-lock --no-audit --no-fund
 
       - name: Push schema to database
-        working-directory: booky-blinders
         run: npm run db:push
 
   build:
@@ -112,23 +102,20 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: booky-blinders/package-lock.json
 
       - name: Install dependencies
-        working-directory: booky-blinders
         run: |
           npm config set registry https://registry.npmjs.org/
           npm install --no-package-lock --no-audit --no-fund
 
       - name: Build application
-        working-directory: booky-blinders
         run: npm run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nextjs-build-prod
-          path: booky-blinders/.next
+          path: .next
           retention-days: 1
 
   # deploy-vercel:
@@ -140,15 +127,15 @@ jobs:
   #       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   #     steps:
   #       - uses: actions/checkout@v4
-        
+
   #       - name: Install Vercel CLI
   #         run: npm install --global vercel@latest
-          
+
   #       - name: Pull Vercel Environment Information
   #         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-          
+
   #       - name: Build Project Artifacts (Vercel)
   #         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-          
+
   #       - name: Deploy Project Artifacts to Vercel
   #         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
