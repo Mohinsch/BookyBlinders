@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
+  modal, // ← @modal slot injected by Next.js
 }: Readonly<{
   children: React.ReactNode;
   modal: React.ReactNode;
@@ -50,7 +50,7 @@ export default function RootLayout({
           <div style={{ flex: 1 }}>{children}</div>
           <Footer />
           <SearchModalWrapper />
-          {modal}
+          {modal} {/* ← Parallel route slot rendered on top */}
         </Providers>
       </body>
     </html>
