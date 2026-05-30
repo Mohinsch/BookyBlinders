@@ -5,7 +5,8 @@
 A mobile-first web application for managing your personal book collection with an industrial 1920s aesthetic. 
 Track your reading progress, organize your library, and discover new books effortlessly.
 
-![Booky Blinders Screenshot](/docs/BookyBlinders_PersonalLibrary.pdf)
+![Booky Blinders Screenshot](/docs/BookyBlinders_PersonalLibrary.jpg)
+![Booky Blinders Screenshot](/docs/BookyBlinders_PersonalLibrary2.jpg)
 
 ---
 
