@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented below, based on the git history.
 
+## 2026-05-30
+- Merge pull request #29 from Mohinsch/chore/exam-readiness (1797373)
+
+## 2026-05-29
+- refacto: clean comment (8f9fa13)
+
 ## 2026-05-28
 - chore: flatten repo structure (move booky-blinders/ to root) (2b9c6c0)
 - hore: update CI, husky and gitignore for flat structure (b284dd0)
@@ -17,6 +23,13 @@ All notable changes to this project are documented below, based on the git histo
 - feat(header): add login entry to mobile burger menu for guests (cc94036)
 - fix(i18n): use addLibrary key for collection creation modal (7aa35bd)
 - Merge pull request #28 from Mohinsch/feat/homepage-random-books (0fcd00a)
+- chore: update changelog (2704ff3)
+- docs: add Server Actions API contract reference (404a357)
+- feat(security): add HTTP security headers and complete OWASP audit doc (af28007)
+-  docs: add pre-production checklist and rollback procedure (41606bc)
+- chore: add lighthouse analysis (095ed11)
+- chore(docs): add gitattributes (b3616a7)
+- chore(docs): update gitignore and dockerignore (1253358)
 
 ## 2026-05-27
 - refactor: improve architecture, server actions security, and accessibility (7fdd339)
