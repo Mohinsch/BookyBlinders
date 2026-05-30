@@ -74,6 +74,10 @@ export const getBookDetailsActionSchema = z.object({
   googleId: z.string().trim().min(1, "Google Book ID is required"),
 });
 
+/**
+ * User interactions Schemas
+ */
+
 export const changePasswordSchema = z.object({
   currentPassword: z.string().trim().min(1, "Current password is required"),
   newPassword: z

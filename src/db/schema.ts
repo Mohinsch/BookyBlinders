@@ -15,7 +15,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 // ==========================================
-// 1. BETTER-AUTH CORE TABLES (Merged & Optimized)
+// 1. BETTER-AUTH CORE TABLES
 // ==========================================
 
 export const user = pgTable("user", {
@@ -24,13 +24,13 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(), // auth credential
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"), // profile picture URL
-  role: varchar("role", { length: 50 }).default("user").notNull(), // Added: permissions
+  role: varchar("role", { length: 50 }).default("user").notNull(), // permissions
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-  deletedAt: timestamp("deleted_at"), // Added: soft delete
+  deletedAt: timestamp("deleted_at"), // soft delete
 });
 
 export const session = pgTable(
