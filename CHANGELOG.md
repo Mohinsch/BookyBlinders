@@ -2,12 +2,18 @@
 
 All notable changes to this project are documented below, based on the git history.
 
+## 2026-06-07
+- refacto: migrate library data fetching to TanStack Query (4815130)
+- fix: delete comment code in ci-prod (93b222a)
+- Merge pull request #31 from Mohinsch/chore/exam-readiness (22e808a)
+
 ## 2026-05-30
 - Merge pull request #29 from Mohinsch/chore/exam-readiness (1797373)
 - chore: update changelog (0d5e63e)
 - fix: next config for better auth and readme with image jpg (d4f2c17)
 - fix: next config return preview version (018701e)
 - Merge pull request #30 from Mohinsch/chore/exam-readiness (d80ae8c)
+- chore: update changelog (23d2878)
 
 ## 2026-05-29
 - refacto: clean comment (8f9fa13)
