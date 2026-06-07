@@ -1,5 +1,6 @@
 "use client";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookPlus,
@@ -48,6 +49,7 @@ export function LibraryDashboard({
   libraries,
 }: LibraryDashboardProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { openSearch } = useSearchStore();
 
   const { locale } = useLocaleContext();
@@ -62,9 +64,6 @@ export function LibraryDashboard({
   const [currentLibraryId, setCurrentLibraryId] = useState<number>(
     libraries[0]?.id || 0,
   );
-  const [userLibraries, setUserLibraries] =
-    useState<UserLibrarySummary[]>(libraries);
-  const [books, setBooks] = useState<UserLibraryBook[]>(initialBooks);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLibraryModalOpen, setIsLibraryModalOpen] = useState(false);
   const libraryModalRef = useRef<HTMLDivElement | null>(null);
@@ -74,6 +73,21 @@ export function LibraryDashboard({
   const [libraryAction, setLibraryAction] = useState<"create" | "rename">(
     "create",
   );
+
+  const { data: userLibraries = [] } = useQuery<UserLibrarySummary[]>({
+    queryKey: ["libraries"],
+    queryFn: getUserLibraries,
+    initialData: libraries,
+  });
+
+  const { data: books = [] } = useQuery<UserLibraryBook[]>({
+    queryKey: ["library", currentLibraryId],
+    queryFn: () =>
+      currentLibraryId ? getUserLibrary(currentLibraryId) : Promise.resolve([]),
+    initialData:
+      currentLibraryId === libraries[0]?.id ? initialBooks : undefined,
+    enabled: currentLibraryId > 0,
+  });
 
   useEffect(() => {
     if (userLibraries.length === 0) {
@@ -86,24 +100,67 @@ export function LibraryDashboard({
     }
   }, [currentLibraryId, userLibraries]);
 
-  useEffect(() => {
-    const loadBooks = async () => {
-      if (!currentLibraryId) {
-        setBooks([]);
-        return;
-      }
-      const freshBooks = await getUserLibrary(currentLibraryId);
-      setBooks(freshBooks);
-    };
-
-    void loadBooks();
-  }, [currentLibraryId]);
-
-  const refreshLibraries = async () => {
+  const invalidateLibraries = () => {
+    void queryClient.invalidateQueries({ queryKey: ["libraries"] });
     router.refresh();
-    const nextLibraries = await getUserLibraries();
-    setUserLibraries(nextLibraries);
   };
+
+  const invalidateBooks = (libraryId: number) => {
+    void queryClient.invalidateQueries({ queryKey: ["library", libraryId] });
+  };
+
+  const createLibraryMutation = useMutation({
+    mutationFn: (name: string) => createLibrary(name),
+    onSuccess: (result) => {
+      if (!result.success) return;
+      setIsLibraryModalOpen(false);
+      setLibraryName("");
+      invalidateLibraries();
+    },
+  });
+
+  const renameLibraryMutation = useMutation({
+    mutationFn: ({ id, name }: { id: number; name: string }) =>
+      renameLibrary(id, name),
+    onSuccess: (result) => {
+      if (!result.success) return;
+      setIsLibraryModalOpen(false);
+      setLibraryName("");
+      invalidateLibraries();
+    },
+  });
+
+  const deleteLibraryMutation = useMutation({
+    mutationFn: (id: number) => deleteLibrary(id),
+    onSuccess: (result) => {
+      if (!result.success) return;
+      setIsSettingsOpen(false);
+      invalidateLibraries();
+    },
+  });
+
+  const updateStatusMutation = useMutation({
+    mutationFn: ({
+      bookId,
+      status,
+    }: {
+      bookId: number;
+      status: ReadingStatus;
+    }) => updateReadingStatus(bookId, status, currentLibraryId),
+    onSuccess: (result) => {
+      if (!result.success) return;
+      invalidateBooks(currentLibraryId);
+    },
+  });
+
+  const removeBookMutation = useMutation({
+    mutationFn: (bookId: number) =>
+      removeBookFromLibrary(bookId, currentLibraryId),
+    onSuccess: (result) => {
+      if (!result.success) return;
+      invalidateBooks(currentLibraryId);
+    },
+  });
 
   const handleOpenCreateModal = () => {
     setLibraryAction("create");
@@ -124,30 +181,23 @@ export function LibraryDashboard({
     setIsSettingsOpen(false);
   };
 
-  const handleSubmitLibrary = async () => {
+  const handleSubmitLibrary = () => {
     const trimmedName = libraryName.trim();
     if (!trimmedName) return;
 
-    const result =
-      libraryAction === "create"
-        ? await createLibrary(trimmedName)
-        : await renameLibrary(currentLibraryId, trimmedName);
-
-    if (!result.success) return;
-
-    setIsLibraryModalOpen(false);
-    setLibraryName("");
-    await refreshLibraries();
+    if (libraryAction === "create") {
+      createLibraryMutation.mutate(trimmedName);
+    } else {
+      renameLibraryMutation.mutate({
+        id: currentLibraryId,
+        name: trimmedName,
+      });
+    }
   };
 
-  const handleDeleteLibrary = async () => {
+  const handleDeleteLibrary = () => {
     if (!currentLibraryId) return;
-
-    const result = await deleteLibrary(currentLibraryId);
-    if (!result.success) return;
-
-    setIsSettingsOpen(false);
-    await refreshLibraries();
+    deleteLibraryMutation.mutate(currentLibraryId);
   };
 
   const filteredAndSortedBooks = useMemo(() => {
@@ -176,18 +226,12 @@ export function LibraryDashboard({
     });
   }, [books, statusFilter, sortBy, searchQuery]);
 
-  const handleStatusChange = async (bookId: number, status: ReadingStatus) => {
-    const result = await updateReadingStatus(bookId, status, currentLibraryId);
-    if (!result.success) return;
-    const freshBooks = await getUserLibrary(currentLibraryId);
-    setBooks(freshBooks);
+  const handleStatusChange = (bookId: number, status: ReadingStatus) => {
+    updateStatusMutation.mutate({ bookId, status });
   };
 
-  const handleRemove = async (bookId: number) => {
-    const result = await removeBookFromLibrary(bookId, currentLibraryId);
-    if (!result.success) return;
-    const freshBooks = await getUserLibrary(currentLibraryId);
-    setBooks(freshBooks);
+  const handleRemove = (bookId: number) => {
+    removeBookMutation.mutate(bookId);
   };
 
   return (
@@ -239,10 +283,7 @@ export function LibraryDashboard({
                   <button type="button" onClick={handleOpenRenameModal}>
                     {t("common.edit")}
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => void handleDeleteLibrary()}
-                  >
+                  <button type="button" onClick={handleDeleteLibrary}>
                     {t("common.delete")}
                   </button>
                 </motion.div>
@@ -333,9 +374,9 @@ export function LibraryDashboard({
                 showReadingControls
                 readingStatus={getReadingStatus(book)}
                 onReadingStatusChange={(status) =>
-                  void handleStatusChange(book.id, status)
+                  handleStatusChange(book.id, status)
                 }
-                onRemoveFromLibrary={() => void handleRemove(book.id)}
+                onRemoveFromLibrary={() => handleRemove(book.id)}
               />
             ))}
           </div>
@@ -385,10 +426,7 @@ export function LibraryDashboard({
                 >
                   {t("accountSettings.cancel")}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => void handleSubmitLibrary()}
-                >
+                <button type="button" onClick={handleSubmitLibrary}>
                   {t("accountSettings.save")}
                 </button>
               </div>
