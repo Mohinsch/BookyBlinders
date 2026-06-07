@@ -23,6 +23,9 @@ All notable changes to this project are documented below, based on the git histo
 - chore: ignore package-lock to let Vercel fetch from public registry (ba6e0e5)
 - fix: delete cache (e45f767)
 - Merge pull request #36 from Mohinsch/chore/exam-readiness (db4f4d4)
+- chore: update changelog (62dbda8)
+- ci: fix auth environment variable leakage in production test job (992048c)
+- Merge pull request #38 from Mohinsch/chore/exam-readiness (64a9c52)
 
 ## 2026-05-30
 - Merge pull request #29 from Mohinsch/chore/exam-readiness (1797373)
