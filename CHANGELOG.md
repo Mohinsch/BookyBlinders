@@ -19,6 +19,10 @@ All notable changes to this project are documented below, based on the git histo
 - chore: update changelog (4b74e63)
 - fix : always dependancies (5ea8ad1)
 - Merge pull request #35 from Mohinsch/chore/exam-readiness (3e4efc1)
+- chore: update changelog (ea9000f)
+- chore: ignore package-lock to let Vercel fetch from public registry (ba6e0e5)
+- fix: delete cache (e45f767)
+- Merge pull request #36 from Mohinsch/chore/exam-readiness (db4f4d4)
 
 ## 2026-05-30
 - Merge pull request #29 from Mohinsch/chore/exam-readiness (1797373)
