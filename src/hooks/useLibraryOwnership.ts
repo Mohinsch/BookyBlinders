@@ -1,38 +1,38 @@
-import { useCallback, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { getOwnedGoogleBookIds, getUserLibraries } from "@/actions/library";
 import { authClient } from "@/lib/auth-client";
 import type { UserLibrarySummary } from "@/types/library";
 
 export const useLibraryOwnership = (isActive: boolean) => {
   const { data: session } = authClient.useSession();
-  const [availableLibraries, setAvailableLibraries] = useState<
-    UserLibrarySummary[]
-  >([]);
-  const [ownedGoogleIds, setOwnedGoogleIds] = useState<string[]>([]);
+  const queryClient = useQueryClient();
+  const enabled = isActive && Boolean(session?.user);
 
-  useEffect(() => {
-    if (!isActive || !session?.user) return;
+  const { data: availableLibraries = [] } = useQuery<UserLibrarySummary[]>({
+    queryKey: ["libraries"],
+    queryFn: getUserLibraries,
+    enabled,
+  });
 
-    const loadLibraries = async () => {
-      const libraries = await getUserLibraries();
-      const ownedIds = await getOwnedGoogleBookIds();
-      setAvailableLibraries(libraries);
-      setOwnedGoogleIds(ownedIds);
-    };
+  const { data: ownedGoogleIds = [] } = useQuery<string[]>({
+    queryKey: ["ownedGoogleIds"],
+    queryFn: getOwnedGoogleBookIds,
+    enabled,
+  });
 
-    void loadLibraries();
-  }, [isActive, session?.user?.id, session?.user]);
-
-  const markOwned = useCallback((googleId: string) => {
-    setOwnedGoogleIds((prev) =>
-      prev.includes(googleId) ? prev : [...prev, googleId],
-    );
-  }, []);
+  const markOwned = useCallback(
+    (googleId: string) => {
+      queryClient.setQueryData<string[]>(["ownedGoogleIds"], (prev = []) =>
+        prev.includes(googleId) ? prev : [...prev, googleId],
+      );
+    },
+    [queryClient],
+  );
 
   return {
     availableLibraries,
     ownedGoogleIds,
-    setOwnedGoogleIds,
     markOwned,
   };
 };

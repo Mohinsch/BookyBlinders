@@ -3,18 +3,12 @@
 import type { Variants } from "framer-motion";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
-import {
-  addBookToLibrary,
-  getOwnedGoogleBookIds,
-  getUserLibraries,
-} from "@/actions/library";
+import { addBookToLibrary } from "@/actions/library";
 import { BookCard } from "@/components/ui/BookCard";
 import { Button } from "@/components/ui/Button";
-import { authClient } from "@/lib/auth-client";
+import { useLibraryOwnership } from "@/hooks/useLibraryOwnership";
 import { useSearchStore } from "@/store/useSearchStore";
 import type { GoogleBookItem } from "@/types/google-books";
-import type { UserLibrarySummary } from "@/types/library";
 import styles from "./DiscoverSection.module.scss";
 
 interface DiscoverSectionProps {
@@ -46,23 +40,8 @@ const itemVariants: Variants = {
 
 export function DiscoverSection({ initialBooks = [] }: DiscoverSectionProps) {
   const { openSearch } = useSearchStore();
-  const { data: session } = authClient.useSession();
-  const [availableLibraries, setAvailableLibraries] = useState<
-    UserLibrarySummary[]
-  >([]);
-  const [ownedGoogleIds, setOwnedGoogleIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    const loadLibraries = async () => {
-      if (!session?.user) return;
-      const libraries = await getUserLibraries();
-      const ownedIds = await getOwnedGoogleBookIds();
-      setAvailableLibraries(libraries);
-      setOwnedGoogleIds(ownedIds);
-    };
-
-    void loadLibraries();
-  }, [session?.user]);
+  const { availableLibraries, ownedGoogleIds, markOwned } =
+    useLibraryOwnership(true);
 
   return (
     <section id="discover" className={styles.discover}>
@@ -97,9 +76,7 @@ export function DiscoverSection({ initialBooks = [] }: DiscoverSectionProps) {
                 onAddToLibrary={async (libraryId) => {
                   const result = await addBookToLibrary(book.id, libraryId);
                   if (!result.success) return;
-                  setOwnedGoogleIds((prev) =>
-                    prev.includes(book.id) ? prev : [...prev, book.id],
-                  );
+                  markOwned(book.id);
                 }}
               />
             </motion.div>
