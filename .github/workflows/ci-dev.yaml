@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm install --no-package-lock --no-audit --no-fund --legacy-peer-deps
+          npm install --no-package-lock --no-audit --no-fund
 
       - name: Run linting
         run: npm run lint
@@ -50,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm install --no-package-lock --no-audit --no-fund --legacy-peer-deps
+          npm install --no-package-lock --no-audit --no-fund
 
       - name: Run tests
         run: npm run test
@@ -88,7 +88,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm install --no-package-lock --no-audit --no-fund --legacy-peer-deps
+          npm install --no-package-lock --no-audit --no-fund
 
       - name: Build application
         run: npm run build
