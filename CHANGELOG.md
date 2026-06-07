@@ -9,6 +9,9 @@ All notable changes to this project are documented below, based on the git histo
 - chore: update changelog (4a01540)
 - fix: better-auth dependancies (f9c374e)
 - Merge pull request #32 from Mohinsch/chore/exam-readiness (e9bdcac)
+- chore: update changelog (42985f8)
+- fix: better-auth dependancies (04e68a2)
+- Merge pull request #33 from Mohinsch/chore/exam-readiness (69102e4)
 
 ## 2026-05-30
 - Merge pull request #29 from Mohinsch/chore/exam-readiness (1797373)
