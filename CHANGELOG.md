@@ -16,6 +16,9 @@ All notable changes to this project are documented below, based on the git histo
 - fix: dependancies (8773ac8)
 - fix: dependancies (cc245bb)
 - Merge pull request #34 from Mohinsch/chore/exam-readiness (cc4ffe3)
+- chore: update changelog (4b74e63)
+- fix : always dependancies (5ea8ad1)
+- Merge pull request #35 from Mohinsch/chore/exam-readiness (3e4efc1)
 
 ## 2026-05-30
 - Merge pull request #29 from Mohinsch/chore/exam-readiness (1797373)
