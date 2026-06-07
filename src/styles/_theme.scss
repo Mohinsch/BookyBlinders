@@ -1,0 +1,35 @@
+// src/styles/_theme.scss
+// Theme variables for light and dark modes
+
+:root {
+  // Dark mode (default) - Black/Gold
+  --color-primary: #D9B26A;
+  --color-bg-base: #252525;
+  --color-surface: #000000;
+  --color-bg-muted: #A19083;
+  --color-text-main: #FFFFFF;
+  --color-text-paper: #F5F5F0;
+  --color-text-dimmed: rgba(255, 255, 255, 0.6);
+}
+
+html.light {
+  // Light mode - Cream/Copper
+  --color-primary: #C89450;
+  --color-bg-base: #F5E6D3;
+  --color-surface: #FAF3E9;
+  --color-bg-muted: #D4A574;
+  --color-text-main: #2D2D2D;
+  --color-text-paper: #3F3F3F;
+  --color-text-dimmed: rgba(45, 45, 45, 0.6);
+}
+
+// Smooth transition for theme switching
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

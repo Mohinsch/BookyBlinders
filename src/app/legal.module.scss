@@ -1,0 +1,119 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem $spacing-md;
+  min-height: 100vh;
+  color: var(--color-text-main);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #f1c47a;
+
+  @include respond-to('md') {
+    font-size: 2rem;
+  }
+}
+
+.lastUpdated {
+  font-size: 0.9rem;
+  color: var(--color-text-dimmed);
+  margin-bottom: 3rem;
+  font-style: italic;
+}
+
+.section {
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f1c47a;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f1c47a;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--color-text-main);
+  }
+
+  ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+
+    li {
+      line-height: 1.8;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: var(--color-text-main);
+    }
+  }
+
+  strong {
+    color: #f1c47a;
+  }
+}
+
+.highlight {
+  background-color: rgba($color-primary, 0.05);
+  border-left: 3px solid rgba($color-primary, 0.3);
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+
+  p {
+    margin: 0;
+    color: var(--color-text-main);
+  }
+
+  strong {
+    color: #f1c47a;
+  }
+}
+
+.contact {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba($color-primary, 0.2);
+
+  strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #f1c47a;
+  }
+
+  p {
+    color: var(--color-text-main);
+  }
+
+  a {
+    color: #f1c47a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: rgba(241, 196, 122, 0.7);
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,152 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.footer {
+  border-top: 1px solid rgba($color-primary, 0.3);
+  background-color: $color-bg-base;
+  padding: 0.5rem 0; 
+  margin-top: auto;
+
+  @include respond-to('md') {
+    padding: 2rem 0 1rem; 
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; 
+}
+
+.topSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center;
+  gap: 1rem;
+
+  @include respond-to('md') {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    gap: 2rem;
+  }
+}
+
+.brand {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  gap: 0.2rem;
+
+  @include respond-to('md') {
+    flex-direction: row; 
+    gap: 1.2rem;
+  }
+
+  .logo {
+    width: 3rem; 
+    height: 3rem; 
+    flex-shrink: 0;
+    color: $color-primary;
+    @include respond-to('md') {
+      width: 4rem; 
+      height: 4rem;
+    }
+  }
+
+  .brandText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .title {
+      font-family: $font-accent;
+      font-size: 1rem;
+      color: $color-text-paper;
+      line-height: 1;
+
+      @include respond-to('md') {
+        font-size: 2rem;
+      }
+    }
+
+    .subtitle {
+      font-family: $font-ui;
+      font-size: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: $color-text-dimmed;
+      margin-top: 0.2rem;
+      @include respond-to('md') {
+        font-size: 0.7rem;
+      }
+    }
+  }
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center; 
+
+  @include respond-to('md') {
+    gap: 2.5rem;
+  }
+
+  .navLink {
+    font-family: $font-ui;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    @include respond-to('md') {
+      font-size: 1rem;
+    }
+
+    &:hover, &.active {
+      color: $color-primary; 
+    }
+  }
+}
+
+.bottomSection {
+  display: flex;
+  flex-direction: column-reverse; 
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+
+  @include respond-to('md') {
+    flex-direction: row; 
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .copyright {
+    font-family: $font-ui;
+    font-size: 0.5rem;
+    color: rgba(255, 255, 255, 0.4);
+
+    @include respond-to('md') {
+      font-size: 0.85rem;
+    }
+  }
+
+  .quote {
+    font-family: $font-ui;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+
+    @include respond-to('md') {
+      font-size: 0.9rem;
+    }
+  }
+}

@@ -1,0 +1,71 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+  
+.features {
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-md;
+
+  .sectionTitle {
+    font-family: $font-accent;
+    font-size: clamp(1.7rem, 5vw, 4rem); 
+    color: $color-primary;
+    margin: 0 0 3rem 0;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  
+  .featureGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+    text-align: left;
+    width: 100%;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .featureCard {
+      @include vintage-border;
+      padding: $spacing-md;
+      @include flex-column;
+      gap: $spacing-xs;
+      
+      background-color: $color-surface;
+      border-radius: 0; 
+
+      .icon, h3, p {
+        position: relative;
+        z-index: 2; 
+      }
+
+      .icon {
+        color: $color-primary;
+        margin-bottom: $spacing-xs;
+      }
+
+      h3 {
+        @include heading-sub;
+        font-size: 1.5rem;
+        border: none;
+        padding: 0;
+        margin: 0;
+        font-family: $font-accent;
+        color: #FFFFFF !important;
+      }
+
+      p {
+        @include text-ui;
+        color: $color-bg-muted;
+        line-height: 1.6;
+        font-size: 1.1rem;
+        margin: 0;
+        font-family: $font-ui;
+      }
+    }
+  }
+}

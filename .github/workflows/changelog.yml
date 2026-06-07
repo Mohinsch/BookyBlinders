@@ -1,0 +1,57 @@
+name: Changelog
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths-ignore:
+      - CHANGELOG.md
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate CHANGELOG.md
+        run: |
+          {
+            echo "# Changelog"
+            echo
+            echo "All notable changes to this project are documented below, based on the git history."
+            echo
+            git log --reverse --date=short --pretty=format:'%ad|%s|%h' | awk -F'|' '
+              {
+                date=$1; msg=$2; sha=$3;
+                if (!(date in seen)) { seen[date]=1; order[++count]=date }
+                lines[date]=lines[date] sprintf("- %s (%s)\n", msg, sha)
+              }
+              END {
+                for (i=count; i>=1; i--) {
+                  d=order[i];
+                  print "## " d;
+                  printf "%s", lines[d];
+                  if (i>1) print "";
+                }
+              }
+            '
+          } > CHANGELOG.md
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet -- CHANGELOG.md; then
+            echo "No changelog updates."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "chore: update changelog"
+          git push

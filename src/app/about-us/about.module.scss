@@ -1,0 +1,109 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.aboutContainer {
+  padding: $spacing-xl $spacing-md;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  width: 100%;
+}
+
+.hero {
+  text-align: center;
+  @include flex-column;
+  @include flex-center;
+  gap: $spacing-sm;
+
+  .logo {
+    width: 80px;
+    height: 80px;
+    color: $color-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  h1 {
+    @include heading-hero;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin: 0;
+  }
+
+  .subtitle {
+    @include text-ui;
+    color: $color-primary;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.card {
+  @include vintage-border;
+  background-color: $color-surface;
+  padding: $spacing-lg;
+  
+  h2 {
+    @include heading-sub;
+    color: $color-primary;
+    margin-bottom: $spacing-md;
+    border-bottom: 1px solid rgba($color-primary, 0.2);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+
+  p {
+    @include text-classic;
+    color: $color-text-paper;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-lg;
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .memberInfo {
+    margin-bottom: $spacing-sm;
+
+    h3 {
+      font-family: $font-accent;
+      color: $color-text-paper;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    span {
+      @include text-ui;
+      color: $color-bg-muted;
+      font-style: italic;
+    }
+  }
+}
+
+.cta {
+  text-align: center;
+  padding: $spacing-xl 0;
+  border-top: 1px solid rgba($color-primary, 0.1);
+
+  h2 {
+    @include heading-sub;
+    margin-bottom: $spacing-md;
+  }
+}

@@ -1,0 +1,68 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.discover {
+  width: 100%;
+
+  .discoverHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+    width: 100%;
+
+    .sectionTitle {
+      @include heading-sub;
+      color: $color-primary;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      text-transform: uppercase;
+      margin: 0;
+      white-space: nowrap;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+
+      @include respond-to('md') {
+        gap: 1.5rem;
+      }
+
+      &::before, &::after {
+        content: '';
+        display: block;
+        height: 1px;
+        width: 25px;
+        background-color: $color-primary;
+        flex-shrink: 0;
+
+        @include respond-to('md') {
+          width: 50px;
+        }
+      }
+    }
+
+    .actionWrapper {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .bookGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    width: 100%;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: $spacing-lg;
+    }
+  }
+
+  .emptyMessage {
+    text-align: center;
+    color: var(--color-text-dimmed);
+    font-family: $font-accent;
+    font-style: italic;
+    font-size: 1.2rem;
+  }
+}

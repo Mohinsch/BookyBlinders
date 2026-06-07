@@ -1,0 +1,20 @@
+# /Dockerfile.dev
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Alpine is minimal, so we need build tools and Python for native dependencies
+RUN apk add --no-cache g++ make py3-pip libc6-compat
+
+# Layer caching for dependencies
+COPY package.json package-lock.json* ./
+RUN npm config set registry https://registry.npmjs.org/ && npm install
+
+# Copy source code
+COPY . .
+
+# Standard Next.js port
+EXPOSE 3000
+
+# Start command with hot-reload
+CMD ["npm", "run", "dev"]

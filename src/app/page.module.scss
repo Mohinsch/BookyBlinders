@@ -1,0 +1,16 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.home {
+  padding: $spacing-xl $spacing-md;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+  width: 100%;
+
+  @include respond-to('md') {
+    gap: 6rem;
+  }
+}

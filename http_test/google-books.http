@@ -1,0 +1,17 @@
+### Variables
+@baseUrl = https://www.googleapis.com/books/v1/volumes
+# Replace the value below with your actual API key
+@googleKey = blabla
+
+### 1. Basic search test (by keyword)
+GET {{baseUrl}}?q=peaky+blinders&key={{googleKey}}
+
+### 2. Search test with limits and filters
+# maxResults=5: Limit to 5 results
+# langRestrict=en,fr: English and French books only
+GET {{baseUrl}}?q=classic+crime+fiction&maxResults=5&langRestrict=en,fr&key={{googleKey}}
+
+### 3. Fetch specific book details via Google ID
+# Example with a random ID (replace with a real ID from previous responses)
+@bookId = jCd3nQAACAAJ
+GET {{baseUrl}}/{{bookId}}?key={{googleKey}}

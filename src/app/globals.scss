@@ -1,0 +1,69 @@
+// ==========================================
+// VARIABLES (Colors, Typography, Spacing)
+// ==========================================
+
+// --- Booky Blinders Palette ---
+$bg-dark: #111827;
+$bg-card: #1a1f2e;
+
+// --- Metallic Accents & Leather ---
+$copper: #b87333;
+$brass: #c5a059;
+$gold-light: #d4a843;
+$burgundy: #7f1d1d;
+$burgundy-light: #991b1b;
+
+// --- Text & Borders ---
+$text-light: #e5e5e5;
+$text-muted: #9ca3af;
+$border-subtle: rgba(184, 115, 51, 0.18); // Based on copper
+
+// --- Typography ---
+$font-serif: "EB Garamond", serif; // Main vintage typography (Headings & Body)
+$font-sans: "Montserrat", sans-serif; // Clean UI typography (Buttons, Nav, Tags)
+
+// ==========================================
+// 3. MIXINS (Your tools for textures/effects)
+// ==========================================
+
+@mixin copper-glow {
+  box-shadow: 0 0 10px rgba(184, 115, 51, 0.2);
+  border: 1px solid $border-subtle;
+}
+
+// ==========================================
+// 4. RESET & GLOBAL STYLES
+// ==========================================
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: $bg-dark;
+  color: $text-light;
+  font-family: $font-serif; // Defaulting to the vintage feel
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; // Extra touch for macOS
+  
+  // Custom text selection to match the theme
+  ::selection {
+    background: $burgundy;
+    color: $text-light;
+  }
+}
+
+// --- Optional: Global UI defaults ---
+// Forcing UI elements to use Montserrat by default for better legibility
+button, 
+input, 
+textarea, 
+select {
+  font-family: $font-sans;
+}
