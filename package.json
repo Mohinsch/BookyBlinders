@@ -29,6 +29,7 @@
     "better-auth": "^1.6.14",
     "drizzle-orm": "^0.45.2",
     "framer-motion": "^12.38.0",
+    "kysely": "0.28.1",
     "lucide": "^1.11.0",
     "lucide-react": "^1.11.0",
     "motion": "^12.38.0",
