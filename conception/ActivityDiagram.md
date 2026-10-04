@@ -1,7 +1,10 @@
 # ACTIVITY DIAGRAM
 
 
-```@startuml
+```
+@startuml
+title Activity Diagram - Booky Blinders
+
 start
 
 repeat :Search for a book;
