@@ -17,7 +17,7 @@ package "Booky Blinders System" {
     package "Profile Management" {
         usecase UC1 as "Sign Up" #A8D8FF
         usecase UC2 as "Sign In" #A8D8FF
-        usecase UC3 as "Manage Profile\n(bio, visibility, username)" #A8D8FF
+        usecase UC3 as "Manage Profile" #A8D8FF
         usecase UC4 as "Set Category Preferences" #FFE5E5
         usecase UC5 as "Delete Account" #A8D8FF
     }
@@ -26,37 +26,38 @@ package "Booky Blinders System" {
         usecase UC6 as "Search for a Book" #A8D8FF
         usecase UC7 as "View Book Details" #A8D8FF
         usecase UC8 as "Add Book to Library" #A8D8FF
-        usecase UC9 as "Update Reading Status\n(To Read / Reading / Finished)" #A8D8FF
-        usecase UC10 as "Manage Personal Notes\n(create, edit, delete)" #FFE5E5
+        usecase UC9 as "Update Reading Status" #A8D8FF
+        usecase UC10 as "Manage Personal Notes" #FFE5E5
         usecase UC11 as "Rate a Book" #FFE5E5
-        usecase UC12 as "Manage Reviews\n(create, edit, delete)" #FFE5E5
+        usecase UC12 as "Manage Reviews" #FFE5E5
     }
     
     package "Administration" {
-        usecase UC13 as "Manage Users\n(block, unblock, delete)" #FFE5E5
+        usecase UC13 as "Manage Users" #FFE5E5
         usecase UC14 as "Moderate Reviews" #FFE5E5
     }
 }
 
 ' Actor Relationships
-V --> UC1
-V --> UC2
-V --> UC6
-V --> UC7
+V -- UC1
+V -- UC2
+V -- UC6
+V -- UC7
 
-U --|> V
-U --> UC3
-U --> UC4
-U --> UC5
-U --> UC8
-U --> UC9
-U --> UC10
-U --> UC11
-U --> UC12
+U -- UC6
+U -- UC7
+U -- UC3
+U -- UC4
+U -- UC5
+U -- UC8
+U -- UC9
+U -- UC10
+U -- UC11
+U -- UC12
 
 A --|> U
-A --> UC13
-A --> UC14
+A -- UC13
+A -- UC14
 
 ' Legend
 legend right
