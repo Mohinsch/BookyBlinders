@@ -14,52 +14,57 @@ participant "Server Action" as Server
 database "Database" as DB
 participant "Google Books API" as API
 
-== Book Search ==
-
 User -> Client : Search for a book ("Title, Author...")
-Client -> Server : GET /search?query=...
+activate Client
+
+Client -> Server : searchBooks(query)
 activate Server
 
-Server -> API : Fetch search results
+Server -> API : fetchSearchResults(query)
 activate API
-API --> Server : Return book list
+API --> Server : return bookList
 deactivate API
 
-opt User is Logged In
-    Server -> DB : Check if books are in user's library
+opt [User is Logged In]
+    Server -> DB : checkLibraryPresence(bookIds, userId)
     activate DB
-    DB --> Server : Return presence status
+    DB --> Server : return presenceStatus
     deactivate DB
 end
 
-Server --> Client : Return results
+Server --> Client : return searchResults
 deactivate Server
 
-== Add Book to Library ==
+Client --> User : display search results
+deactivate Client
+
 
 User -> Client : Click "Add to Library"
-Client -> Server : Trigger addToLibrary action
+activate Client
+
+Client -> Server : addBookToLibrary(bookId, userId)
 activate Server
 
 group Atomic Database Transaction
     note over Server, DB : The 'Upsert' handles the existence check automatically
     
-    Server -> DB : UPSERT into 'book' table (on conflict: UPDATE)
+    Server -> DB : saveOrUpdateBook(book)
     activate DB
-    note right of DB : IF NOT FOUND: INSERT (POST)\nIF FOUND: UPDATE (PUT)
-    DB --> Server : Book record synchronized
+    note right of DB : IF NOT FOUND: INSERT\nIF FOUND: UPDATE
+    DB --> Server : book record synchronized
     deactivate DB
 
-    Server -> DB : INSERT into 'library_book' (link user to book)
+    Server -> DB : linkBookToUserLibrary(userId, bookId)
     activate DB
-    DB --> Server : Confirmation
+    DB --> Server : confirmation
     deactivate DB
 end
 
-Server --> Client : Success Response
+Server --> Client : return successResponse
 deactivate Server
 
-Client --> User : Displays success notification
+Client --> User : displays success notification
+deactivate Client
 
 @enduml
 ```

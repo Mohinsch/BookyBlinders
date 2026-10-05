@@ -21,10 +21,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: |
-          npm config set registry https://registry.npmjs.org/
-          npm install --no-package-lock --no-audit --no-fund
-
+        run: npm ci
       - name: Run linting
         run: npm run lint
 
@@ -46,10 +43,8 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: |
-          npm config set registry https://registry.npmjs.org/
-          npm install --no-package-lock --no-audit --no-fund
-
+        run: npm ci
+        
       - name: Run tests
         run: npm run test
 
@@ -83,9 +78,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: |
-          npm config set registry https://registry.npmjs.org/
-          npm install --no-package-lock --no-audit --no-fund
+        run: npm ci
 
       - name: Build application
         run: npm run build
